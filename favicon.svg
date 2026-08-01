@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" fill="#030507"/>
+  <text x="16" y="23" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#C9A465" text-anchor="middle">S</text>
+  <line x1="16" y1="2" x2="16" y2="7" stroke="#C9A465" stroke-width="1.5"/>
+  <line x1="16" y1="25" x2="16" y2="30" stroke="#C9A465" stroke-width="1.5"/>
+  <line x1="2" y1="16" x2="7" y2="16" stroke="#C9A465" stroke-width="1.5"/>
+  <line x1="25" y1="16" x2="30" y2="16" stroke="#C9A465" stroke-width="1.5"/>
+</svg>

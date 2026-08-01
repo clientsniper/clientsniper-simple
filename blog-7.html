@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#030507;--border:#1a1e24;--gold:#C9A465;--text:#F0EBE0;--text-dim:#8a8578;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;}
+html{background:var(--bg);color:var(--text);font-family:var(--sans)}
+body{overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#030507}
+::-webkit-scrollbar-thumb{background:#2a2e34;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#C9A465}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(3,5,7,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.logo{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--gold);letter-spacing:1px}
+.logo span{color:var(--text)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{padding:9px 22px;border:1px solid var(--gold);color:var(--gold);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;transition:all .2s}
+.nav-cta:hover{background:var(--gold);color:var(--bg)}
+@media(max-width:768px){.nav-links{display:none}.nav{padding:16px 20px}}
+.article-hero{padding:120px 24px 48px;text-align:center;background:var(--bg);border-bottom:1px solid var(--border)}
+.article-cat{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.article-title{font-family:var(--serif);font-size:clamp(2rem,5vw,3.2rem);font-weight:700;line-height:1.15;max-width:800px;margin:0 auto 20px}
+.article-meta{font-size:.8rem;color:var(--text-dim);display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.article-body{background:#ffffff;min-height:60vh}
+.article-content{max-width:700px;margin:0 auto;padding:56px 24px 80px;font-size:1.05rem;line-height:1.85;color:#2d2d2d}
+.article-content h2{font-family:var(--serif);font-size:1.75rem;color:#111;margin:48px 0 16px;font-weight:700}
+.article-content p{margin-bottom:20px}
+.article-content ul,.article-content ol{padding-left:24px;margin-bottom:20px}
+.article-content li{margin-bottom:10px}
+.article-content strong{color:#111;font-weight:700}
+.article-content blockquote{border-left:3px solid #C9A465;padding:16px 20px;background:#faf9f7;margin:28px 0;font-style:italic;color:#444}
+.article-content .highlight-box{background:#faf9f7;border:1px solid #e8e4dc;padding:20px 24px;margin:28px 0;border-left:3px solid #C9A465}
+.article-content .highlight-box p{margin-bottom:0;font-weight:500;color:#333}
+.article-content a{color:#C9A465;text-decoration:underline;text-underline-offset:2px}
+.article-content hr{border:none;border-top:1px solid #e8e4dc;margin:40px 0}
+.article-author{display:flex;align-items:center;gap:16px;padding:28px 0;border-top:1px solid #e8e4dc;border-bottom:1px solid #e8e4dc;margin-bottom:40px}
+.author-avatar-lg{width:52px;height:52px;background:#C9A465;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.4rem;color:#030507;font-weight:700;flex-shrink:0}
+.author-details .name{font-weight:700;color:#111;margin-bottom:2px}
+.author-details .role{font-size:.82rem;color:#777}
+.back-link{display:inline-flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;padding:14px 0;transition:color .2s}
+.back-link:hover{color:#C9A465}
+.article-cta{background:var(--bg);border-top:1px solid var(--border);padding:60px 24px;text-align:center}
+.article-cta h3{font-family:var(--serif);font-size:1.8rem;color:var(--gold);margin-bottom:12px}
+.article-cta p{font-size:.9rem;color:var(--text-dim);margin-bottom:28px}
+.article-cta a{display:inline-block;padding:14px 36px;background:var(--gold);color:var(--bg);font-size:.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.footer{border-top:1px solid var(--border);padding:40px 40px 24px;background:var(--bg)}
+.footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-dim)}
+.article-hero-img{width:100%;max-height:440px;overflow:hidden;line-height:0;border-bottom:1px solid #e8e4dc}
+.article-hero-img img{width:100%;height:440px;object-fit:cover;display:block}.nav-signin{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .3s;padding:0 4px}.nav-signin:hover{color:var(--gold)}
+</style>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ClientSniper">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Community Spotlight: £8K in One Week — ClientSniper Blog">
+<meta property="og:description" content="How one ClientSniper user generated £8K in a single week using the Maps scraper and cold outreach.">
+<meta property="og:url" content="https://clientsniper.com/blog-7.html">
+<meta property="og:image" content="https://clientsniper.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@clientsniper">
+<meta name="twitter:title" content="Community Spotlight: £8K in One Week — ClientSniper Blog">
+<meta name="twitter:description" content="How one ClientSniper user generated £8K in a single week using the Maps scraper and cold outreach.">
+<meta name="twitter:image" content="https://clientsniper.com/og-image.png">
+<link rel="canonical" href="https://clientsniper.com/blog-7.html">
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="logo">Client<span>Sniper</span></a>
+  <div class="nav-links">
+    <a href="index.html">Home</a><a href="features.html">Features</a><a href="blog.html">Blog</a><a href="payment.html">Pricing</a>
+    <a href="https://clientsniper-zwr3.vercel.app/" class="nav-signin">Sign In</a>
+    <a href="payment.html" class="nav-cta">Get Started</a>
+  </div>
+</nav><div class="article-hero">
+  <div class="article-cat">Community</div>
+  <h1 class="article-title">Community Spotlight: How @sophie_builds Made &pound;8K in One Week</h1>
+  <div class="article-meta"><span>ClientSniper Team</span><span>&middot;</span><span>Jan 20, 2026</span><span>&middot;</span><span>4 min read</span></div>
+</div>
+
+<div class="article-hero-img"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&h=440&fit=crop&auto=format&q=80" alt="Person smiling at laptop" loading="lazy"></div><div class="article-body"><div class="article-content">
+<a href="blog.html" class="back-link">&larr; Back to Blog</a>
+<div class="article-author"><div class="author-avatar-lg">C</div><div class="author-details"><div class="name">ClientSniper Team</div><div class="role">Published Jan 20, 2026 &middot; 4 min read</div></div></div>
+<p>Sophie joined ClientSniper in early January. By the end of her first full week using the platform, she had closed three website projects totalling £8,200. We spoke to her about exactly what she did.</p>
+<div class="highlight-box"><p>"I'd been freelancing for two years but never had a consistent way to find clients. ClientSniper changed that in about 45 minutes." — @sophie_builds</p></div>
+<h2>What Sophie Did Differently</h2>
+<p>Sophie's first move was to niche down hard. Rather than searching for "businesses with no website" broadly, she focused specifically on independent nail salons in her city — a niche she understood because she'd worked in the beauty industry before transitioning to web design.</p>
+<p>Her search returned 67 nail salons with no website or a poor one. She filtered to the top 30 by review count and rating, then spent an evening writing personalised outreach for each one.</p>
+<h2>The Email That Worked</h2>
+<p>Sophie shared the template she used:</p>
+<blockquote>"Hi [Name], I found [Salon Name] while looking for nail salons in [city] — you have brilliant reviews but no website, which means you're probably missing customers who search online. I specialise in building sites for beauty businesses and could have yours live in 2 weeks. Worth a chat? Sophie"</blockquote>
+<p>Simple. Specific. 65 words. She sent 30 emails in one evening and received 11 replies within 48 hours — a 37% reply rate, which is exceptional even by warm-lead standards.</p>
+<h2>The Conversion</h2>
+<p>Of 11 replies, 8 booked discovery calls. Sophie ran the calls in 20-minute slots over two days. She closed 3 out of 8 — a 37.5% close rate — at prices of £2,400, £2,800, and £3,000 respectively.</p>
+<p>Total: £8,200 in one week from her first 30 emails.</p>
+<h2>What's Next for Sophie</h2>
+<p>She's expanding to neighbouring cities and plans to build a referral network within the beauty industry. "One client already referred me to her sister who runs a lash studio. I didn't even have to send an email for that one."</p>
+<hr>
+<p>Want to run the same playbook? <a href="payment.html">Get started</a> today.</p>
+</div></div>
+<div class="article-cta"><h3>Your Success Story Starts Here</h3><p>500 bonus leads for new members. Cancel anytime.</p><a href="payment.html">Get Started &rarr;</a></div><footer class="footer">
+  <div class="footer-bottom">
+    <span>&copy; 2026 ClientSniper. All rights reserved.</span>
+    <a href="blog.html" style="color:var(--text-dim)">&larr; Back to Blog</a>
+  </div>
+</footer>
+  <script defer data-domain="clientsniper.com" src="https://plausible.io/js/script.js"></script>
+  <script src="/cookie-consent.js"></script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thread — ClientSniper Community</title>
+<meta name="description" content="ClientSniper Community Forum thread.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#030507;--surface:#0a0d10;--surface2:#111519;--border:#1a1e24;--gold:#C9A465;--text:#F0EBE0;--text-dim:#8a8578;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif}
+[data-theme="light"]{--bg:#f8f6f2;--surface:#ffffff;--surface2:#f1ede6;--border:#e0dbd0;--text:#1a1612;--text-dim:#6b6560}
+html{scroll-behavior:smooth;background:var(--bg);color:var(--text);font-family:var(--sans)}
+body{overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#030507}::-webkit-scrollbar-thumb{background:#2a2e34;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#C9A465}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(3,5,7,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:all .3s}
+.nav.scrolled{padding:14px 40px;background:rgba(3,5,7,.98)}
+.logo{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--gold);letter-spacing:1px}
+.logo span{color:var(--text)}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{padding:10px 24px;border:1px solid var(--gold);color:var(--gold);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;transition:all .2s}
+.nav-cta:hover{background:var(--gold);color:var(--bg)}
+.nav-actions{display:flex;gap:12px;align-items:center}
+.theme-toggle{width:34px;height:34px;border:1px solid var(--border);background:none;color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s}
+.theme-toggle:hover{border-color:var(--gold);color:var(--gold)}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.burger span{width:22px;height:1.5px;background:var(--text-dim);transition:all .3s;display:block}
+.drawer{display:none;position:fixed;inset:0;top:0;z-index:199;background:rgba(3,5,7,.98);padding:80px 32px 32px;flex-direction:column;gap:24px}
+.drawer.open{display:flex}
+.drawer a{font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);padding:12px 0;border-bottom:1px solid var(--border)}
+@media(max-width:768px){.nav-links{display:none}.burger{display:flex}.nav{padding:16px 20px}}
+
+/* LAYOUT */
+.page-wrap{padding-top:80px;min-height:100vh;max-width:900px;margin:0 auto;padding-left:24px;padding-right:24px}
+.breadcrumb{display:flex;align-items:center;gap:8px;padding:24px 0 0;font-size:.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim)}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--gold)}
+.breadcrumb .sep{color:var(--border)}
+
+/* THREAD */
+.thread-main{margin-top:24px;border:1px solid var(--border);background:var(--surface)}
+.thread-body-wrap{padding:32px}
+.thread-cat-badge{display:inline-block;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(201,164,101,.08);border:1px solid rgba(201,164,101,.2);padding:3px 12px;margin-bottom:16px}
+.thread-title{font-family:var(--serif);font-size:clamp(1.5rem,4vw,2.2rem);font-weight:700;line-height:1.2;margin-bottom:12px;color:var(--text)}
+.thread-meta-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.avatar-sm{width:30px;height:30px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:.95rem;color:#030507;font-weight:700;flex-shrink:0}
+.author-name{font-size:.85rem;font-weight:600;color:var(--text)}
+.team-badge{background:rgba(201,164,101,.12);color:var(--gold);font-size:.55rem;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;font-weight:700;border:1px solid rgba(201,164,101,.25);margin-left:4px}
+.meta-sep{color:var(--border)}
+.meta-info{font-size:.78rem;color:var(--text-dim)}
+.thread-text{font-size:.95rem;line-height:1.85;color:var(--text);white-space:pre-wrap;word-break:break-word}
+.thread-tags-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.thread-tag{font-size:.65rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);background:var(--surface2);border:1px solid var(--border);padding:3px 10px}
+.vote-row{display:flex;align-items:center;gap:8px;margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
+.vote-btn-lg{display:flex;align-items:center;gap:6px;padding:8px 18px;border:1px solid var(--border);background:var(--surface2);color:var(--text-dim);font-size:.78rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;font-family:var(--sans)}
+.vote-btn-lg:hover{border-color:var(--gold);color:var(--gold)}
+.vote-btn-lg.upvoted{border-color:var(--gold);color:var(--gold);background:rgba(201,164,101,.08)}
+.vote-count-lg{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--gold)}
+.vote-lbl{font-size:.68rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim)}
+
+/* REPLIES */
+.replies-section{margin-top:40px}
+.replies-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.replies-header h2{font-family:var(--serif);font-size:1.25rem;color:var(--text)}
+.reply-card{border:1px solid var(--border);border-top:none;background:var(--surface);padding:24px;position:relative}
+.reply-card:first-child{border-top:1px solid var(--border)}
+.reply-card.team-reply{border-left:2px solid var(--gold)}
+.reply-text{font-size:.9rem;line-height:1.8;color:var(--text);white-space:pre-wrap;word-break:break-word;margin-bottom:16px}
+.reply-footer{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.reply-vote-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);background:none;color:var(--text-dim);font-size:.72rem;cursor:pointer;transition:all .2s;font-family:var(--sans)}
+.reply-vote-btn:hover{border-color:var(--gold);color:var(--gold)}
+.reply-vote-btn.upvoted{border-color:var(--gold);color:var(--gold)}
+.no-replies{text-align:center;padding:48px 24px;color:var(--text-dim);font-size:.9rem;border:1px solid var(--border);background:var(--surface)}
+
+/* REPLY FORM */
+.reply-form{margin-top:32px;border:1px solid var(--border);background:var(--surface);padding:28px}
+.reply-form h3{font-family:var(--serif);font-size:1.1rem;color:var(--text);margin-bottom:20px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:7px}
+.form-input{width:100%;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:.88rem;font-family:var(--sans);outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--gold)}
+.form-error{display:none;padding:10px 14px;background:rgba(220,53,69,.08);border:1px solid rgba(220,53,69,.2);color:#ef4444;font-size:.82rem;margin-bottom:16px}
+.char-count{text-align:right;font-size:.68rem;color:var(--text-dim);margin-top:4px}
+.form-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:4px}
+.team-toggle-btn{font-size:.72rem;color:var(--text-dim);text-decoration:underline;background:none;border:none;cursor:pointer;padding:0}
+.submit-btn{padding:11px 28px;background:var(--gold);color:#030507;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;font-family:var(--sans);transition:opacity .2s}
+.submit-btn:hover{opacity:.85}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:40px 40px 24px;background:var(--bg);margin-top:60px}
+.footer-bottom{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-dim)}
+
+/* CURSOR */
+.cursor-ring{position:fixed;width:28px;height:28px;border:1.5px solid rgba(201,164,101,.5);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);transition:border-color .3s;z-index:9999}
+.cursor-ring.hover{width:40px;height:40px;border-color:var(--gold)}
+.cursor-dot{position:fixed;width:4px;height:4px;background:var(--gold);border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);z-index:9999}
+@media(hover:none){.cursor-ring,.cursor-dot{display:none}}
+
+/* SKELETON */
+.skeleton{background:linear-gradient(90deg,var(--surface) 25%,var(--surface2) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.nav-signin{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .3s;padding:0 4px}.nav-signin:hover{color:var(--gold)}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ClientSniper">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Community Forum — ClientSniper">
+<meta property="og:description" content="Join the ClientSniper community. Share strategies, ask questions, and connect with other lead generation pros.">
+<meta property="og:url" content="https://clientsniper.com/forum.html">
+<meta property="og:image" content="https://clientsniper.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@clientsniper">
+<meta name="twitter:title" content="Community Forum — ClientSniper">
+<meta name="twitter:description" content="Join the ClientSniper community. Share strategies, ask questions, and connect with other lead generation pros.">
+<meta name="twitter:image" content="https://clientsniper.com/og-image.png">
+<link rel="canonical" href="https://clientsniper.com/forum.html">
+</head>
+<body>
+
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<nav class="nav" id="mainNav">
+  <a href="index.html" class="logo">Client<span>Sniper</span></a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="forum.html">Community</a>
+    <a href="payment.html">Pricing</a>
+    <a href="https://clientsniper-zwr3.vercel.app/" class="nav-signin">Sign In</a>
+    <a href="payment.html" class="nav-cta">Get Started</a>
+  </div>
+  <div class="nav-actions">
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+    <button class="burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="drawer" id="drawer">
+  <a href="index.html" onclick="closeDrawer()">Home</a>
+  <a href="features.html" onclick="closeDrawer()">Features</a>
+  <a href="forum.html" onclick="closeDrawer()">Community</a>
+  <a href="payment.html" onclick="closeDrawer()">Pricing</a>
+  <a href="payment.html" onclick="closeDrawer()" style="color:var(--gold)">Get Started</a>
+</div>
+
+<div class="page-wrap">
+  <div class="breadcrumb">
+    <a href="forum.html">Community</a>
+    <span class="sep">/</span>
+    <span id="breadcrumbCat" style="color:var(--gold)">Thread</span>
+  </div>
+
+  <!-- MAIN THREAD -->
+  <div class="thread-main" id="threadMain">
+    <div class="thread-body-wrap">
+      <div id="threadContent">
+        <div class="skeleton" style="height:18px;width:80px;margin-bottom:16px"></div>
+        <div class="skeleton" style="height:36px;width:70%;margin-bottom:12px"></div>
+        <div class="skeleton" style="height:14px;width:40%;margin-bottom:24px"></div>
+        <div class="skeleton" style="height:14px;width:100%;margin-bottom:8px"></div>
+        <div class="skeleton" style="height:14px;width:92%;margin-bottom:8px"></div>
+        <div class="skeleton" style="height:14px;width:78%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPLIES -->
+  <div class="replies-section">
+    <div class="replies-header">
+      <h2 id="repliesHeading">Replies</h2>
+    </div>
+    <div id="repliesList"></div>
+  </div>
+
+  <!-- REPLY FORM -->
+  <div class="reply-form">
+    <h3>Leave a Reply</h3>
+    <div class="form-error" id="rfError"></div>
+    <div class="form-group">
+      <label class="form-label">Your Name *</label>
+      <input id="rfAuthor" type="text" class="form-input" placeholder="@yourhandle or name" maxlength="60">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Your Reply *</label>
+      <textarea id="rfBody" class="form-input" rows="6" placeholder="Share your thoughts, answer, or tip…" maxlength="3000" style="resize:vertical;line-height:1.6"></textarea>
+      <div class="char-count" id="rfCharCount">0 / 3000</div>
+    </div>
+    <div id="rfTeamPassRow" style="display:none;margin-bottom:16px">
+      <label class="form-label" style="color:var(--gold)">Team Password</label>
+      <input id="rfTeamPass" type="password" class="form-input" placeholder="ClientSniper team only" style="border-color:rgba(201,164,101,.3)">
+    </div>
+    <div class="form-footer">
+      <button class="team-toggle-btn" onclick="document.getElementById('rfTeamPassRow').style.display=document.getElementById('rfTeamPassRow').style.display==='none'?'block':'none'">ClientSniper team?</button>
+      <button class="submit-btn" id="rfSubmit" onclick="submitReply()">Post Reply</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-bottom">
+    <span>&copy; 2026 ClientSniper. All rights reserved.</span>
+    <a href="forum.html" style="color:var(--text-dim)">← Back to Community</a>
+  </div>
+</footer>
+
+<script>
+/* ── SUPABASE ─────────────────────────── */
+const SUPABASE_URL  = 'https://jxcahqkkcnqkmjjqdnuu.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U';
+const TEAM_PASS     = 'BenFinn12!';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+/* THEME */
+function toggleTheme(){const h=document.documentElement;const d=h.getAttribute('data-theme')==='dark';h.setAttribute('data-theme',d?'light':'dark');localStorage.setItem('cs-theme',d?'light':'dark');document.querySelectorAll('.theme-toggle').forEach(b=>b.textContent=d?'🌙':'☀️')}
+(function(){const s=localStorage.getItem('cs-theme');if(s){document.documentElement.setAttribute('data-theme',s);document.querySelectorAll('.theme-toggle').forEach(b=>b.textContent=s==='light'?'🌙':'☀️')}})();
+
+/* CURSOR */
+(function(){const r=document.getElementById('cursorRing'),d=document.getElementById('cursorDot');if(!r||!d)return;let mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;d.style.left=mx+'px';d.style.top=my+'px'});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(a)})();document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>r.classList.add('hover'));el.addEventListener('mouseleave',()=>r.classList.remove('hover'))})})();
+
+/* NAV */
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>40));
+const burger=document.getElementById('burger'),drawer=document.getElementById('drawer');
+burger.addEventListener('click',()=>{burger.classList.toggle('open');drawer.classList.toggle('open')});
+function closeDrawer(){burger.classList.remove('open');drawer.classList.remove('open')}
+
+/* VOTED STATE */
+const votedThreads=JSON.parse(localStorage.getItem('cs-voted-threads')||'{}');
+const votedReplies=JSON.parse(localStorage.getItem('cs-voted-replies')||'{}');
+function saveVoted(){localStorage.setItem('cs-voted-threads',JSON.stringify(votedThreads));localStorage.setItem('cs-voted-replies',JSON.stringify(votedReplies))}
+
+/* TIME */
+function timeAgo(iso){if(!iso)return '';const s=Math.floor((Date.now()-new Date(iso).getTime())/1000);if(s<60)return 'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';if(s<604800)return Math.floor(s/86400)+'d ago';return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}
+
+function teamBadge(){return '<span class="team-badge">Team</span>'}
+
+const catLabels={general:'General',maps:'Maps Tips',outreach:'Outreach',strategy:'Strategy',showcase:'Showcase / Wins',feature:'Feature Requests'};
+
+/* THREAD */
+const threadId=new URLSearchParams(window.location.search).get('id');
+let threadReplies=[];
+
+async function loadThread(){
+  if(!threadId){
+    document.getElementById('threadContent').innerHTML='<p style="color:#ef4444">No thread ID. <a href="forum.html" style="color:var(--gold);text-decoration:underline">Go back.</a></p>';
+    return;
+  }
+  const {data:t,error}=await db.from('forum_threads').select('*').eq('id',threadId).single();
+  if(error||!t){
+    document.getElementById('threadContent').innerHTML='<p style="color:#ef4444">Thread not found. <a href="forum.html" style="color:var(--gold);text-decoration:underline">Go back.</a></p>';
+    return;
+  }
+  const {data:replies}=await db.from('forum_replies').select('*').eq('thread_id',threadId).order('created_at',{ascending:true});
+  threadReplies=replies||[];
+  renderThread(t,threadReplies);
+  renderReplies(threadReplies);
+  document.title=t.title+' — ClientSniper Community';
+  const bc=document.getElementById('breadcrumbCat');
+  if(bc)bc.textContent=catLabels[t.category]||t.category;
+}
+
+function escHtml(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function renderThread(t,replies){
+  const voted=!!votedThreads[t.id];
+  const tags=(t.tags||[]).map(tag=>`<span class="thread-tag">${tag}</span>`).join('');
+  document.getElementById('threadContent').innerHTML=`
+    <div class="thread-cat-badge">${catLabels[t.category]||t.category}</div>
+    ${t.pinned?'<div style="font-size:.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">&#128204; Pinned by team</div>':''}
+    <h1 class="thread-title">${escHtml(t.title)}</h1>
+    <div class="thread-meta-row">
+      <div class="avatar-sm">${(t.author||'?')[0].toUpperCase()}</div>
+      <div><span class="author-name">${escHtml(t.author)}${t.is_team?teamBadge():''}</span></div>
+      <span class="meta-sep">&#183;</span>
+      <span class="meta-info">${timeAgo(t.created_at)}</span>
+      <span class="meta-sep">&#183;</span>
+      <span class="meta-info">${(replies||[]).length} ${(replies||[]).length===1?'reply':'replies'}</span>
+    </div>
+    <div class="thread-text">${escHtml(t.body)}</div>
+    ${tags?`<div class="thread-tags-row">${tags}</div>`:''}
+    <div class="vote-row">
+      <button class="vote-btn-lg${voted?' upvoted':''}" id="threadVoteBtn" onclick="voteThread('${t.id}')">
+        &#9650; ${voted?'Voted':'Upvote'}
+      </button>
+      <span class="vote-count-lg" id="threadVoteCount">${t.votes||0}</span>
+      <span class="vote-lbl">votes</span>
+    </div>`;
+}
+
+function renderReplies(replies){
+  const heading=document.getElementById('repliesHeading');
+  if(heading)heading.textContent=`${replies.length} ${replies.length===1?'Reply':'Replies'}`;
+  const list=document.getElementById('repliesList');
+  if(!replies||replies.length===0){
+    list.innerHTML='<div class="no-replies">No replies yet. Be the first!</div>';
+    return;
+  }
+  list.innerHTML=replies.map((r,i)=>{
+    const voted=!!votedReplies[r.id];
+    return `
+    <div class="reply-card${r.is_team?' team-reply':''}" id="reply-${r.id}">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <div class="avatar-sm" style="width:28px;height:28px;font-size:.85rem">${(r.author||'?')[0].toUpperCase()}</div>
+        <span class="author-name" style="font-size:.82rem">${escHtml(r.author)}${r.is_team?teamBadge():''}</span>
+        <span class="meta-sep">&#183;</span>
+        <span class="meta-info">${timeAgo(r.created_at)}</span>
+        <span style="font-size:.7rem;color:var(--text-dim);margin-left:auto">#${i+1}</span>
+      </div>
+      <div class="reply-text">${escHtml(r.body)}</div>
+      <div class="reply-footer">
+        <button class="reply-vote-btn${voted?' upvoted':''}" id="rv-${r.id}" onclick="voteReply('${r.id}',this)">
+          &#9650; <span id="rvc-${r.id}">${r.votes||0}</span>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* VOTE THREAD */
+async function voteThread(id){
+  const voted=!!votedThreads[id];
+  const {data,error}=await db.rpc('vote_on_thread',{p_id:id,p_delta:voted?-1:1});
+  if(error){console.error(error);return;}
+  document.getElementById('threadVoteCount').textContent=data;
+  const btn=document.getElementById('threadVoteBtn');
+  if(!voted){votedThreads[id]=true;btn.classList.add('upvoted');btn.innerHTML='&#9650; Voted';}
+  else{delete votedThreads[id];btn.classList.remove('upvoted');btn.innerHTML='&#9650; Upvote';}
+  saveVoted();
+}
+
+/* VOTE REPLY */
+async function voteReply(id,btn){
+  const voted=!!votedReplies[id];
+  const {data,error}=await db.rpc('vote_on_reply',{p_id:id,p_delta:voted?-1:1});
+  if(error){console.error(error);return;}
+  document.getElementById('rvc-'+id).textContent=data;
+  if(!voted){votedReplies[id]=true;btn.classList.add('upvoted');}
+  else{delete votedReplies[id];btn.classList.remove('upvoted');}
+  saveVoted();
+}
+
+/* REPLY FORM */
+document.getElementById('rfBody').addEventListener('input',function(){
+  document.getElementById('rfCharCount').textContent=this.value.length+' / 3000';
+});
+
+async function submitReply(){
+  const btn=document.getElementById('rfSubmit');
+  const errEl=document.getElementById('rfError');
+  errEl.style.display='none';
+  const author=document.getElementById('rfAuthor').value.trim();
+  const body=document.getElementById('rfBody').value.trim();
+  const tpass=document.getElementById('rfTeamPass').value.trim();
+  if(!author||!body){errEl.textContent='Please enter your name and reply.';errEl.style.display='block';return;}
+  btn.textContent='Posting…';btn.style.opacity='.6';
+  const {data,error}=await db.from('forum_replies')
+    .insert({thread_id:threadId,body,author,is_team:tpass===TEAM_PASS,votes:0})
+    .select().single();
+  if(error){errEl.textContent='Error posting reply.';errEl.style.display='block';btn.textContent='Post Reply';btn.style.opacity='1';return;}
+  ['rfAuthor','rfBody','rfTeamPass'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('rfCharCount').textContent='0 / 3000';
+  threadReplies=[...threadReplies,data];
+  renderReplies(threadReplies);
+  setTimeout(()=>document.getElementById('reply-'+data.id)?.scrollIntoView({behavior:'smooth',block:'center'}),100);
+  btn.textContent='Post Reply';btn.style.opacity='1';
+}
+
+loadThread();
+</script>
+  <script defer data-domain="clientsniper.com" src="https://plausible.io/js/script.js"></script>
+  <script src="/cookie-consent.js"></script>
+</body>
+</html>

@@ -1,12 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ClientSniper — Precision Lead Generation</title>
+  <title>ClientSniper — Find Local Businesses That Need Better Websites</title>
   <meta name="description"
-    content="Scrape verified leads from Google Maps &amp; Instagram in minutes. AI-powered lead generation tools for agencies, freelancers &amp; businesses.">
+    content="ClientSniper helps freelancers and agencies find local businesses with missing, outdated, or poorly designed websites. Discover opportunities, reach out instantly, win more clients.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -349,28 +350,23 @@
       isolation: isolate
     }
 
-    #sky-canvas {
+    .hero-video {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      z-index: 0
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80') center/cover no-repeat;
-      opacity: .65;
-      transition: filter 2s ease, opacity 2s ease
+      object-fit: cover;
+      filter: contrast(1.12) saturate(1.25) brightness(0.92);
+      z-index: 0;
+      opacity: .75;
+      pointer-events: none;
     }
 
     .hero-overlay {
       position: absolute;
       inset: 0;
       z-index: 2;
-      background: linear-gradient(180deg, rgba(3, 5, 7, .05) 0%, rgba(3, 5, 7, .65) 100%)
+      background: linear-gradient(180deg, rgba(3, 5, 7, .04) 0%, rgba(3, 5, 7, .18) 40%, rgba(3, 5, 7, .72) 100%)
     }
 
     .hero-content {
@@ -2184,7 +2180,8 @@
     [data-theme="light"] .newsletter-bar {
       background: linear-gradient(180deg, transparent, rgba(176, 138, 48, .06), transparent)
     }
-  </style>
+  .nav-signin{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .3s;padding:0 4px}.nav-signin:hover{color:var(--gold)}
+</style>
   <style>
     @media(max-width:600px) {
       #cookieConsent {
@@ -2213,34 +2210,265 @@
         max-width: 90px !important;
       }
     }
-  </style>
+  .nav-signin{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .3s;padding:0 4px}.nav-signin:hover{color:var(--gold)}
+</style>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ClientSniper">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="ClientSniper — Find Local Businesses That Need Better Websites">
+<meta property="og:description" content="Find and contact local businesses with missing or outdated websites. Google Maps scraping and outreach tools built for freelancers and agencies.">
+<meta property="og:url" content="https://clientsniper.com/">
+<meta property="og:image" content="https://clientsniper.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@clientsniper">
+<meta name="twitter:title" content="ClientSniper — Find Local Businesses That Need Better Websites">
+<meta name="twitter:description" content="Find and contact local businesses with missing or outdated websites. Google Maps scraping and outreach tools built for freelancers and agencies.">
+<meta name="twitter:image" content="https://clientsniper.com/og-image.png">
+<link rel="canonical" href="https://clientsniper.com/">
 </head>
 
 <body>
 
-  <!-- ════════ COOKIES POPUP ════════ -->
+  <!-- ════════ DEMO MODAL ════════ -->
+  <div id="demoModal" style="display:none;position:fixed;inset:0;z-index:99998;background:rgba(3,5,7,.92);backdrop-filter:blur(8px);align-items:center;justify-content:center;">
+    <div style="background:#0a0d10;border:1px solid #1a1e24;max-width:780px;width:calc(100% - 40px);max-height:90vh;overflow-y:auto;position:relative;">
 
-  <div id="cookieConsent"
-    style="display:none;position:fixed;bottom:24px;right:24px;background:var(--surface2,#222);color:var(--text,#fff);padding:14px 16px 14px 14px;box-shadow:0 4px 16px rgba(0,0,0,.18);border-radius:10px;z-index:99999;min-width:220px;max-width:320px;text-align:left;font-size:.95rem;display:flex;align-items:center;gap:12px">
-    <div style="display:flex;align-items:flex-start;gap:7px;flex:1 1 auto;min-width:0">
-      <div style="font-size:1.1rem;line-height:1;margin-right:3px">🍪</div>
-      <div style="min-width:0">
-        <div style="font-size:.98rem;font-weight:600;margin-bottom:2px;white-space:nowrap">Cookies</div>
-        <div style="font-size:.89rem;line-height:1.4;white-space:normal;word-break:break-word;max-width:120px">We use
-          cookies to enhance your experience. <a href="cookies.html"
-            style="color:var(--gold);text-decoration:underline">Learn more</a></div>
+      <!-- Header -->
+      <div style="padding:20px 28px;border-bottom:1px solid #1a1e24;display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:#C9A465;margin-bottom:3px;">Live Demo</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#F0EBE0;">See ClientSniper in Action</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button id="demoPlayBtn" onclick="toggleDemoPlay()" style="display:flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid #C9A465;background:none;color:#C9A465;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:inherit;">
+            <span id="demoPlayIcon">⏸</span><span id="demoPlayLabel">Pause</span>
+          </button>
+          <button onclick="closeDemo()" style="width:36px;height:36px;border:1px solid #1a1e24;background:none;color:#8a8578;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
+        </div>
       </div>
+
+      <!-- Progress bar -->
+      <div style="height:2px;background:#111519;">
+        <div id="demoProgress" style="height:100%;background:var(--gold,#C9A465);width:0%;transition:width .3s;"></div>
+      </div>
+
+      <!-- Step tabs -->
+      <div style="display:flex;border-bottom:1px solid #1a1e24;">
+        <div id="tab0" onclick="jumpDemo(0)" style="flex:1;padding:11px;text-align:center;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:#C9A465;border-bottom:2px solid #C9A465;cursor:pointer;">1. Search</div>
+        <div id="tab1" onclick="jumpDemo(1)" style="flex:1;padding:11px;text-align:center;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;border-bottom:2px solid transparent;cursor:pointer;">2. Scan</div>
+        <div id="tab2" onclick="jumpDemo(2)" style="flex:1;padding:11px;text-align:center;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;border-bottom:2px solid transparent;cursor:pointer;">3. Leads</div>
+        <div id="tab3" onclick="jumpDemo(3)" style="flex:1;padding:11px;text-align:center;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;border-bottom:2px solid transparent;cursor:pointer;">4. Outreach</div>
+      </div>
+
+      <!-- Step 0: Search -->
+      <div id="demoStep0" class="demo-panel" style="padding:28px;">
+        <p style="font-size:.82rem;color:#8a8578;margin-bottom:20px;">Enter a business type and location to start finding leads.</p>
+        <div style="background:#111519;border:1px solid #1a1e24;padding:22px;margin-bottom:16px;">
+          <div style="margin-bottom:14px;">
+            <div style="font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;margin-bottom:7px;">Business Type</div>
+            <div style="background:#0a0d10;border:1px solid #1a1e24;padding:11px 14px;font-size:.9rem;color:#F0EBE0;">
+              <span id="demoType"></span><span class="demo-cursor">|</span>
+            </div>
+          </div>
+          <div style="margin-bottom:18px;">
+            <div style="font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;margin-bottom:7px;">Location</div>
+            <div style="background:#0a0d10;border:1px solid #1a1e24;padding:11px 14px;font-size:.9rem;color:#F0EBE0;">
+              <span id="demoLoc"></span>
+            </div>
+          </div>
+          <div id="demoSearchBtn" style="opacity:0;text-align:center;transition:opacity .4s;">
+            <div style="display:inline-block;padding:11px 36px;background:#C9A465;color:#030507;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;">Snipe Leads →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 1: Scan -->
+      <div id="demoStep1" class="demo-panel" style="display:none;padding:28px;">
+        <p style="font-size:.82rem;color:#8a8578;margin-bottom:20px;">ClientSniper scans Google Maps and checks each business for a website.</p>
+        <div style="background:#111519;border:1px solid #1a1e24;padding:22px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <div style="font-size:.78rem;color:#F0EBE0;">Scanning <span style="color:#C9A465;">Restaurants</span> in <span style="color:#C9A465;">London</span></div>
+            <div id="scanCount" style="font-size:.78rem;color:#8a8578;">0 found</div>
+          </div>
+          <div style="background:#0a0d10;border:1px solid #1a1e24;height:5px;margin-bottom:18px;overflow:hidden;">
+            <div id="scanBar" style="height:100%;width:0%;background:linear-gradient(90deg,#C9A465,#f0c87a);transition:width .15s;"></div>
+          </div>
+          <div id="scanLog" style="font-size:.74rem;color:#8a8578;font-family:monospace;height:110px;overflow:hidden;display:flex;flex-direction:column;gap:4px;"></div>
+        </div>
+      </div>
+
+      <!-- Step 2: Leads -->
+      <div id="demoStep2" class="demo-panel" style="display:none;padding:28px;">
+        <p style="font-size:.82rem;color:#8a8578;margin-bottom:20px;">Businesses with missing or poor websites — your hottest leads.</p>
+        <div id="leadsList" style="display:flex;flex-direction:column;gap:9px;"></div>
+      </div>
+
+      <!-- Step 3: Outreach -->
+      <div id="demoStep3" class="demo-panel" style="display:none;padding:28px;">
+        <p style="font-size:.82rem;color:#8a8578;margin-bottom:20px;">One click generates a personalised outreach email ready to send.</p>
+        <div style="background:#111519;border:1px solid #1a1e24;padding:22px;margin-bottom:20px;">
+          <div style="padding-bottom:14px;border-bottom:1px solid #1a1e24;margin-bottom:14px;">
+            <div style="font-size:.65rem;color:#8a8578;margin-bottom:3px;">TO</div>
+            <div style="font-size:.82rem;color:#F0EBE0;">owner@goldeneaglebar.co.uk</div>
+          </div>
+          <div style="margin-bottom:14px;">
+            <div style="font-size:.65rem;color:#8a8578;margin-bottom:3px;">SUBJECT</div>
+            <div style="font-size:.82rem;color:#F0EBE0;">Quick question about Golden Eagle Bar's website</div>
+          </div>
+          <div style="border-top:1px solid #1a1e24;padding-top:14px;">
+            <div id="emailBody" style="font-size:.82rem;color:#8a8578;line-height:1.85;"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+          <div style="font-size:.75rem;color:#2DBD6E;">✓ Personalised with business name &amp; location</div>
+          <a href="payment.html" style="padding:12px 28px;background:#C9A465;color:#030507;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;text-decoration:none;display:inline-block;">Get Started →</a>
+        </div>
+      </div>
+
     </div>
-    <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
-      <button id="cookieAccept"
-        style="background:var(--gold);color:var(--bg);font-weight:600;padding:6px 12px;border:none;border-radius:4px;font-size:.89rem;cursor:pointer;box-shadow:0 2px 8px rgba(201,164,101,.08);margin-bottom:2px">Accept</button>
-      <button id="cookieDecline"
-        style="background:var(--surface);color:var(--text-dim);font-weight:600;padding:6px 12px;border:1px solid var(--border);border-radius:4px;font-size:.89rem;cursor:pointer">Decline</button>
+  </div>
+
+  <style>
+    .demo-cursor{animation:blink .7s step-end infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .lead-row{background:#111519;border:1px solid #1a1e24;padding:13px 17px;display:flex;align-items:center;gap:14px;opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s}
+    .lead-row.visible{opacity:1;transform:translateY(0)}
+    .lead-badge{font-size:.63rem;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;flex-shrink:0}
+    .badge-none{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.2)}
+    .badge-poor{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.2)}
+  .nav-signin{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .3s;padding:0 4px}.nav-signin:hover{color:var(--gold)}
+</style>
+
+  <script>
+    const LEADS=[
+      {name:'Golden Eagle Bar',area:'Shoreditch, London',phone:'020 7123 4567',status:'none',label:'No Website'},
+      {name:"Mia's Hair Studio",area:'Hackney, London',phone:'020 7234 5678',status:'poor',label:'Poor Website'},
+      {name:'Prime Cuts Barbershop',area:'Bethnal Green, London',phone:'020 7345 6789',status:'none',label:'No Website'},
+      {name:'The Olive Kitchen',area:'Islington, London',phone:'020 7456 7890',status:'poor',label:'Outdated Site'},
+      {name:'Apex Auto Repairs',area:'Stratford, London',phone:'020 7567 8901',status:'none',label:'No Website'},
+    ];
+
+    let demoStep=0, demoPlaying=true, demoAutoTimer=null;
+    const STEP_DURATIONS=[4500,4500,3500,5000];
+
+    function openDemo(){
+      document.getElementById('demoModal').style.display='flex';
+      document.body.style.overflow='hidden';
+      demoStep=0; demoPlaying=true;
+      updatePlayBtn();
+      showStep(0);
+      scheduleNext();
+    }
+    function closeDemo(){
+      document.getElementById('demoModal').style.display='none';
+      document.body.style.overflow='';
+      clearTimeout(demoAutoTimer);
+    }
+    document.getElementById('demoModal').addEventListener('click',function(e){if(e.target===this)closeDemo();});
+
+    function toggleDemoPlay(){
+      demoPlaying=!demoPlaying;
+      updatePlayBtn();
+      if(demoPlaying) scheduleNext();
+      else clearTimeout(demoAutoTimer);
+    }
+    function updatePlayBtn(){
+      document.getElementById('demoPlayIcon').textContent=demoPlaying?'⏸':'▶';
+      document.getElementById('demoPlayLabel').textContent=demoPlaying?'Pause':'Play';
+    }
+    function jumpDemo(s){
+      clearTimeout(demoAutoTimer);
+      demoStep=s;
+      showStep(s);
+      if(demoPlaying) scheduleNext();
+    }
+    function scheduleNext(){
+      clearTimeout(demoAutoTimer);
+      if(demoStep>=3) return;
+      demoAutoTimer=setTimeout(()=>{
+        demoStep++;
+        showStep(demoStep);
+        scheduleNext();
+      }, STEP_DURATIONS[demoStep]);
+    }
+
+    function showStep(s){
+      document.querySelectorAll('.demo-panel').forEach((p,i)=>p.style.display=i===s?'block':'none');
+      for(let i=0;i<4;i++){
+        const t=document.getElementById('tab'+i);
+        t.style.color=i===s?'#C9A465':'#8a8578';
+        t.style.borderBottom=i===s?'2px solid #C9A465':'2px solid transparent';
+      }
+      const pct=Math.round((s/3)*100);
+      document.getElementById('demoProgress').style.width=pct+'%';
+      if(s===0) runSearchAnim();
+      if(s===1) runScanAnim();
+      if(s===2) runLeadsAnim();
+      if(s===3) runEmailAnim();
+    }
+
+    function typeText(el,text,speed,cb){
+      el.textContent='';let i=0;
+      const t=setInterval(()=>{
+        el.textContent+=text[i++];
+        if(i>=text.length){clearInterval(t);if(cb)setTimeout(cb,300);}
+      },speed);
+    }
+    function runSearchAnim(){
+      const te=document.getElementById('demoType'),le=document.getElementById('demoLoc'),btn=document.getElementById('demoSearchBtn');
+      te.textContent='';le.textContent='';btn.style.opacity='0';
+      setTimeout(()=>typeText(te,'Restaurants',75,()=>setTimeout(()=>typeText(le,'London, UK',75,()=>btn.style.opacity='1'),350)),400);
+    }
+    function runScanAnim(){
+      const bar=document.getElementById('scanBar'),cnt=document.getElementById('scanCount'),log=document.getElementById('scanLog');
+      bar.style.width='0%';cnt.textContent='0 found';log.innerHTML='';
+      const entries=['→ Checking Golden Eagle Bar...','✓ No website — flagged as lead','→ Checking Mia\'s Hair Studio...','✓ Poor website — flagged','→ Checking Prime Cuts Barbershop...','✓ No website — flagged as lead','→ Checking The Olive Kitchen...','✓ Outdated site — flagged','→ Checking Apex Auto Repairs...','✓ No website — flagged as lead','— Scan complete. 5 leads identified.'];
+      let found=0;
+      entries.forEach((txt,i)=>setTimeout(()=>{
+        const ln=document.createElement('div');ln.textContent=txt;
+        ln.style.color=txt.startsWith('✓')?'#2DBD6E':txt.startsWith('—')?'#C9A465':'#8a8578';
+        log.appendChild(ln);log.scrollTop=log.scrollHeight;
+        bar.style.width=Math.round(((i+1)/entries.length)*100)+'%';
+        if(txt.startsWith('✓'))cnt.textContent=++found+' found';
+      },i*300));
+    }
+    function runLeadsAnim(){
+      const list=document.getElementById('leadsList');list.innerHTML='';
+      LEADS.forEach((lead,i)=>{
+        const row=document.createElement('div');row.className='lead-row';
+        row.innerHTML=`<div style="flex:1;min-width:0;"><div style="font-size:.87rem;color:#F0EBE0;margin-bottom:3px;">${lead.name}</div><div style="font-size:.74rem;color:#8a8578;">${lead.area} · ${lead.phone}</div></div><span class="lead-badge ${lead.status==='none'?'badge-none':'badge-poor'}">${lead.label}</span>`;
+        list.appendChild(row);
+        setTimeout(()=>row.classList.add('visible'),i*140+80);
+      });
+    }
+    const EMAIL_TEXT=`Hi,\n\nI came across Golden Eagle Bar while searching for restaurants in Shoreditch and noticed you don't currently have a website.\n\nA professional site could help you attract more customers, take bookings online, and stand out from competitors in the area.\n\nI build websites for local businesses — would you be open to a quick 10-minute chat?\n\nBest,\n[Your name]`;
+    function runEmailAnim(){
+      const el=document.getElementById('emailBody');el.innerHTML='';
+      let delay=0;
+      EMAIL_TEXT.split('\n').forEach(line=>{
+        setTimeout(()=>{
+          const d=document.createElement('div');d.style.minHeight='1.5em';d.textContent=line;d.style.opacity='0';d.style.transition='opacity .25s';
+          el.appendChild(d);setTimeout(()=>d.style.opacity='1',40);
+        },delay);
+        delay+=line.length?line.length*16:180;
+      });
+    }
+  </script>
+
+  <!-- ════════ COOKIE BANNER ════════ -->
+  <div id="cookieConsent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#0a0d10;border-top:1px solid #1a1e24;padding:16px 40px;">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+      <p style="font-size:.85rem;color:#8a8578;line-height:1.6;margin:0;">We use cookies to improve your experience and analyse site traffic. By clicking Accept, you consent to our use of cookies. <a href="cookies.html" style="color:#C9A465;text-decoration:underline;">Cookie Policy</a></p>
+      <div style="display:flex;gap:12px;flex-shrink:0;">
+        <button id="cookieDecline" style="padding:10px 24px;border:1px solid #1a1e24;background:none;color:#8a8578;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:inherit;transition:border-color .2s,color .2s;" onmouseover="this.style.borderColor='#C9A465';this.style.color='#C9A465'" onmouseout="this.style.borderColor='#1a1e24';this.style.color='#8a8578'">Decline</button>
+        <button id="cookieAccept" style="padding:10px 24px;background:#C9A465;color:#030507;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;cursor:pointer;border:none;font-family:inherit;">Accept</button>
+      </div>
     </div>
   </div>
 
   <script>
-    // Show cookie popup if not previously accepted/declined
     window.addEventListener('DOMContentLoaded', function () {
       if (!localStorage.getItem('cookieConsent')) {
         document.getElementById('cookieConsent').style.display = 'block';
@@ -2273,10 +2501,11 @@
       <a href="forum.html">Forum</a>
       <a href="payment.html">Plans</a>
       <a href="#contact">Contact</a>
+      <a href="sales-apply.html">Sales Reps</a>
     </div>
     <div style="display:flex;align-items:center;gap:8px">
+      <a href="https://clientsniper-zwr3.vercel.app/" class="nav-signin">Sign In</a>
       <button class="nav-cta" onclick="openCheckout()">Get Started</button>
-      <button class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">☀️</button>
     </div>
     <div class="burger" id="burger"><span></span><span></span><span></span></div>
   </nav>
@@ -2286,76 +2515,78 @@
     <a href="blog.html" onclick="closeDrawer()">Blog</a>
     <a href="forum.html" onclick="closeDrawer()">Forum</a>
     <a href="payment.html" onclick="closeDrawer()">Plans</a>
+    <a href="sales-apply.html" onclick="closeDrawer()">Sales Reps</a>
+    <a href="https://clientsniper-zwr3.vercel.app/" onclick="closeDrawer()">Sign In</a>
     <a href="#contact" onclick="closeDrawer()">Contact</a>
     <button class="nav-cta" onclick="openCheckout();closeDrawer()">Get Started</button>
-    <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
   </div>
 
   <!-- ════════ HERO ════════ -->
   <section class="hero" id="hero">
-    <canvas id="sky-canvas"></canvas>
-    <div class="hero-bg" id="heroBg"></div>
+    <video class="hero-video" autoplay muted loop playsinline preload="auto">
+      <source src="hero-bg.mp4" type="video/mp4">
+    </video>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <div class="tag">Precision Lead Generation</div>
-      <h1>Find Clients.<br><span class="outline">Close Deals.</span></h1>
-      <p>Scrape verified leads from Google Maps &amp; Instagram. AI-powered tools that turn any search into a pipeline
-        of ready-to-action prospects.</p>
+      <div class="tag">Client Acquisition Platform</div>
+      <h1>Find Local Businesses That Need<br><span class="outline">Better Websites.</span></h1>
+      <p>ClientSniper helps freelancers and agencies discover local businesses with missing, outdated, or poorly designed websites — so you can reach out faster and win more clients.</p>
       <div class="hero-actions">
-        <a href="payment.html" class="btn-primary">Start Free Trial →</a>
-        <a href="#products" class="btn-secondary">See How It Works</a>
+        <a href="payment.html" class="btn-primary">Start Finding Leads →</a>
+        <button class="btn-secondary" onclick="openDemo()">Watch Demo</button>
       </div>
     </div>
     <div class="hero-glow-line"></div>
   </section>
   <div class="ticker-wrap">
     <div class="ticker">
-      <span class="gold">✦</span><span>Google Maps Scraper</span><span class="gold">✦</span><span>Instagram Lead
-        Finder</span><span class="gold">✦</span><span>AI Website Generator</span><span
-        class="gold">✦</span><span>Built-In CRM</span><span class="gold">✦</span><span>CSV &amp; Excel
-        Export</span><span class="gold">✦</span><span>Real-Time Verification</span><span
-        class="gold">✦</span><span>30-Day Free Trial</span><span class="gold">✦</span><span>No Per-Lead Costs</span>
-      <span class="gold">✦</span><span>Google Maps Scraper</span><span class="gold">✦</span><span>Instagram Lead
-        Finder</span><span class="gold">✦</span><span>AI Website Generator</span><span
-        class="gold">✦</span><span>Built-In CRM</span><span class="gold">✦</span><span>CSV &amp; Excel
-        Export</span><span class="gold">✦</span><span>Real-Time Verification</span><span
-        class="gold">✦</span><span>30-Day Free Trial</span><span class="gold">✦</span><span>No Per-Lead Costs</span>
+      <span class="gold">✦</span><span>Website Opportunity Finder</span><span class="gold">✦</span><span>No Website Detected</span><span class="gold">✦</span><span>Outdated Design Alert</span><span class="gold">✦</span><span>Poor Mobile Experience</span><span class="gold">✦</span><span>Opportunity Score</span><span class="gold">✦</span><span>AI Outreach Templates</span><span class="gold">✦</span><span>Direct Outreach</span><span class="gold">✦</span><span>Email Outreach</span><span class="gold">✦</span><span>Pipeline Dashboard</span><span class="gold">✦</span><span>Smart Filters</span><span class="gold">✦</span><span>Follow-Up Tracking</span><span class="gold">✦</span><span>CSV Export</span><span class="gold">✦</span><span>500 Bonus Leads</span>
+      <span class="gold">✦</span><span>Website Opportunity Finder</span><span class="gold">✦</span><span>No Website Detected</span><span class="gold">✦</span><span>Outdated Design Alert</span><span class="gold">✦</span><span>Poor Mobile Experience</span><span class="gold">✦</span><span>Opportunity Score</span><span class="gold">✦</span><span>AI Outreach Templates</span><span class="gold">✦</span><span>Direct Outreach</span><span class="gold">✦</span><span>Email Outreach</span><span class="gold">✦</span><span>Pipeline Dashboard</span><span class="gold">✦</span><span>Smart Filters</span><span class="gold">✦</span><span>Follow-Up Tracking</span><span class="gold">✦</span><span>CSV Export</span><span class="gold">✦</span><span>500 Bonus Leads</span>
     </div>
   </div>
 
-  <!-- ════════ PRODUCTS ════════ -->
+  <!-- ════════ FEATURES ════════ -->
   <section class="section" id="products">
     <div class="container reveal">
-      <div class="section-tag">Our Tools</div>
-      <div class="section-title">Three Products. One Platform.</div>
-      <p class="section-sub">Everything you need to find, qualify and convert leads — without juggling six different
-        subscriptions.</p>
-      <div class="products-grid">
+      <div class="section-tag">Everything You Need</div>
+      <div class="section-title">Find Opportunities. Reach Out. Win Clients.</div>
+      <p class="section-sub">Every tool you need to go from zero to booked calls — in a single platform built for freelancers and agencies.</p>
+      <div class="products-grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="product-card">
-          <div class="p-icon">📍</div>
-          <h3>Google Maps Scraper</h3>
-          <p>Scrape verified business data — names, emails, phones, ratings — from any Google Maps search in any city
-            worldwide.</p>
+          <div class="p-icon">🔍</div>
+          <h3>Lead Discovery</h3>
+          <p>Search any city and niche to instantly surface local businesses that need better websites. Powered by real Google Maps data.</p>
           <div class="price-tag">From £30/mo</div>
         </div>
         <div class="product-card">
-          <div class="p-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--insta2)">
-              <rect x="2" y="2" width="20" height="20" rx="5" />
-              <circle cx="12" cy="12" r="5" />
-              <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
-            </svg></div>
-          <h3>Instagram Lead Scraper</h3>
-          <p>Extract bio emails, follower counts, engagement metrics from any public profile, hashtag or competitor
-            following.</p>
+          <div class="p-icon">🌐</div>
+          <h3>Website Analysis</h3>
+          <p>Automatically detect missing websites, outdated designs, poor mobile experience, slow load times, and weak SEO — for every lead.</p>
           <div class="price-tag">From £30/mo</div>
         </div>
         <div class="product-card">
-          <div class="p-icon">🤖</div>
-          <h3>AI Website Generator</h3>
-          <p>Auto-generate professional website mockups for any lead. Show prospects what you'd build — close deals
-            faster.</p>
-          <div class="price-tag">Included in Bundle</div>
+          <div class="p-icon">🎯</div>
+          <h3>Opportunity Score</h3>
+          <p>Each lead is scored 0–100 based on website quality, mobile friendliness, SEO, social presence, and available contact info.</p>
+          <div class="price-tag">From £30/mo</div>
+        </div>
+        <div class="product-card">
+          <div class="p-icon">📋</div>
+          <h3>Pipeline Dashboard</h3>
+          <p>Organise, tag and track every lead through your entire sales pipeline — from first contact to closed deal.</p>
+          <div class="price-tag">Included in all plans</div>
+        </div>
+        <div class="product-card">
+          <div class="p-icon">✉️</div>
+          <h3>Outreach Templates</h3>
+          <p>AI-generated, personalised outreach messages using <code style="font-family:var(--sans);color:var(--gold);background:rgba(201,164,101,.08);padding:1px 6px">{{businessName}}</code>, <code style="font-family:var(--sans);color:var(--gold);background:rgba(201,164,101,.08);padding:1px 6px">{{city}}</code> and <code style="font-family:var(--sans);color:var(--gold);background:rgba(201,164,101,.08);padding:1px 6px">{{niche}}</code>. One click and you're ready to send.</p>
+          <div class="price-tag">Included in all plans</div>
+        </div>
+        <div class="product-card">
+          <div class="p-icon">⚡</div>
+          <h3>Smart Filters</h3>
+          <p>Filter leads by: no website, outdated design, poor mobile, slow speed, weak SEO, social presence, location, and category.</p>
+          <div class="price-tag">Included in all plans</div>
         </div>
       </div>
     </div>
@@ -2369,25 +2600,28 @@
   <section class="section" id="how-it-works">
     <div class="container reveal" style="text-align:center">
       <div class="section-tag">How It Works</div>
-      <div class="section-title">Three Steps. Five Minutes.</div>
-      <p class="section-sub" style="margin:0 auto">No code, no config, no learning curve. Just results.</p>
-      <div class="steps">
+      <div class="section-title">Four Steps. Five Minutes.</div>
+      <p class="section-sub" style="margin:0 auto">No code, no config, no learning curve. Just opportunities.</p>
+      <div class="steps" style="grid-template-columns:repeat(4,1fr)">
         <div class="step">
           <div class="step-num">01</div>
-          <h3>Choose Your Source</h3>
-          <p>Pick Google Maps or Instagram. Enter a location, niche, hashtag or competitor account to target.</p>
+          <h3>Enter City &amp; Niche</h3>
+          <p>Type a city like London and a niche like Barber. ClientSniper searches real local businesses in that area instantly.</p>
         </div>
         <div class="step">
           <div class="step-num">02</div>
-          <h3>Scrape &amp; Verify</h3>
-          <p>Our engine pulls leads in real-time — emails, phones, ratings, engagement — and verifies every data point.
-          </p>
+          <h3>Analyse Websites</h3>
+          <p>For every business found, we check website presence, design quality, mobile responsiveness, speed, SEO, social media, and contact details.</p>
         </div>
         <div class="step">
           <div class="step-num">03</div>
-          <h3>Export &amp; Close</h3>
-          <p>Download your leads as CSV, push to your CRM, or use our AI to generate a website mockup and pitch
-            instantly.</p>
+          <h3>Identify Opportunities</h3>
+          <p>Filter by businesses with no website, outdated designs, slow pages, or poor mobile experience. Each lead gets an Opportunity Score.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <h3>Reach Out Instantly</h3>
+          <p>Send a personalised email, reach out by phone, or use automated outreach sequences — all from inside ClientSniper.</p>
         </div>
       </div>
     </div>
@@ -2395,172 +2629,132 @@
 
   <div class="section-divider"></div>
 
-  <!-- ════════ LEAD PREVIEW — MAPS ════════ -->
+  <!-- ════════ LIVE DEMO ════════ -->
   <section class="section" id="maps-preview">
     <div class="container reveal">
-      <div class="section-tag">Google Maps Scraper</div>
-      <div class="section-title">See What You'll Get</div>
-      <p class="section-sub">Real results from a real search. Every row is a verified, ready-to-contact lead.</p>
+      <div class="section-tag">See It In Action</div>
+      <div class="section-title">Real Opportunities. Real Businesses.</div>
+      <p class="section-sub">Here's what a search for "Barbers in London" surfaces — high-opportunity leads ranked by score, ready to contact.</p>
       <div class="dmock">
         <div class="dmsb">
-          <div style="font-family:var(--serif);font-size:1rem;color:var(--gold);padding:8px 12px;margin-bottom:12px">
-            ClientSniper</div>
-          <div class="dmsb-item active">
-            <div class="dot" style="background:var(--maps)"></div>Maps Scraper
-          </div>
-          <div class="dmsb-item">
-            <div class="dot" style="background:var(--insta2)"></div>Instagram
-          </div>
-          <div class="dmsb-item">
-            <div class="dot" style="background:var(--ai)"></div>AI Generator
-          </div>
-          <div class="dmsb-item">
-            <div class="dot" style="background:var(--gold)"></div>Pipeline CRM
-          </div>
-          <div class="dmsb-item">
-            <div class="dot" style="background:var(--text-dim)"></div>Exports
-          </div>
-          <div class="dmsb-item">
-            <div class="dot" style="background:var(--text-dim)"></div>Settings
-          </div>
+          <div style="font-family:var(--serif);font-size:1rem;color:var(--gold);padding:8px 12px;margin-bottom:12px">ClientSniper</div>
+          <div class="dmsb-item active"><div class="dot" style="background:var(--maps)"></div>Lead Discovery</div>
+          <div class="dmsb-item"><div class="dot" style="background:var(--gold)"></div>Pipeline CRM</div>
+          <div class="dmsb-item"><div class="dot" style="background:var(--ai)"></div>Auto Sequences</div>
+          <div class="dmsb-item"><div class="dot" style="background:var(--insta2)"></div>Email Outreach</div>
+          <div class="dmsb-item"><div class="dot" style="background:var(--text-dim)"></div>Smart Filters</div>
+          <div class="dmsb-item"><div class="dot" style="background:var(--text-dim)"></div>Exports</div>
         </div>
         <div class="dmm">
           <div class="dm-header">
-            <h4>Dentists in Manchester</h4>
+            <h4>Barbers in London <span style="font-size:.7rem;color:var(--text-dim);font-family:var(--sans);font-weight:400;margin-left:8px">Filter: No Website / Outdated</span></h4>
             <input class="dm-search" placeholder="Search leads…" disabled>
           </div>
           <div class="dm-stats">
-            <div class="dm-stat">
-              <div class="num">247</div>
-              <div class="label">Results</div>
-            </div>
-            <div class="dm-stat">
-              <div class="num">98%</div>
-              <div class="label">Verified</div>
-            </div>
-            <div class="dm-stat">
-              <div class="num">4.6★</div>
-              <div class="label">Avg Rating</div>
-            </div>
-            <div class="dm-stat">
-              <div class="num">189</div>
-              <div class="label">Has Email</div>
-            </div>
+            <div class="dm-stat"><div class="num">143</div><div class="label">Businesses Found</div></div>
+            <div class="dm-stat"><div class="num">61</div><div class="label">No Website</div></div>
+            <div class="dm-stat"><div class="num">38</div><div class="label">Outdated Site</div></div>
+            <div class="dm-stat"><div class="num">44</div><div class="label">Poor Mobile</div></div>
           </div>
           <table class="dm-table">
             <thead>
               <tr>
                 <th>Business</th>
-                <th>Email</th>
+                <th>Website Status</th>
                 <th>Phone</th>
-                <th>Rating</th>
-                <th>Status</th>
+                <th>Social</th>
+                <th>Opp. Score</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Apex Dental Clinic</td>
-                <td>info@apexdental.co.uk</td>
-                <td>0161 XXX XXXX</td>
-                <td>4.8★</td>
-                <td><span class="dm-badge verified">Verified</span></td>
+                <td>Fade Masters London</td>
+                <td><span class="dm-badge" style="background:rgba(220,53,69,.1);color:#e05c6a">No Website</span></td>
+                <td>07700 XXX XXX</td>
+                <td style="color:var(--insta2)">✓ Found</td>
+                <td style="color:var(--gold);font-family:var(--serif);font-size:1rem;font-weight:700">98</td>
               </tr>
               <tr>
-                <td>Bright Smiles Orthodontics</td>
-                <td>hello@brightsmiles.com</td>
-                <td>0161 XXX XXXX</td>
-                <td>4.7★</td>
-                <td><span class="dm-badge verified">Verified</span></td>
+                <td>Luxe Cuts</td>
+                <td><span class="dm-badge" style="background:rgba(201,164,101,.1);color:var(--gold)">Outdated Website</span></td>
+                <td>07711 XXX XXX</td>
+                <td style="color:var(--insta2)">✓ Found</td>
+                <td style="color:var(--gold);font-family:var(--serif);font-size:1rem;font-weight:700">91</td>
               </tr>
               <tr>
-                <td>CityDent Manchester</td>
-                <td>book@citydent.co.uk</td>
-                <td>0161 XXX XXXX</td>
-                <td>4.5★</td>
-                <td><span class="dm-badge verified">Verified</span></td>
+                <td>East End Barbers</td>
+                <td><span class="dm-badge" style="background:rgba(162,89,255,.1);color:var(--ai)">Poor Mobile</span></td>
+                <td>07722 XXX XXX</td>
+                <td style="color:var(--text-dim)">— None</td>
+                <td style="color:var(--gold);font-family:var(--serif);font-size:1rem;font-weight:700">87</td>
               </tr>
               <tr>
-                <td>Dr Patel's Family Dental</td>
-                <td>dr.patel@familydent.com</td>
-                <td>0161 XXX XXXX</td>
-                <td>4.9★</td>
-                <td><span class="dm-badge verified">Verified</span></td>
+                <td>The Clipper Room</td>
+                <td><span class="dm-badge" style="background:rgba(201,164,101,.1);color:var(--gold)">Outdated Website</span></td>
+                <td>07733 XXX XXX</td>
+                <td style="color:var(--insta2)">✓ Found</td>
+                <td style="color:var(--gold);font-family:var(--serif);font-size:1rem;font-weight:700">82</td>
               </tr>
               <tr>
-                <td>Smile Hub Deansgate</td>
-                <td>team@smilehub.co.uk</td>
-                <td>0161 XXX XXXX</td>
-                <td>4.4★</td>
-                <td><span class="dm-badge pending">Checking</span></td>
+                <td>Sharp Lines Barbershop</td>
+                <td><span class="dm-badge" style="background:rgba(220,53,69,.1);color:#e05c6a">No Website</span></td>
+                <td>07744 XXX XXX</td>
+                <td style="color:var(--insta2)">✓ Found</td>
+                <td style="color:var(--gold);font-family:var(--serif);font-size:1rem;font-weight:700">79</td>
               </tr>
             </tbody>
           </table>
+          <!-- Generate Outreach Demo -->
+          <div style="margin-top:20px;border:1px solid var(--border);border-radius:8px;overflow:hidden">
+            <div style="background:var(--surface2);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
+              <span style="font-size:.75rem;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase">AI Outreach — Fade Masters London</span>
+              <button style="padding:6px 18px;background:var(--gold);color:var(--bg);font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;border:none;cursor:default;border-radius:2px">Generate Outreach</button>
+            </div>
+            <div style="padding:16px 20px;font-size:.82rem;line-height:1.75;color:var(--text-dim)">
+              Hi <strong style="color:var(--text)">Fade Masters London</strong>,<br><br>
+              I noticed your business doesn't currently have a website — which means potential customers searching for barbers in London can't find you online.<br><br>
+              I specialise in helping barbers in London create modern websites that bring in more bookings and new customers.<br><br>
+              Would you be interested in a <strong style="color:var(--gold)">free website preview</strong> built specifically for your shop?
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ════════ INSTAGRAM PREVIEW ════════ -->
-  <section class="section" id="insta-preview">
+  <!-- ════════ OUTREACH CHANNELS ════════ -->
+  <section class="section" id="outreach-preview">
     <div class="container reveal">
-      <div class="section-tag">Instagram Lead Scraper</div>
-      <div class="section-title">Tap Into Social Audiences</div>
-      <p class="section-sub">Scrape profiles, hashtags and competitor followings. Every card below is a real data
-        preview.</p>
+      <div class="section-tag">Reach Out Instantly</div>
+      <div class="section-title">Three Ways to Contact Every Lead</div>
+      <p class="section-sub">Once you've found your opportunity, ClientSniper gives you everything you need to start the conversation immediately.</p>
       <div class="insta-grid">
-        <div class="insta-card">
-          <div class="handle">@studio.bloom</div>
-          <div class="niche">Yoga &amp; Wellness</div>
-          <div class="insta-stats">
-            <div class="insta-stat"><strong>12.4k</strong> followers</div>
-            <div class="insta-stat"><strong>3.8%</strong> engage</div>
+        <div class="insta-card" style="border-color:rgba(45,189,110,.15)">
+          <div class="handle" style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.2rem">📞</span>
+            Phone Outreach
           </div>
-          <div class="bio-email">bloom@studiobloom.co.uk</div>
+          <div class="niche" style="color:var(--maps)">Click to Call</div>
+          <div style="font-size:.82rem;color:var(--text-dim);line-height:1.65;margin-bottom:12px">Every business lead includes a verified phone number. One click dials them directly or opens WhatsApp — no copy-pasting, no switching apps.</div>
+          <div class="bio-email" style="color:var(--maps)">Verified numbers · One-click dial · WhatsApp</div>
         </div>
-        <div class="insta-card">
-          <div class="handle">@thefitcoach_</div>
-          <div class="niche">Personal Training</div>
-          <div class="insta-stats">
-            <div class="insta-stat"><strong>8.7k</strong> followers</div>
-            <div class="insta-stat"><strong>5.2%</strong> engage</div>
+        <div class="insta-card" style="border-color:rgba(45,189,110,.15)">
+          <div class="handle" style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.2rem">✉️</span>
+            Email Outreach
           </div>
-          <div class="bio-email">dan@thefitcoach.com</div>
+          <div class="niche" style="color:var(--maps)">Cold Email</div>
+          <div style="font-size:.82rem;color:var(--text-dim);line-height:1.65;margin-bottom:12px">Send personalised cold emails directly from ClientSniper using your AI-generated template. Each email is tailored to the business name, city, and niche.</div>
+          <div class="bio-email" style="color:var(--maps)">Personalised per lead · No copy-paste required</div>
         </div>
-        <div class="insta-card">
-          <div class="handle">@coastal.eats</div>
-          <div class="niche">Restaurant</div>
-          <div class="insta-stats">
-            <div class="insta-stat"><strong>23.1k</strong> followers</div>
-            <div class="insta-stat"><strong>4.1%</strong> engage</div>
+        <div class="insta-card" style="border-color:rgba(162,89,255,.15)">
+          <div class="handle" style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.2rem">⚡</span>
+            Auto Outreach
           </div>
-          <div class="bio-email">hello@coastaleats.co.uk</div>
-        </div>
-        <div class="insta-card">
-          <div class="handle">@luxe.interiors</div>
-          <div class="niche">Interior Design</div>
-          <div class="insta-stats">
-            <div class="insta-stat"><strong>15.9k</strong> followers</div>
-            <div class="insta-stat"><strong>2.9%</strong> engage</div>
-          </div>
-          <div class="bio-email">studio@luxeinteriors.com</div>
-        </div>
-        <div class="insta-card">
-          <div class="handle">@pawsandclaws.uk</div>
-          <div class="niche">Pet Grooming</div>
-          <div class="insta-stats">
-            <div class="insta-stat"><strong>6.2k</strong> followers</div>
-            <div class="insta-stat"><strong>6.7%</strong> engage</div>
-          </div>
-          <div class="bio-email">info@pawsandclaws.uk</div>
-        </div>
-        <div class="insta-card">
-          <div class="handle">@neonbarber</div>
-          <div class="niche">Barbershop</div>
-          <div class="insta-stats">
-            <div class="insta-stat"><strong>4.8k</strong> followers</div>
-            <div class="insta-stat"><strong>7.3%</strong> engage</div>
-          </div>
-          <div class="bio-email">neon@neonbarber.co.uk</div>
+          <div class="niche" style="color:var(--ai)">Automated</div>
+          <div style="font-size:.82rem;color:var(--text-dim);line-height:1.65;margin-bottom:12px">Set up automated outreach sequences for your filtered lead lists. ClientSniper sends, tracks replies, and logs follow-ups — so nothing falls through the cracks.</div>
+          <div class="bio-email" style="color:var(--ai)">Sequences · Follow-ups · Reply tracking</div>
         </div>
       </div>
     </div>
@@ -2583,9 +2777,8 @@
           <div class="blog-body">
             <div class="blog-meta"><span class="blog-cat">Google Maps</span><span class="blog-date">Mar 28, 2026</span>
             </div>
-            <h3>How to Scrape 500 Verified Leads in Under 10 Minutes</h3>
-            <p>Most people use Google Maps wrong. Here's the exact workflow our top users follow to fill their pipeline
-              fast.</p>
+            <h3>How to Find 100 Local Businesses Without a Website in Under 10 Minutes</h3>
+            <p>Most freelancers look for clients in the wrong places. Here's the exact ClientSniper workflow our top users follow to fill their pipeline fast.</p>
             <a href="blog.html" class="blog-link">Read More →</a>
           </div>
         </div>
@@ -2594,11 +2787,10 @@
             style="background:url('https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=600&q=80') center/cover no-repeat">
           </div>
           <div class="blog-body">
-            <div class="blog-meta"><span class="blog-cat">Instagram</span><span class="blog-date">Mar 22, 2026</span>
+            <div class="blog-meta"><span class="blog-cat">Outreach</span><span class="blog-date">Mar 22, 2026</span>
             </div>
-            <h3>Instagram Outreach: 5 DM Templates That Actually Convert</h3>
-            <p>Scraping is step one. Here are the exact messages our agency partners send to turn scraped leads into
-              paying clients.</p>
+            <h3>5 Cold Email Templates for Web Designers That Actually Get Replies</h3>
+            <p>Finding the lead is step one. Here are the exact outreach messages our agency partners send to turn website opportunities into paying clients.</p>
             <a href="blog.html" class="blog-link">Read More →</a>
           </div>
         </div>
@@ -2637,13 +2829,10 @@
             <div class="vote-label">votes</div>
           </div>
           <div class="forum-body">
-            <h4>Best niches for Google Maps scraping in 2026?</h4>
-            <p>I've been killing it with dentists and plumbers, but looking for fresh verticals. What's working for
-              everyone?</p>
-            <div class="forum-tags"><span class="forum-tag hot">🔥 Hot</span><span class="forum-tag">Maps</span><span
-                class="forum-tag">Strategy</span></div>
-            <div class="forum-meta-row"><span>23
-                replies</span><span>·</span><span>@dan_leads</span><span>·</span><span>2h ago</span></div>
+            <h4>Best niches to target for "no website" outreach in 2026?</h4>
+            <p>I've been killing it with barbers and local restaurants. What niches are everyone else finding the most opportunity in?</p>
+            <div class="forum-tags"><span class="forum-tag hot">🔥 Hot</span><span class="forum-tag">Strategy</span><span class="forum-tag">Outreach</span></div>
+            <div class="forum-meta-row"><span>23 replies</span><span>·</span><span>@dan_leads</span><span>·</span><span>2h ago</span></div>
           </div>
         </div>
         <div class="forum-thread">
@@ -2652,13 +2841,10 @@
             <div class="vote-label">votes</div>
           </div>
           <div class="forum-body">
-            <h4>How I closed £8K in one week using Instagram scraping</h4>
-            <p>Case study — scraped 300 fitness coaches, sent cold DMs, landed 4 web design clients. Full breakdown
-              inside.</p>
-            <div class="forum-tags"><span class="forum-tag hot">🔥 Hot</span><span
-                class="forum-tag">Instagram</span><span class="forum-tag">Case Study</span></div>
-            <div class="forum-meta-row"><span>18
-                replies</span><span>·</span><span>@sophie_builds</span><span>·</span><span>5h ago</span></div>
+            <h4>How I closed £8K in one week targeting businesses with no website</h4>
+            <p>Case study — found 200 local businesses with missing or outdated websites, sent personalised cold emails, landed 4 web design clients. Full breakdown inside.</p>
+            <div class="forum-tags"><span class="forum-tag hot">🔥 Hot</span><span class="forum-tag">Case Study</span><span class="forum-tag">Outreach</span></div>
+            <div class="forum-meta-row"><span>18 replies</span><span>·</span><span>@sophie_builds</span><span>·</span><span>5h ago</span></div>
           </div>
         </div>
         <div class="forum-thread">
@@ -2693,6 +2879,37 @@
       </div>
       <div style="text-align:center;margin-top:36px">
         <a href="forum.html" class="btn-secondary">Browse All Forum Threads →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ════════ WHO IS THIS FOR ════════ -->
+  <section class="section" id="who-its-for">
+    <div class="container reveal" style="text-align:center">
+      <div class="section-tag">Who It's For</div>
+      <div class="section-title">Built for People Who Close Deals</div>
+      <p class="section-sub" style="margin:0 auto 48px">If you sell websites or digital services, ClientSniper turns your prospecting from guesswork into a pipeline.</p>
+      <div class="products-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="product-card" style="text-align:left">
+          <div class="p-icon">💼</div>
+          <h3>Freelancers</h3>
+          <p>Stop spending hours hunting for clients. Search a city and niche, find businesses with no website or a broken one, and reach out before anyone else does.</p>
+          <div class="price-tag" style="color:var(--maps)">Find prospects in minutes</div>
+        </div>
+        <div class="product-card" style="text-align:left">
+          <div class="p-icon">🖥️</div>
+          <h3>Web Designers</h3>
+          <p>Discover businesses that genuinely need your help — not people who are happy with what they have. Every lead is a real opportunity, pre-qualified by website quality.</p>
+          <div class="price-tag" style="color:var(--ai)">Target the right businesses</div>
+        </div>
+        <div class="product-card" style="text-align:left">
+          <div class="p-icon">📈</div>
+          <h3>Small Agencies</h3>
+          <p>Scale your outreach without scaling your headcount. Filter thousands of local businesses, prioritise the best opportunities, and let your team close more clients.</p>
+          <div class="price-tag" style="color:var(--gold)">Scale outreach, close more</div>
+        </div>
       </div>
     </div>
   </section>
@@ -2749,26 +2966,28 @@
   <section class="section" id="bundle">
     <div class="container reveal" style="text-align:center">
       <div class="section-tag">Best Value</div>
-      <div class="section-title">Get Everything. Save £5/mo.</div>
+      <div class="section-title">Everything You Need. One Price.</div>
       <div class="bundle-box">
         <div style="text-align:left">
-          <h3>The Complete Arsenal</h3>
-          <p>Maps + Instagram + AI Website Generator. One subscription, every tool, serious savings.</p>
+          <h3>The Complete Client Acquisition Platform</h3>
+          <p>Lead discovery, website analysis, opportunity scoring, outreach templates, pipeline CRM, and auto outreach — all in one place.</p>
           <div class="bundle-includes">
-            <div class="bi"><span class="check">✓</span> Unlimited Google Maps searches</div>
-            <div class="bi"><span class="check">✓</span> Unlimited Instagram scraping</div>
-            <div class="bi"><span class="check">✓</span> AI Website Generator (Beta)</div>
-            <div class="bi"><span class="check">✓</span> Built-in pipeline CRM</div>
-            <div class="bi"><span class="check">✓</span> CSV, Excel &amp; CRM export</div>
-            <div class="bi"><span class="check">✓</span> Priority live chat support</div>
-            <div class="bi"><span class="check">✓</span> Early access to new tools</div>
+            <div class="bi"><span class="check">✓</span> Unlimited local business searches</div>
+            <div class="bi"><span class="check">✓</span> Website analysis &amp; opportunity scoring</div>
+            <div class="bi"><span class="check">✓</span> AI-generated outreach templates</div>
+            <div class="bi"><span class="check">✓</span> Email, phone &amp; automated outreach</div>
+            <div class="bi"><span class="check">✓</span> Automated outreach sequences</div>
+            <div class="bi"><span class="check">✓</span> Built-in pipeline CRM &amp; follow-up tracking</div>
+            <div class="bi"><span class="check">✓</span> CSV export &amp; CRM integrations</div>
+            <div class="bi"><span class="check">✓</span> Smart filters &amp; priority email support</div>
           </div>
+          <p style="margin-top:20px;font-size:.78rem;color:var(--text-dim);border-top:1px solid var(--border);padding-top:16px">Additional team members can be added to your workspace at <strong style="color:var(--gold)">£4/month per seat</strong>.</p>
         </div>
         <div class="bundle-price-side">
           <div class="old">£60/mo</div>
           <div class="price">£54.99</div>
-          <div class="period">per month · 30-day free trial</div>
-          <button class="btn-primary" onclick="openCheckout('bundle')">Start Free Trial →</button>
+          <div class="period">per month · cancel anytime</div>
+          <button class="btn-primary" onclick="location.href='payment.html'">Get Started →</button>
         </div>
       </div>
     </div>
@@ -2778,19 +2997,19 @@
   <section class="section" id="stats">
     <div class="container reveal" style="text-align:center">
       <div class="section-tag">By The Numbers</div>
-      <div class="section-title">Trusted By Thousands</div>
+      <div class="section-title">Trusted By Freelancers &amp; Agencies</div>
       <div class="stats-row">
         <div class="stat-item">
-          <div class="stat-num" data-target="2400">0</div>
+          <div class="stat-num" data-target="2800">0</div>
           <div class="stat-label">Active Users</div>
         </div>
         <div class="stat-item">
           <div class="stat-num" data-target="1800000">0</div>
-          <div class="stat-label">Leads Scraped</div>
+          <div class="stat-label">Businesses Analysed</div>
         </div>
         <div class="stat-item">
           <div class="stat-num" data-target="98">0</div>
-          <div class="stat-label">% Verified</div>
+          <div class="stat-label">% Opportunity Accuracy</div>
         </div>
         <div class="stat-item">
           <div class="stat-num" data-target="4">0</div>
@@ -2809,26 +3028,22 @@
         <div class="testimonial-slider" id="testimonialSlider">
           <div class="testimonial-card">
             <div class="stars">★★★★★</div>
-            <blockquote>"We pulled 400 verified dentist leads in one afternoon. Three became paying clients within the
-              week. ROI was insane."</blockquote>
-            <div class="author"><strong>James T.</strong> — Digital Agency Owner, London</div>
+            <blockquote>"I searched 'restaurants in Leeds' and found 43 businesses with no website or an outdated one. Sent 40 emails, got 11 replies, closed 3 clients in a week."</blockquote>
+            <div class="author"><strong>James T.</strong> — Freelance Web Designer, London</div>
           </div>
           <div class="testimonial-card">
             <div class="stars">★★★★★</div>
-            <blockquote>"The Instagram scraper is a game-changer for our influencer outreach. We find niche creators
-              with verified emails in minutes."</blockquote>
-            <div class="author"><strong>Sophie R.</strong> — Marketing Manager, Manchester</div>
+            <blockquote>"The Opportunity Score is genuinely brilliant. I only contact businesses scoring above 85 and my reply rate has tripled compared to cold outreach I used to do manually."</blockquote>
+            <div class="author"><strong>Sophie R.</strong> — Digital Agency Owner, Manchester</div>
           </div>
           <div class="testimonial-card">
             <div class="stars">★★★★★</div>
-            <blockquote>"I was spending £200/mo on three different tools. ClientSniper replaced all of them for £55. And
-              it's actually better."</blockquote>
+            <blockquote>"I was spending £200/mo on three different tools and hours a week on manual research. ClientSniper replaced all of it for £55. And it's actually better."</blockquote>
             <div class="author"><strong>Amir K.</strong> — Freelance Web Designer</div>
           </div>
           <div class="testimonial-card">
             <div class="stars">★★★★★</div>
-            <blockquote>"The AI website generator blew my prospects' minds. I send them a mockup before the call and
-              they're already sold."</blockquote>
+            <blockquote>"The outreach templates are incredibly well-written. I generate one, tweak two lines, and send. My conversion from first contact to booked call went from 4% to 14%."</blockquote>
             <div class="author"><strong>Laura M.</strong> — Agency Founder, Dublin</div>
           </div>
         </div>
@@ -2844,25 +3059,22 @@
       <div class="section-title">Common Questions</div>
       <div class="faq-list">
         <div class="faq-item">
-          <div class="faq-question"><span>How does the 30-day free trial work?</span><span class="faq-icon">+</span>
+          <div class="faq-question"><span>How does billing work?</span><span class="faq-icon">+</span>
           </div>
           <div class="faq-answer">
-            <p>Sign up for any plan and get full access for 30 days. We won't charge your card until day 31. Cancel
-              before then and you pay nothing.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question"><span>Is web scraping legal?</span><span class="faq-icon">+</span></div>
-          <div class="faq-answer">
-            <p>ClientSniper only scrapes publicly available data. We comply with GDPR and data protection regulations.
-              You're responsible for how you use the data you collect.</p>
+            <p>Subscribe to any plan and get instant access. New members receive 500 bonus leads on sign-up. Cancel anytime — no lock-ins, no cancellation fees.</p>
           </div>
         </div>
         <div class="faq-item">
-          <div class="faq-question"><span>How many leads can I scrape?</span><span class="faq-icon">+</span></div>
+          <div class="faq-question"><span>Where does ClientSniper get its data?</span><span class="faq-icon">+</span></div>
           <div class="faq-answer">
-            <p>Every plan includes unlimited searches. You can scrape up to 1,000 results per search and run as many
-              searches as you like.</p>
+            <p>ClientSniper analyses publicly available data — business listings, websites, and social profiles that are already visible online. We comply with GDPR and data protection regulations. You're responsible for how you use the data you collect.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question"><span>How many businesses can I search?</span><span class="faq-icon">+</span></div>
+          <div class="faq-answer">
+            <p>Every plan includes unlimited searches. You can analyse up to 1,000 businesses per search and run as many searches as you like across any city and niche combination.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -2873,11 +3085,9 @@
           </div>
         </div>
         <div class="faq-item">
-          <div class="faq-question"><span>What's included in the AI Website Generator?</span><span
-              class="faq-icon">+</span></div>
+          <div class="faq-question"><span>How does the outreach template generator work?</span><span class="faq-icon">+</span></div>
           <div class="faq-answer">
-            <p>Select any scraped lead and our AI generates a full website mockup with tailored copy, services and
-              contact info. You get a shareable preview link to send to prospects.</p>
+            <p>Select any lead and click "Generate Outreach". ClientSniper automatically writes a personalised cold email or DM using the business name, city, niche, and the specific website issue detected (e.g. no website, poor mobile, outdated design). You review it and send — no copy-pasting required.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -2890,8 +3100,7 @@
         <div class="faq-item">
           <div class="faq-question"><span>Do you offer team plans?</span><span class="faq-icon">+</span></div>
           <div class="faq-answer">
-            <p>Team collaboration is coming soon on the Bundle plan. For now, each subscription is tied to a single
-              account. Contact us for agency licensing.</p>
+            <p>Yes — you can add additional team members to your workspace at <strong style="color:var(--gold)">£4/month per seat</strong>. Each seat gets full access to all tools in your plan. Contact us to add seats or for custom agency licensing.</p>
           </div>
         </div>
       </div>
@@ -2909,7 +3118,7 @@
             <div class="ci-icon">📧</div>
             <div>
               <h4>Email</h4>
-              <p>support@clientsniper.com</p>
+              <p>clientsniper.official@gmail.com</p>
             </div>
           </div>
           <div class="contact-item">
@@ -2943,6 +3152,11 @@
           <div id="ct-status" style="margin-top:12px;font-size:.82rem;display:none"></div>
         </form>
       </div>
+      <div style="margin-top:48px;border:1px solid var(--border);overflow:hidden;height:280px;">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d317718.69319292053!2d-0.3817765050863085!3d51.52800624072641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C%20UK!5e0!3m2!1sen!2suk!4v1720000000000!5m2!1sen!2suk"
+          width="100%" height="280" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="ClientSniper — London, UK"></iframe>
+      </div>
     </div>
   </section>
 
@@ -2951,12 +3165,10 @@
     style="text-align:center;padding:100px 24px;background:linear-gradient(180deg,transparent 0%,rgba(201,164,101,.03) 50%,transparent 100%)">
     <div class="container reveal">
       <div class="section-tag">Ready?</div>
-      <div class="section-title" style="font-size:clamp(1.6rem,4vw,2.8rem)">Your First 500 Leads<br>Are 5 Minutes Away
-      </div>
-      <p style="color:var(--text-dim);max-width:480px;margin:0 auto 32px;line-height:1.7">Pick a plan, enter your
-        search, and watch verified leads roll in. No credit card charged during your trial.</p>
+      <div class="section-title" style="font-size:clamp(1.6rem,4vw,2.8rem)">Your First Client<br>Is 5 Minutes Away</div>
+      <p style="color:var(--text-dim);max-width:480px;margin:0 auto 32px;line-height:1.7">Enter a city and niche. ClientSniper finds the opportunities. You send the message. No credit card charged during your trial.</p>
       <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-        <button class="btn-primary" onclick="openCheckout('bundle')">Start Bundle Free Trial →</button>
+        <button class="btn-primary" onclick="location.href='payment.html'">Start Finding Leads →</button>
         <a href="features.html" class="btn-secondary">Explore All Features</a>
       </div>
     </div>
@@ -2965,7 +3177,7 @@
   <!-- ════════ NEWSLETTER ════════ -->
   <div class="newsletter-bar reveal">
     <h3>Stay in the Loop</h3>
-    <p>Get product updates, tips, and exclusive offers — no spam, ever.</p>
+    <p>Product updates, outreach tips, and the occasional offer. Unsubscribe any time.</p>
     <form class="nl-form" id="nlForm" onsubmit="submitNewsletter(event)">
       <input type="email" id="nl-email" placeholder="Enter your email" required>
       <button type="submit" id="nl-btn">Subscribe</button>
@@ -2978,25 +3190,19 @@
     <div class="footer-grid">
       <div>
         <div class="footer-brand">Client<span style="color:var(--text)">Sniper</span></div>
-        <p class="footer-brand-text">Precision lead generation for modern businesses. Scrape verified leads from Google
-          Maps &amp; Instagram in minutes.</p>
+        <p class="footer-brand-text">The client acquisition platform for freelancers and agencies. Find local businesses that need better websites and reach out before anyone else does.</p>
         <div class="footer-social">
-          <a href="javascript:void(0)" aria-label="Twitter" title="Coming soon">𝕏</a>
-          <a href="javascript:void(0)" aria-label="LinkedIn" title="Coming soon">in</a>
-          <a href="javascript:void(0)" aria-label="Instagram" title="Coming soon"><svg width="14" height="14"
-              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" />
-              <circle cx="12" cy="12" r="5" />
-              <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
-            </svg></a>
-          <a href="javascript:void(0)" aria-label="YouTube" title="Coming soon">▶</a>
+          <a href="https://x.com/clientsniper" target="_blank" rel="noopener" aria-label="X">𝕏</a>
+          <a href="https://www.instagram.com/clientsniperofficial/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.facebook.com/profile.php?id=61588980692276" target="_blank" rel="noopener" aria-label="Facebook"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+          <a href="https://www.tiktok.com/@clientsniperltd" target="_blank" rel="noopener" aria-label="TikTok"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.53V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>
         </div>
       </div>
       <div class="footer-col">
         <h4>Product</h4>
-        <a href="#products">Google Maps Scraper</a>
-        <a href="#insta-preview">Instagram Scraper</a>
+        <a href="#products">Lead Discovery</a>
+        <a href="#outreach-preview">Outreach Tools</a>
+        <a href="#who-its-for">Who It's For</a>
         <a href="features.html">All Features</a>
         <a href="payment.html">Pricing</a>
       </div>
@@ -3016,8 +3222,8 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2025 ClientSniper. All rights reserved.</span>
-      <span>Built with precision. 🎯</span>
+      <span>&copy; 2026 ClientSniper. All rights reserved.</span>
+      <span>Made in London.</span>
     </div>
   </footer>
 
@@ -3063,149 +3269,6 @@
     burger.addEventListener('click', () => { burger.classList.toggle('open'); drawer.classList.toggle('open') });
     function closeDrawer() { burger.classList.remove('open'); drawer.classList.remove('open') }
 
-    /* ───── SKY ANIMATION (day/night cycle) ───── */
-    (function () {
-      const canvas = document.getElementById('sky-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let W, H;
-      function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight }
-      resize();
-      window.addEventListener('resize', resize);
-
-      /* sky color stops over a 60-second cycle */
-      const palette = [
-        [2, 3, 8], [2, 3, 8], [8, 15, 40], [30, 60, 120], [80, 140, 200], [135, 190, 230],
-        [170, 210, 240], [135, 190, 230], [80, 140, 200], [30, 60, 120], [8, 15, 40], [2, 3, 8]
-      ];
-      function lerpColor(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t] }
-      function getSkyColor(time) {
-        const seg = time * palette.length;
-        const i = Math.floor(seg) % palette.length;
-        const j = (i + 1) % palette.length;
-        return lerpColor(palette[i], palette[j], seg - Math.floor(seg));
-      }
-
-      /* stars */
-      const stars = [];
-      for (let i = 0; i < 120; i++) {
-        stars.push({ x: Math.random(), y: Math.random(), r: Math.random() * 1.2 + .4, phase: Math.random() * Math.PI * 2, speed: Math.random() * .008 + .002 });
-      }
-
-      /* shooting stars */
-      const shooters = [];
-      function spawnShooter() {
-        shooters.push({ x: Math.random() * W, y: Math.random() * H * .4, vx: 4 + Math.random() * 4, vy: 2 + Math.random() * 2, life: 1, decay: .015 + Math.random() * .01 });
-      }
-
-      const cycleDuration = 60000; /* 60 seconds */
-      let lastShoot = 0;
-
-      function draw(now) {
-        const t = (now % cycleDuration) / cycleDuration;
-        const sky = getSkyColor(t);
-        /* sky gradient */
-        const grad = ctx.createLinearGradient(0, 0, 0, H);
-        grad.addColorStop(0, `rgb(${sky[0] | 0},${sky[1] | 0},${sky[2] | 0})`);
-        grad.addColorStop(1, `rgb(${Math.max(sky[0] - 10, 0) | 0},${Math.max(sky[1] - 10, 0) | 0},${Math.max(sky[2] - 10, 0) | 0})`);
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, W, H);
-
-        /* stars — visible when sky is dark */
-        const brightness = (sky[0] + sky[1] + sky[2]) / 3;
-        const starAlpha = Math.max(0, 1 - brightness / 80);
-        if (starAlpha > 0) {
-          stars.forEach(s => {
-            const tw = .65 + .35 * Math.sin(now * s.speed + s.phase);
-            ctx.globalAlpha = starAlpha * tw * .45;
-            ctx.fillStyle = '#fff';
-            ctx.beginPath();
-            ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
-            ctx.fill();
-          });
-          ctx.globalAlpha = 1;
-        }
-
-        /* shooting stars (during night) */
-        if (starAlpha > .3) {
-          if (now - lastShoot > 2000 + Math.random() * 3000) { spawnShooter(); lastShoot = now }
-          for (let i = shooters.length - 1; i >= 0; i--) {
-            const sh = shooters[i];
-            sh.x += sh.vx; sh.y += sh.vy; sh.life -= sh.decay;
-            if (sh.life <= 0) { shooters.splice(i, 1); continue }
-            ctx.globalAlpha = sh.life * starAlpha;
-            ctx.strokeStyle = '#fff';
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(sh.x, sh.y);
-            ctx.lineTo(sh.x - sh.vx * 4, sh.y - sh.vy * 4);
-            ctx.stroke();
-          }
-          ctx.globalAlpha = 1;
-        }
-
-        /* sun — only visible during day (brightness high = daytime) */
-        const sunAngle = t * Math.PI * 2 - Math.PI / 2;
-        const sunX = W / 2 + Math.cos(sunAngle) * W * .38;
-        const sunY = H * .65 + Math.sin(sunAngle) * H * .55;
-        const sunAboveHorizon = Math.max(0, Math.min(1, (H * .9 - sunY) / (H * .4)));
-        const dayAlpha = Math.max(0, Math.min(1, (brightness - 30) / 90));
-        const sunOpacity = sunAboveHorizon * dayAlpha;
-        if (sunOpacity > .01) {
-          ctx.globalAlpha = sunOpacity;
-          const sunGlow = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 70);
-          sunGlow.addColorStop(0, 'rgba(255,220,100,.9)');
-          sunGlow.addColorStop(.25, 'rgba(255,200,80,.35)');
-          sunGlow.addColorStop(.6, 'rgba(255,160,40,.08)');
-          sunGlow.addColorStop(1, 'rgba(255,140,0,0)');
-          ctx.fillStyle = sunGlow;
-          ctx.fillRect(sunX - 70, sunY - 70, 140, 140);
-          ctx.fillStyle = 'rgba(255,230,140,.95)';
-          ctx.beginPath();
-          ctx.arc(sunX, sunY, 14, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-        }
-
-        /* moon — only visible during night (brightness low = nighttime) */
-        const moonAngle = sunAngle + Math.PI;
-        const moonX = W / 2 + Math.cos(moonAngle) * W * .35;
-        const moonY = H * .6 + Math.sin(moonAngle) * H * .5;
-        const moonAboveHorizon = Math.max(0, Math.min(1, (H * .9 - moonY) / (H * .4)));
-        const nightAlpha = Math.max(0, Math.min(1, 1 - brightness / 60));
-        const moonOpacity = moonAboveHorizon * nightAlpha;
-        if (moonOpacity > .01) {
-          ctx.globalAlpha = moonOpacity;
-          const moonGlow = ctx.createRadialGradient(moonX, moonY, 0, moonX, moonY, 55);
-          moonGlow.addColorStop(0, 'rgba(200,215,255,.6)');
-          moonGlow.addColorStop(.5, 'rgba(180,200,255,.12)');
-          moonGlow.addColorStop(1, 'rgba(200,210,255,0)');
-          ctx.fillStyle = moonGlow;
-          ctx.fillRect(moonX - 55, moonY - 55, 110, 110);
-          ctx.fillStyle = 'rgba(220,230,255,.9)';
-          ctx.beginPath();
-          ctx.arc(moonX, moonY, 10, 0, Math.PI * 2);
-          ctx.fill();
-          /* crescent shadow */
-          ctx.fillStyle = `rgb(${sky[0] | 0},${sky[1] | 0},${sky[2] | 0})`;
-          ctx.beginPath();
-          ctx.arc(moonX + 4, moonY - 2, 8, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-        }
-
-        /* hero background brightness — synced smoothly to sky */
-        const heroBg = document.getElementById('heroBg');
-        if (heroBg) {
-          const dayFactor = Math.max(0, Math.min(1, (brightness - 15) / 100));
-          heroBg.style.filter = `brightness(${.4 + dayFactor * .55})`;
-          heroBg.style.opacity = .55 + dayFactor * .2;
-        }
-
-        requestAnimationFrame(draw);
-      }
-      requestAnimationFrame(draw);
-    })();
 
     /* ───── SCROLL REVEAL ───── */
     const ro = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') }) }, { threshold: .12 });
@@ -3332,8 +3395,8 @@
     const STRIPE_LINKS = {
       maps_monthly: 'https://buy.stripe.com/bJeeVf4Zz0fFb9RgHpcwg07',
       maps_yearly: 'https://buy.stripe.com/9B64gBeA94vVcdV0Ircwg06',
-      instagram_monthly: 'https://buy.stripe.com/eVq3cx77HaUj6TBdvdcwg09',
-      instagram_yearly: 'https://buy.stripe.com/7sY8wRdw5bYn2Dl8aTcwg0a',
+      outreach_monthly: 'https://buy.stripe.com/eVq3cx77HaUj6TBdvdcwg09',
+      outreach_yearly: 'https://buy.stripe.com/7sY8wRdw5bYn2Dl8aTcwg0a',
       bundle_monthly: 'https://buy.stripe.com/00weVf0JjbYn91J76Pcwg0b',
       bundle_yearly: 'https://buy.stripe.com/7sYcN763D0fF2Dl4YHcwg0c'
     };
@@ -3344,20 +3407,19 @@
       if (url) window.location.href = url;
       else window.location.href = 'payment.html';
     }
-    /* THEME TOGGLE */
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.getAttribute('data-theme') === 'dark';
-      const newTheme = isDark ? 'light' : 'dark';
-      html.setAttribute('data-theme', newTheme);
-      localStorage.setItem('cs-theme', newTheme);
-      document.querySelectorAll('.theme-toggle').forEach(b => b.textContent = isDark ? '🌙' : '☀️');
-    }
+    /* Lock dark mode */
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('cs-theme', 'dark');
+
+    /* Skip first 5s of hero video so action starts immediately */
     (function () {
-      const saved = localStorage.getItem('cs-theme');
-      if (saved) { document.documentElement.setAttribute('data-theme', saved); document.querySelectorAll('.theme-toggle').forEach(b => b.textContent = saved === 'light' ? '🌙' : '☀️') }
+      const v = document.querySelector('.hero-video');
+      if (!v) return;
+      v.addEventListener('loadedmetadata', function () { v.currentTime = 5; }, { once: true });
     })();
   </script>
+  <script defer data-domain="clientsniper.com" src="https://plausible.io/js/script.js"></script>
+  <script src="/cookie-consent.js"></script>
 </body>
 
 </html>

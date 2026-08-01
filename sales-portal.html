@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Rep Portal — ClientSniper</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#030507;--surface:#0a0d10;--surface2:#111519;--surface3:#161b20;
+      --border:#1a1e24;--gold:#C9A465;--gold-dim:rgba(201,164,101,.15);
+      --text:#F0EBE0;--text-dim:#8a8578;--text-muted:#4a4840;
+      --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--amber:#f59e0b;
+      --serif:'Cormorant Garamond',Georgia,serif;
+      --sans:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;
+      --sidebar:220px;
+    }
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden}
+    a{color:inherit;text-decoration:none}
+
+    /* AUTH GATE */
+    #authGate{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+    .auth-box{background:var(--surface);border:1px solid var(--border);padding:48px;width:100%;max-width:420px}
+    .auth-logo{font-family:var(--serif);font-size:1.6rem;color:var(--gold);letter-spacing:2px;font-weight:700;margin-bottom:4px}
+    .auth-logo span{color:var(--text)}
+    .auth-tag{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:32px}
+    .auth-tabs{display:flex;gap:0;margin-bottom:28px;border-bottom:1px solid var(--border)}
+    .auth-tab{padding:10px 20px;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+    .auth-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+    .auth-field{margin-bottom:16px}
+    .auth-field label{display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px}
+    .auth-field input{width:100%;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:.9rem;transition:border-color .2s}
+    .auth-field input:focus{outline:none;border-color:var(--gold)}
+    .auth-btn{width:100%;padding:14px;background:var(--gold);color:var(--bg);font-family:var(--sans);font-size:.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;margin-top:4px;transition:opacity .2s}
+    .auth-btn:hover{opacity:.88}
+    .auth-btn:disabled{opacity:.5;cursor:not-allowed}
+    .auth-err{color:var(--red);font-size:.8rem;margin-top:10px;display:none}
+    .auth-msg{color:var(--green);font-size:.8rem;margin-top:10px;display:none}
+    .auth-pending{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);padding:16px;font-size:.84rem;color:#f59e0b;line-height:1.6;display:none;margin-top:16px}
+
+    /* LAYOUT */
+    #app{display:none;height:100vh;overflow:hidden}
+    .layout{display:grid;grid-template-columns:var(--sidebar) 1fr;height:100%}
+
+    /* SIDEBAR */
+    .sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+    .sidebar-logo{padding:24px 20px 20px;border-bottom:1px solid var(--border)}
+    .sidebar-logo-text{font-family:var(--serif);font-size:1.1rem;color:var(--gold);font-weight:700;letter-spacing:1.5px}
+    .sidebar-logo-text span{color:var(--text)}
+    .sidebar-tag{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted)}
+    .sidebar-rep{padding:16px 20px;border-bottom:1px solid var(--border)}
+    .rep-name{font-size:.82rem;font-weight:600;margin-bottom:2px;color:var(--text)}
+    .rep-code{font-size:.7rem;color:var(--gold);letter-spacing:1px}
+    .rep-tier{font-size:.65rem;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;background:var(--gold-dim);color:var(--gold);display:inline-block;margin-top:4px}
+    nav.sidebar-nav{padding:12px 0;flex:1}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:.8rem;letter-spacing:.5px;color:var(--text-dim);cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+    .nav-item:hover{color:var(--text);background:rgba(255,255,255,.02)}
+    .nav-item.active{color:var(--gold);background:var(--gold-dim);border-left-color:var(--gold)}
+    .nav-icon{font-size:1rem;width:18px;text-align:center}
+    .sidebar-footer{padding:16px 20px;border-top:1px solid var(--border)}
+    .signout-btn{width:100%;padding:9px;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);background:none;border:1px solid var(--border);cursor:pointer;font-family:var(--sans);transition:all .2s}
+    .signout-btn:hover{border-color:var(--red);color:var(--red)}
+
+    /* MAIN CONTENT */
+    .main{overflow-y:auto;background:var(--bg)}
+    .page{display:none;padding:40px;min-height:100%}
+    .page.active{display:block}
+    .page-header{margin-bottom:32px}
+    .page-title{font-family:var(--serif);font-size:2rem;margin-bottom:4px}
+    .page-sub{color:var(--text-dim);font-size:.88rem}
+
+    /* STATS GRID */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:32px}
+    .stat-card{background:var(--surface);border:1px solid var(--border);padding:24px;position:relative}
+    .stat-label{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px}
+    .stat-value{font-family:var(--serif);font-size:2.2rem;color:var(--gold);font-weight:700;line-height:1}
+    .stat-sub{font-size:.75rem;color:var(--text-muted);margin-top:6px}
+    .stat-badge{position:absolute;top:16px;right:16px;font-size:.65rem;letter-spacing:1px;padding:3px 8px;text-transform:uppercase}
+    .badge-green{background:rgba(34,197,94,.1);color:var(--green)}
+
+    /* REFERRAL LINK */
+    .ref-box{background:var(--surface);border:1px solid var(--border);padding:28px;margin-bottom:24px}
+    .ref-box h3{font-family:var(--serif);font-size:1.2rem;margin-bottom:6px}
+    .ref-box p{color:var(--text-dim);font-size:.84rem;margin-bottom:16px;line-height:1.6}
+    .link-copy{display:flex;gap:0;align-items:stretch}
+    .link-input{flex:1;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:monospace;font-size:.82rem}
+    .copy-btn{padding:12px 20px;background:var(--gold);color:var(--bg);font-family:var(--sans);font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;transition:opacity .2s;white-space:nowrap}
+    .copy-btn:hover{opacity:.88}
+
+    /* TABLE */
+    .table-wrap{background:var(--surface);border:1px solid var(--border);overflow-x:auto;margin-bottom:24px}
+    table{width:100%;border-collapse:collapse;font-size:.83rem}
+    thead th{padding:14px 20px;text-align:left;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border);font-weight:500;white-space:nowrap}
+    tbody td{padding:14px 20px;border-bottom:1px solid rgba(26,30,36,.5);color:var(--text);vertical-align:middle}
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover{background:rgba(255,255,255,.015)}
+    .status-pill{display:inline-block;padding:3px 10px;font-size:.65rem;letter-spacing:1px;text-transform:uppercase}
+    .pill-green{background:rgba(34,197,94,.1);color:var(--green)}
+    .pill-amber{background:rgba(245,158,11,.1);color:var(--amber)}
+    .pill-red{background:rgba(239,68,68,.1);color:var(--red)}
+    .pill-blue{background:rgba(59,130,246,.1);color:var(--blue)}
+    .empty-state{padding:60px;text-align:center;color:var(--text-muted);font-size:.88rem}
+
+    /* ANNOUNCEMENT CARDS */
+    .announce-list{display:flex;flex-direction:column;gap:16px;margin-bottom:24px}
+    .announce-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gold);padding:24px}
+    .announce-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .announce-emoji{font-size:1.3rem}
+    .announce-title{font-family:var(--serif);font-size:1.1rem}
+    .announce-date{margin-left:auto;font-size:.72rem;color:var(--text-muted)}
+    .announce-body{font-size:.86rem;color:var(--text-dim);line-height:1.7}
+
+    /* LEADERBOARD */
+    .lb-item{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--surface);border:1px solid var(--border);margin-bottom:12px;transition:border-color .2s}
+    .lb-rank{font-family:var(--serif);font-size:1.8rem;color:var(--gold-dim);width:40px;text-align:center;font-weight:700}
+    .lb-rank.top{color:var(--gold)}
+    .lb-name{flex:1;font-weight:500}
+    .lb-earn{font-family:var(--serif);font-size:1.1rem;color:var(--gold)}
+    .lb-you{font-size:.65rem;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;background:var(--gold-dim);color:var(--gold);margin-left:8px}
+
+    /* SUPPORT FORM */
+    .support-form{background:var(--surface);border:1px solid var(--border);padding:32px;margin-bottom:24px}
+    .support-form h3{font-family:var(--serif);font-size:1.3rem;margin-bottom:20px}
+    .s-field{margin-bottom:16px}
+    .s-field label{display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px}
+    .s-field input,.s-field textarea,.s-field select{width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:.88rem}
+    .s-field input:focus,.s-field textarea:focus,.s-field select:focus{outline:none;border-color:var(--gold)}
+    .s-field textarea{min-height:120px;resize:vertical}
+    .btn-primary{padding:12px 28px;background:var(--gold);color:var(--bg);font-family:var(--sans);font-size:.75rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;transition:opacity .2s}
+    .btn-primary:hover{opacity:.88}
+    .btn-primary:disabled{opacity:.5;cursor:not-allowed}
+
+    /* SETTINGS */
+    .settings-card{background:var(--surface);border:1px solid var(--border);padding:32px;margin-bottom:20px}
+    .settings-card h3{font-family:var(--serif);font-size:1.2rem;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+
+    /* SALES CENTRE RESOURCES */
+    .resources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:24px}
+    .resource-card{background:var(--surface);border:1px solid var(--border);padding:24px;transition:border-color .2s}
+    .resource-card:hover{border-color:rgba(201,164,101,.3)}
+    .resource-icon{font-size:1.8rem;margin-bottom:12px}
+    .resource-title{font-family:var(--serif);font-size:1.05rem;margin-bottom:6px}
+    .resource-desc{font-size:.8rem;color:var(--text-dim);line-height:1.6;margin-bottom:16px}
+    .resource-link{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);border-bottom:1px solid transparent;transition:border-color .2s}
+    .resource-link:hover{border-bottom-color:var(--gold)}
+
+    /* LOADING */
+    .loading{color:var(--text-muted);font-size:.85rem;padding:32px 0}
+
+    /* MOBILE */
+    .mobile-header{display:none;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+    .hamburger{background:none;border:none;color:var(--text);font-size:1.3rem;cursor:pointer}
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:80}
+    .sidebar.mobile-open{transform:translateX(0)}
+
+    @media(max-width:768px){
+      html,body{overflow:auto}
+      #app{height:auto;overflow:auto}
+      .layout{grid-template-columns:1fr}
+      .sidebar{position:fixed;top:0;left:0;bottom:0;z-index:90;transform:translateX(-100%);transition:transform .25s}
+      .sidebar.mobile-open{transform:translateX(0)}
+      .sidebar-overlay{display:block;opacity:0;pointer-events:none;transition:opacity .25s}
+      .sidebar-overlay.visible{opacity:1;pointer-events:all}
+      .mobile-header{display:flex}
+      .main{overflow:auto;height:auto}
+      .page{padding:24px 16px}
+      .stats-grid{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<div id="authGate">
+  <div class="auth-box">
+    <div class="auth-logo">Client<span>Sniper</span></div>
+    <div class="auth-tag">Sales Rep Portal</div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchTab('login')">Log In</div>
+      <div class="auth-tab" onclick="switchTab('reset')">Reset Password</div>
+    </div>
+    <div id="loginForm">
+      <div class="auth-field"><label>Email</label><input type="email" id="loginEmail" placeholder="you@email.com"></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••"></div>
+      <button class="auth-btn" id="loginBtn" onclick="doLogin()">Sign In →</button>
+      <div class="auth-err" id="loginErr"></div>
+      <div class="auth-pending" id="pendingMsg">
+        Your application is still under review. We'll email you once approved with login credentials.
+      </div>
+    </div>
+    <div id="resetForm" style="display:none">
+      <div class="auth-field"><label>Email</label><input type="email" id="resetEmail" placeholder="you@email.com"></div>
+      <button class="auth-btn" id="resetBtn" onclick="doReset()">Send Reset Link →</button>
+      <div class="auth-err" id="resetErr"></div>
+      <div class="auth-msg" id="resetMsg">Check your inbox for a password reset link.</div>
+    </div>
+    <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:.78rem;color:var(--text-muted)">
+      Not a sales rep yet? <a href="sales-apply.html" style="color:var(--gold)">Apply here →</a>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-text">Client<span>Sniper</span></div>
+        <div class="sidebar-tag">Sales Rep Portal</div>
+      </div>
+      <div class="sidebar-rep">
+        <div class="rep-name" id="sidebarName">Loading…</div>
+        <div class="rep-code" id="sidebarCode"></div>
+        <div class="rep-tier" id="sidebarTier">Bronze</div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-item active" data-page="dashboard"><span class="nav-icon">◈</span> Dashboard</div>
+        <div class="nav-item" data-page="referral"><span class="nav-icon">🔗</span> Referral Centre</div>
+        <div class="nav-item" data-page="customers"><span class="nav-icon">👤</span> My Customers</div>
+        <div class="nav-item" data-page="earnings"><span class="nav-icon">£</span> Earnings</div>
+        <div class="nav-item" data-page="sales"><span class="nav-icon">📁</span> Sales Centre</div>
+        <div class="nav-item" data-page="leaderboard"><span class="nav-icon">🏆</span> Leaderboard</div>
+        <div class="nav-item" data-page="announcements"><span class="nav-icon">📢</span> Announcements</div>
+        <div class="nav-item" data-page="support"><span class="nav-icon">💬</span> Support</div>
+        <div class="nav-item" data-page="settings"><span class="nav-icon">⚙</span> Settings</div>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="signout-btn" onclick="doSignOut()">Sign Out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="mobile-header" id="mobileHeader">
+        <button class="hamburger" onclick="openSidebar()">☰</button>
+        <span style="font-family:var(--serif);color:var(--gold);font-size:1.1rem;font-weight:700">ClientSniper</span>
+        <span style="width:32px"></span>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-sub">Welcome back. Here's your overview.</p>
+        </div>
+        <div class="stats-grid" id="dashStats">
+          <div class="stat-card"><div class="stat-label">Total Earned</div><div class="stat-value" id="d-total">£0</div><div class="stat-sub">All time commissions</div></div>
+          <div class="stat-card"><div class="stat-label">This Month</div><div class="stat-value" id="d-month">£0</div><div class="stat-sub">Pending payout</div></div>
+          <div class="stat-card"><div class="stat-label">Active Customers</div><div class="stat-value" id="d-customers">0</div><div class="stat-sub">Currently subscribed</div></div>
+          <div class="stat-card"><div class="stat-label">Your Tier</div><div class="stat-value" id="d-tier">Bronze</div><div class="stat-sub">Based on active customers</div></div>
+        </div>
+        <div class="ref-box">
+          <h3>Your Referral Link</h3>
+          <p>Share this link with potential customers. When they subscribe, you'll earn 20% every month.</p>
+          <div class="link-copy">
+            <input class="link-input" id="d-reflink" readonly value="Loading...">
+            <button class="copy-btn" onclick="copyRef('d-reflink',this)">Copy Link</button>
+          </div>
+        </div>
+        <div class="table-wrap" id="dashRecentWrap">
+          <table>
+            <thead><tr><th>Customer</th><th>Plan</th><th>Commission</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody id="dashRecentBody"><tr><td colspan="5" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REFERRAL CENTRE -->
+      <div class="page" id="page-referral">
+        <div class="page-header">
+          <h1 class="page-title">Referral Centre</h1>
+          <p class="page-sub">Your referral link and performance overview.</p>
+        </div>
+        <div class="ref-box">
+          <h3>Your Referral Link</h3>
+          <p>Every visitor who signs up via this link is tracked to you for the lifetime of their subscription.</p>
+          <div class="link-copy">
+            <input class="link-input" id="r-reflink" readonly value="Loading...">
+            <button class="copy-btn" onclick="copyRef('r-reflink',this)">Copy Link</button>
+          </div>
+        </div>
+        <div class="ref-box">
+          <h3>Share on Social</h3>
+          <p>Ready-made copy for social media and DMs. Edit to personalise before sending.</p>
+          <div class="s-field" style="margin-top:12px">
+            <label>Social / DM Message</label>
+            <textarea class="link-input" id="socialCopy" rows="5" style="width:100%;padding:12px;font-family:var(--sans);font-size:.84rem;line-height:1.6;background:var(--surface2);border:1px solid var(--border);color:var(--text);resize:vertical"></textarea>
+          </div>
+          <button class="copy-btn" style="margin-top:8px" onclick="copySocial()">Copy Message</button>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Total Referrals</div><div class="stat-value" id="r-total">0</div></div>
+          <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value" id="r-active">0</div></div>
+          <div class="stat-card"><div class="stat-label">Cancelled</div><div class="stat-value" id="r-cancelled">0</div></div>
+          <div class="stat-card"><div class="stat-label">Conversion Rate</div><div class="stat-value" id="r-conv">—</div></div>
+        </div>
+      </div>
+
+      <!-- MY CUSTOMERS -->
+      <div class="page" id="page-customers">
+        <div class="page-header">
+          <h1 class="page-title">My Customers</h1>
+          <p class="page-sub">All subscriptions attributed to your referral link.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Customer</th><th>Plan</th><th>Monthly Value</th><th>Your Cut (20%)</th><th>Since</th><th>Status</th></tr></thead>
+            <tbody id="customersBody"><tr><td colspan="6" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EARNINGS -->
+      <div class="page" id="page-earnings">
+        <div class="page-header">
+          <h1 class="page-title">Earnings</h1>
+          <p class="page-sub">Your commission history and upcoming payouts.</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Total Earned</div><div class="stat-value" id="e-total">£0</div><div class="stat-sub">All time</div></div>
+          <div class="stat-card"><div class="stat-label">Pending Payout</div><div class="stat-value" id="e-pending">£0</div><div class="stat-sub">Processing this month</div></div>
+          <div class="stat-card"><div class="stat-label">Paid Out</div><div class="stat-value" id="e-paid">£0</div><div class="stat-sub">Successfully transferred</div></div>
+        </div>
+        <h3 style="font-family:var(--serif);font-size:1.2rem;margin:24px 0 16px">Commission History</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Period</th><th>Customer</th><th>Invoice Amount</th><th>Commission (20%)</th><th>Status</th></tr></thead>
+            <tbody id="earningsBody"><tr><td colspan="5" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+        <h3 style="font-family:var(--serif);font-size:1.2rem;margin:24px 0 16px">Payout History</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Date</th><th>Amount</th><th>Method</th><th>Status</th></tr></thead>
+            <tbody id="payoutsBody"><tr><td colspan="4" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SALES CENTRE -->
+      <div class="page" id="page-sales">
+        <div class="page-header">
+          <h1 class="page-title">Sales Centre</h1>
+          <p class="page-sub">Scripts, templates, and resources to help you close more referrals.</p>
+        </div>
+        <div class="resources-grid">
+          <div class="resource-card">
+            <div class="resource-icon">📋</div>
+            <div class="resource-title">Cold Outreach Script</div>
+            <div class="resource-desc">Proven DM and email script to introduce ClientSniper to freelancers and agencies.</div>
+            <a id="scriptToggle" class="resource-link" onclick="toggleScript()" style="cursor:pointer">View Script →</a>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">💰</div>
+            <div class="resource-title">Pricing Breakdown</div>
+            <div class="resource-desc">Know the plans inside out — Starter at £25/mo, Growth at £45/mo. Use this in conversations.</div>
+            <a href="payment.html" target="_blank" class="resource-link">View Pricing →</a>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">🎯</div>
+            <div class="resource-title">Ideal Customer Profile</div>
+            <div class="resource-desc">Freelancers, marketing agencies, estate agents, consultants — anyone needing B2B leads.</div>
+            <a id="icpToggle" class="resource-link" onclick="toggleICP()" style="cursor:pointer">View ICP →</a>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">❓</div>
+            <div class="resource-title">Objection Handling</div>
+            <div class="resource-desc">Common objections and how to address them confidently.</div>
+            <a id="objToggle" class="resource-link" onclick="toggleObj()" style="cursor:pointer">View Guide →</a>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">🔢</div>
+            <div class="resource-title">Commission Calculator</div>
+            <div class="resource-desc">See what you'd earn based on number of customers and plans.</div>
+            <a id="calcToggle" class="resource-link" onclick="toggleCalc()" style="cursor:pointer">Open Calculator →</a>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">📊</div>
+            <div class="resource-title">Key Stats</div>
+            <div class="resource-desc">Data points to use in conversations — lead generation results, ROI, time saved.</div>
+            <a id="statsToggle" class="resource-link" onclick="toggleStats()" style="cursor:pointer">View Stats →</a>
+          </div>
+        </div>
+
+        <!-- Expandable panels -->
+        <div id="panel-script" style="display:none" class="ref-box">
+          <h3>Cold Outreach Script</h3>
+          <div style="font-size:.85rem;line-height:1.8;color:var(--text-dim);white-space:pre-line">Hey [Name],
+
+Noticed you [run a freelance agency / work in marketing / do B2B sales] — wanted to share something that's been massive for lead gen.
+
+It's called ClientSniper — it pulls business contacts from Google Maps and Instagram so you can reach out directly. No ads, no gatekeepers.
+
+Plans start at £25/mo and you can get 500 free leads just for signing up.
+
+Thought it could be useful for you: <span id="scriptLink">[your referral link]</span>
+
+Let me know if you have any questions — happy to walk you through it.</div>
+        </div>
+
+        <div id="panel-icp" style="display:none" class="ref-box">
+          <h3>Ideal Customer Profile</h3>
+          <div style="font-size:.85rem;line-height:1.8;color:var(--text-dim)">
+            <strong style="color:var(--text)">Best-fit customers:</strong><br>
+            • Freelancers offering marketing, design, copywriting, or consulting services<br>
+            • Small digital agencies looking for consistent client flow<br>
+            • Estate agents and mortgage brokers<br>
+            • B2B sales reps who cold-reach SMEs<br>
+            • Anyone who needs a constant pipeline of warm prospects<br><br>
+            <strong style="color:var(--text)">What they care about:</strong><br>
+            • Saving time on manual prospecting<br>
+            • Not relying on expensive ad spend<br>
+            • Getting direct contact info (email, phone) not just names<br>
+            • Affordable tools that actually deliver ROI
+          </div>
+        </div>
+
+        <div id="panel-obj" style="display:none" class="ref-box">
+          <h3>Objection Handling</h3>
+          <div style="font-size:.85rem;line-height:1.8;color:var(--text-dim)">
+            <strong style="color:var(--text)">"Is it legal?"</strong><br>
+            Yes. ClientSniper scrapes publicly available business information — exactly the same data you'd find by searching Google yourself. No private data is accessed.<br><br>
+            <strong style="color:var(--text)">"I already have leads."</strong><br>
+            Most tools give you the same recycled databases. ClientSniper pulls fresh, hyper-local data directly from Google Maps and Instagram in real time.<br><br>
+            <strong style="color:var(--text)">"It's too expensive."</strong><br>
+            One client landed from 500 leads typically covers 6–12 months of the plan cost. The ROI speaks for itself.<br><br>
+            <strong style="color:var(--text)">"I'll try it later."</strong><br>
+            New members get 500 bonus leads when they sign up — the longer you wait, the more you leave on the table.
+          </div>
+        </div>
+
+        <div id="panel-calc" style="display:none" class="ref-box">
+          <h3>Commission Calculator</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+            <div class="s-field"><label>Starter Customers (£25/mo)</label><input type="number" id="calc-starter" value="0" min="0" oninput="calcComm()"></div>
+            <div class="s-field"><label>Growth Customers (£45/mo)</label><input type="number" id="calc-growth" value="0" min="0" oninput="calcComm()"></div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-label">Monthly Recurring</div><div class="stat-value" id="calc-monthly">£0</div></div>
+            <div class="stat-card"><div class="stat-label">Yearly Estimate</div><div class="stat-value" id="calc-yearly">£0</div></div>
+          </div>
+        </div>
+
+        <div id="panel-stats" style="display:none" class="ref-box">
+          <h3>Key Stats to Use in Conversations</h3>
+          <div style="font-size:.85rem;line-height:1.8;color:var(--text-dim)">
+            • 500 leads delivered to new members on signup — free, no strings<br>
+            • Google Maps + Instagram data pulled in real time — always fresh<br>
+            • Starter plan: £25/mo for ongoing lead generation<br>
+            • Growth plan: £45/mo with advanced filtering<br>
+            • One closed client from cold outreach typically 10× the monthly cost<br>
+            • Used by freelancers, agencies, and B2B sales teams across the UK<br>
+            • Fully self-serve — no sales calls, instant access after payment
+          </div>
+        </div>
+      </div>
+
+      <!-- LEADERBOARD -->
+      <div class="page" id="page-leaderboard">
+        <div class="page-header">
+          <h1 class="page-title">Leaderboard</h1>
+          <p class="page-sub">Top performing sales reps this month.</p>
+        </div>
+        <div id="leaderboardList" class="loading">Loading leaderboard...</div>
+      </div>
+
+      <!-- ANNOUNCEMENTS -->
+      <div class="page" id="page-announcements">
+        <div class="page-header">
+          <h1 class="page-title">Announcements</h1>
+          <p class="page-sub">Updates from the ClientSniper team.</p>
+        </div>
+        <div id="announceList" class="loading">Loading...</div>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="page" id="page-support">
+        <div class="page-header">
+          <h1 class="page-title">Support</h1>
+          <p class="page-sub">Submit a question or issue and we'll get back to you.</p>
+        </div>
+        <div class="support-form">
+          <h3>New Ticket</h3>
+          <div class="s-field"><label>Subject</label><input type="text" id="sup-subject" placeholder="Brief summary of your issue"></div>
+          <div class="s-field"><label>Category</label>
+            <select id="sup-cat">
+              <option>Commission / Payout</option>
+              <option>Referral Tracking</option>
+              <option>Technical Issue</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="s-field"><label>Message</label><textarea id="sup-message" placeholder="Describe your issue in detail..."></textarea></div>
+          <div id="supErr" style="color:var(--red);font-size:.82rem;margin-bottom:10px;display:none"></div>
+          <div id="supOk" style="color:var(--green);font-size:.82rem;margin-bottom:10px;display:none">Ticket submitted! We'll respond via email.</div>
+          <button class="btn-primary" id="supBtn" onclick="submitTicket()">Submit Ticket</button>
+        </div>
+        <h3 style="font-family:var(--serif);font-size:1.2rem;margin-bottom:16px">Your Tickets</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Subject</th><th>Category</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody id="ticketsBody"><tr><td colspan="4" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="page-settings">
+        <div class="page-header">
+          <h1 class="page-title">Settings</h1>
+          <p class="page-sub">Manage your account and payout preferences.</p>
+        </div>
+        <div class="settings-card">
+          <h3>Payout Information</h3>
+          <p style="font-size:.84rem;color:var(--text-dim);margin-bottom:20px;line-height:1.6">We pay commissions monthly via bank transfer or PayPal. Add your preferred payment details below.</p>
+          <div class="s-field"><label>Preferred Payout Method</label>
+            <select id="set-method">
+              <option value="bank">Bank Transfer (UK)</option>
+              <option value="paypal">PayPal</option>
+              <option value="wise">Wise</option>
+            </select>
+          </div>
+          <div class="s-field"><label>Payout Details</label><textarea id="set-payout" placeholder="Bank: Sort code, account number, name&#10;PayPal: your PayPal email&#10;Wise: your Wise email"></textarea></div>
+          <div id="setErr" style="color:var(--red);font-size:.82rem;margin-bottom:10px;display:none"></div>
+          <div id="setOk" style="color:var(--green);font-size:.82rem;margin-bottom:10px;display:none">Saved!</div>
+          <button class="btn-primary" onclick="saveSettings()">Save Payout Info</button>
+        </div>
+        <div class="settings-card">
+          <h3>Account</h3>
+          <div class="s-field"><label>Email</label><input type="email" id="set-email" readonly style="opacity:.6;cursor:not-allowed"></div>
+          <div class="s-field"><label>New Password</label><input type="password" id="set-newpass" placeholder="Leave blank to keep current"></div>
+          <div id="pwErr" style="color:var(--red);font-size:.82rem;margin-bottom:10px;display:none"></div>
+          <div id="pwOk" style="color:var(--green);font-size:.82rem;margin-bottom:10px;display:none">Password updated!</div>
+          <button class="btn-primary" onclick="changePassword()">Update Password</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+  const SUPABASE_URL  = 'https://jxcahqkkcnqkmjjqdnuu.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  let REP = null;
+
+  // AUTH TABS
+  function switchTab(tab) {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('loginForm').style.display = tab === 'login' ? '' : 'none';
+    document.getElementById('resetForm').style.display = tab === 'reset' ? '' : 'none';
+    document.querySelectorAll('.auth-tab')[tab === 'login' ? 0 : 1].classList.add('active');
+  }
+
+  async function doLogin() {
+    const btn = document.getElementById('loginBtn');
+    const err = document.getElementById('loginErr');
+    const pending = document.getElementById('pendingMsg');
+    btn.disabled = true; btn.textContent = 'Signing in...';
+    err.style.display = 'none'; pending.style.display = 'none';
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass  = document.getElementById('loginPass').value;
+
+    const { error } = await db.auth.signInWithPassword({ email, password: pass });
+    if (error) {
+      err.textContent = error.message.includes('Invalid') ? 'Invalid email or password.' : error.message;
+      err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Sign In →';
+    }
+  }
+
+  async function doReset() {
+    const btn = document.getElementById('resetBtn');
+    const err = document.getElementById('resetErr');
+    const msg = document.getElementById('resetMsg');
+    btn.disabled = true; err.style.display = 'none'; msg.style.display = 'none';
+    const email = document.getElementById('resetEmail').value.trim();
+    const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: location.href });
+    if (error) { err.textContent = error.message; err.style.display = 'block'; }
+    else msg.style.display = 'block';
+    btn.disabled = false;
+  }
+
+  async function doSignOut() {
+    await db.auth.signOut();
+    location.reload();
+  }
+
+  // AUTH STATE
+  db.auth.onAuthStateChange(async (event, session) => {
+    if (!session) return;
+    if (event === 'PASSWORD_RECOVERY') return;
+    await loadApp(session.user);
+  });
+
+  async function loadApp(user) {
+    const { data: rep } = await db.from('sales_reps').select('*').eq('user_id', user.id).maybeSingle();
+    if (!rep) {
+      document.getElementById('pendingMsg').style.display = 'block';
+      document.getElementById('loginBtn').disabled = false;
+      document.getElementById('loginBtn').textContent = 'Sign In →';
+      document.getElementById('loginErr').style.display = 'none';
+      await db.auth.signOut();
+      return;
+    }
+    REP = rep;
+    document.getElementById('authGate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+
+    document.getElementById('sidebarName').textContent = rep.name;
+    document.getElementById('sidebarCode').textContent = 'Code: ' + rep.referral_code;
+    document.getElementById('sidebarTier').textContent = rep.tier.charAt(0).toUpperCase() + rep.tier.slice(1);
+    document.getElementById('set-email').value = rep.email;
+    if (rep.payout_info) document.getElementById('set-payout').value = rep.payout_info;
+
+    const refLink = `https://clientsniper.com/?ref=${rep.referral_code}`;
+    document.getElementById('d-reflink').value = refLink;
+    document.getElementById('r-reflink').value = refLink;
+    document.getElementById('d-tier').textContent = rep.tier.charAt(0).toUpperCase() + rep.tier.slice(1);
+
+    const socialMsg = `Hey — wanted to share a tool that's been great for lead generation.\n\nIt's called ClientSniper. It pulls business contacts from Google Maps & Instagram so you can reach out directly. No ads, no gatekeepers.\n\nPlans start at £25/mo and new members get 500 bonus leads.\n\nWorth checking out: ${refLink}`;
+    document.getElementById('socialCopy').value = socialMsg;
+    document.getElementById('scriptLink').textContent = refLink;
+
+    loadDashboard();
+    setupNav();
+  }
+
+  function setupNav() {
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        item.classList.add('active');
+        document.getElementById('page-' + item.dataset.page).classList.add('active');
+        closeSidebar();
+        const page = item.dataset.page;
+        if (page === 'customers') loadCustomers();
+        else if (page === 'earnings') loadEarnings();
+        else if (page === 'leaderboard') loadLeaderboard();
+        else if (page === 'announcements') loadAnnouncements();
+        else if (page === 'support') loadSupport();
+        else if (page === 'referral') loadReferralStats();
+      });
+    });
+  }
+
+  async function loadDashboard() {
+    const { data: comms } = await db.from('commissions').select('*').eq('rep_id', REP.id);
+    const { data: refs  } = await db.from('referrals').select('*').eq('rep_id', REP.id);
+
+    const totalEarned = (comms || []).reduce((s, c) => s + Number(c.amount), 0);
+    const now = new Date();
+    const thisMonth = (comms || []).filter(c => {
+      const d = new Date(c.earned_at);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear() && c.status === 'pending';
+    }).reduce((s, c) => s + Number(c.amount), 0);
+
+    const activeCustomers = (refs || []).filter(r => r.status === 'active').length;
+    document.getElementById('d-total').textContent = '£' + totalEarned.toFixed(2);
+    document.getElementById('d-month').textContent = '£' + thisMonth.toFixed(2);
+    document.getElementById('d-customers').textContent = activeCustomers;
+
+    const recent = (comms || []).slice(-5).reverse();
+    const tbody = document.getElementById('dashRecentBody');
+    if (!recent.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No commissions yet. Start sharing your link!</td></tr>'; return; }
+
+    const refMap = {};
+    (refs || []).forEach(r => refMap[r.id] = r);
+    tbody.innerHTML = recent.map(c => {
+      const ref = refMap[c.referral_id] || {};
+      return `<tr>
+        <td>${ref.customer_name || ref.customer_email || '—'}</td>
+        <td>${ref.plan || '—'}</td>
+        <td>£${Number(c.amount).toFixed(2)}</td>
+        <td>${fmt(c.earned_at)}</td>
+        <td><span class="status-pill ${c.status === 'paid' ? 'pill-green' : 'pill-amber'}">${c.status}</span></td>
+      </tr>`;
+    }).join('');
+  }
+
+  async function loadCustomers() {
+    const { data: refs } = await db.from('referrals').select('*').eq('rep_id', REP.id).order('referred_at', { ascending: false });
+    const tbody = document.getElementById('customersBody');
+    if (!refs || !refs.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No customers yet.</td></tr>'; return; }
+    tbody.innerHTML = refs.map(r => `<tr>
+      <td>${r.customer_name || ''}<br><small style="color:var(--text-muted)">${r.customer_email}</small></td>
+      <td>${r.plan || '—'}</td>
+      <td>£${Number(r.monthly_value).toFixed(2)}</td>
+      <td>£${(Number(r.monthly_value) * 0.2).toFixed(2)}</td>
+      <td>${fmt(r.referred_at)}</td>
+      <td><span class="status-pill ${r.status === 'active' ? 'pill-green' : 'pill-red'}">${r.status}</span></td>
+    </tr>`).join('');
+  }
+
+  async function loadEarnings() {
+    const [{ data: comms }, { data: pays }, { data: refs }] = await Promise.all([
+      db.from('commissions').select('*').eq('rep_id', REP.id).order('earned_at', { ascending: false }),
+      db.from('payouts').select('*').eq('rep_id', REP.id).order('created_at', { ascending: false }),
+      db.from('referrals').select('id,customer_name,customer_email').eq('rep_id', REP.id),
+    ]);
+    const refMap = {};
+    (refs || []).forEach(r => refMap[r.id] = r);
+
+    const total  = (comms || []).reduce((s,c) => s + Number(c.amount), 0);
+    const pending = (comms || []).filter(c => c.status === 'pending').reduce((s,c) => s + Number(c.amount), 0);
+    const paid   = (pays || []).filter(p => p.status === 'paid').reduce((s,p) => s + Number(p.amount), 0);
+    document.getElementById('e-total').textContent   = '£' + total.toFixed(2);
+    document.getElementById('e-pending').textContent = '£' + pending.toFixed(2);
+    document.getElementById('e-paid').textContent    = '£' + paid.toFixed(2);
+
+    const cb = document.getElementById('earningsBody');
+    if (!comms || !comms.length) { cb.innerHTML = '<tr><td colspan="5" class="empty-state">No commissions yet.</td></tr>'; }
+    else cb.innerHTML = comms.map(c => {
+      const ref = refMap[c.referral_id] || {};
+      return `<tr>
+        <td>${c.period || fmt(c.earned_at)}</td>
+        <td>${ref.customer_name || ref.customer_email || '—'}</td>
+        <td>£${Number(c.invoice_amount || 0).toFixed(2)}</td>
+        <td>£${Number(c.amount).toFixed(2)}</td>
+        <td><span class="status-pill ${c.status === 'paid' ? 'pill-green' : 'pill-amber'}">${c.status}</span></td>
+      </tr>`;
+    }).join('');
+
+    const pb = document.getElementById('payoutsBody');
+    if (!pays || !pays.length) { pb.innerHTML = '<tr><td colspan="4" class="empty-state">No payouts yet.</td></tr>'; }
+    else pb.innerHTML = pays.map(p => `<tr>
+      <td>${fmt(p.created_at)}</td>
+      <td>£${Number(p.amount).toFixed(2)}</td>
+      <td>${p.method || '—'}</td>
+      <td><span class="status-pill ${p.status === 'paid' ? 'pill-green' : 'pill-amber'}">${p.status}</span></td>
+    </tr>`).join('');
+  }
+
+  async function loadReferralStats() {
+    const { data: refs } = await db.from('referrals').select('*').eq('rep_id', REP.id);
+    const total = refs?.length || 0;
+    const active = refs?.filter(r => r.status === 'active').length || 0;
+    const cancelled = refs?.filter(r => r.status === 'cancelled').length || 0;
+    document.getElementById('r-total').textContent = total;
+    document.getElementById('r-active').textContent = active;
+    document.getElementById('r-cancelled').textContent = cancelled;
+    document.getElementById('r-conv').textContent = total ? Math.round(active/total*100)+'%' : '—';
+  }
+
+  async function loadLeaderboard() {
+    const { data: reps } = await db.from('sales_reps').select('id,name,referral_code').eq('status', 'active');
+    const { data: comms } = await db.from('commissions').select('rep_id,amount');
+    const now = new Date();
+    const totals = {};
+    (comms || []).forEach(c => {
+      totals[c.rep_id] = (totals[c.rep_id] || 0) + Number(c.amount);
+    });
+    const sorted = (reps || []).sort((a,b) => (totals[b.id]||0) - (totals[a.id]||0)).slice(0,10);
+    const el = document.getElementById('leaderboardList');
+    if (!sorted.length) { el.innerHTML = '<div class="empty-state" style="padding:32px">No leaderboard data yet.</div>'; return; }
+    el.innerHTML = sorted.map((r,i) => `
+      <div class="lb-item">
+        <div class="lb-rank ${i < 3 ? 'top' : ''}">${i+1}</div>
+        <div class="lb-name">${r.name}${r.id === REP.id ? '<span class="lb-you">You</span>' : ''}</div>
+        <div class="lb-earn">£${(totals[r.id]||0).toFixed(2)}</div>
+      </div>`).join('');
+  }
+
+  async function loadAnnouncements() {
+    const { data: anns } = await db.from('announcements').select('*').order('created_at', { ascending: false });
+    const el = document.getElementById('announceList');
+    if (!anns || !anns.length) { el.innerHTML = '<div class="empty-state">No announcements yet.</div>'; return; }
+    el.innerHTML = `<div class="announce-list">${anns.map(a => `
+      <div class="announce-card">
+        <div class="announce-head">
+          <div class="announce-emoji">${a.emoji || '📢'}</div>
+          <div class="announce-title">${a.title}</div>
+          <div class="announce-date">${fmt(a.created_at)}</div>
+        </div>
+        <div class="announce-body">${a.body}</div>
+      </div>`).join('')}</div>`;
+  }
+
+  async function loadSupport() {
+    const { data: tickets } = await db.from('rep_support_tickets').select('*').eq('rep_id', REP.id).order('created_at', { ascending: false });
+    const tbody = document.getElementById('ticketsBody');
+    if (!tickets || !tickets.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No tickets yet.</td></tr>'; return; }
+    tbody.innerHTML = tickets.map(t => `<tr>
+      <td>${t.subject}</td>
+      <td>—</td>
+      <td>${fmt(t.created_at)}</td>
+      <td><span class="status-pill ${t.status === 'open' ? 'pill-amber' : 'pill-green'}">${t.status}</span></td>
+    </tr>`).join('');
+  }
+
+  async function submitTicket() {
+    const btn = document.getElementById('supBtn');
+    const err = document.getElementById('supErr');
+    const ok  = document.getElementById('supOk');
+    err.style.display = 'none'; ok.style.display = 'none';
+    btn.disabled = true; btn.textContent = 'Submitting...';
+    const { error } = await db.from('rep_support_tickets').insert({
+      rep_id: REP.id,
+      subject: document.getElementById('sup-subject').value.trim(),
+      message: document.getElementById('sup-message').value.trim(),
+    });
+    if (error) { err.textContent = error.message; err.style.display = 'block'; }
+    else {
+      ok.style.display = 'block';
+      document.getElementById('sup-subject').value = '';
+      document.getElementById('sup-message').value = '';
+      loadSupport();
+    }
+    btn.disabled = false; btn.textContent = 'Submit Ticket';
+  }
+
+  async function saveSettings() {
+    const err = document.getElementById('setErr');
+    const ok  = document.getElementById('setOk');
+    err.style.display = 'none'; ok.style.display = 'none';
+    const payout = document.getElementById('set-payout').value.trim();
+    const method = document.getElementById('set-method').value;
+    const { error } = await db.from('sales_reps').update({ payout_info: `${method}: ${payout}` }).eq('id', REP.id);
+    if (error) { err.textContent = error.message; err.style.display = 'block'; }
+    else ok.style.display = 'block';
+  }
+
+  async function changePassword() {
+    const err = document.getElementById('pwErr');
+    const ok  = document.getElementById('pwOk');
+    err.style.display = 'none'; ok.style.display = 'none';
+    const pass = document.getElementById('set-newpass').value;
+    if (!pass) { err.textContent = 'Enter a new password.'; err.style.display = 'block'; return; }
+    const { error } = await db.auth.updateUser({ password: pass });
+    if (error) { err.textContent = error.message; err.style.display = 'block'; }
+    else { ok.style.display = 'block'; document.getElementById('set-newpass').value = ''; }
+  }
+
+  function copyRef(id, btn) {
+    const val = document.getElementById(id).value;
+    navigator.clipboard.writeText(val).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy Link', 2000);
+    });
+  }
+
+  function copySocial() {
+    navigator.clipboard.writeText(document.getElementById('socialCopy').value).then(() => alert('Message copied!'));
+  }
+
+  function calcComm() {
+    const s = Number(document.getElementById('calc-starter').value) || 0;
+    const g = Number(document.getElementById('calc-growth').value) || 0;
+    const monthly = (s * 25 + g * 45) * 0.20;
+    document.getElementById('calc-monthly').textContent = '£' + monthly.toFixed(2);
+    document.getElementById('calc-yearly').textContent  = '£' + (monthly * 12).toFixed(2);
+  }
+
+  function togglePanel(id, linkId, showText, hideText) {
+    const el = document.getElementById(id);
+    const link = document.getElementById(linkId);
+    const visible = el.style.display !== 'none';
+    el.style.display = visible ? 'none' : 'block';
+    link.textContent = visible ? showText : hideText;
+  }
+
+  function toggleScript() { togglePanel('panel-script','scriptToggle','View Script →','Hide Script ↑'); }
+  function toggleICP()    { togglePanel('panel-icp','icpToggle','View ICP →','Hide ICP ↑'); }
+  function toggleObj()    { togglePanel('panel-obj','objToggle','View Guide →','Hide Guide ↑'); }
+  function toggleCalc()   { togglePanel('panel-calc','calcToggle','Open Calculator →','Close Calculator ↑'); }
+  function toggleStats()  { togglePanel('panel-stats','statsToggle','View Stats →','Hide Stats ↑'); }
+
+  function openSidebar() {
+    document.getElementById('sidebar').classList.add('mobile-open');
+    document.getElementById('sidebarOverlay').classList.add('visible');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('mobile-open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
+  }
+
+  function fmt(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  // Handle password recovery redirect
+  if (location.hash.includes('type=recovery')) {
+    document.getElementById('authGate').style.display = 'flex';
+  }
+</script>
+</body>
+</html>

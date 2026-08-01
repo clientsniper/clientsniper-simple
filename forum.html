@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Community Forum — ClientSniper</title>
 <meta name="description" content="Join the ClientSniper community. Share strategies, ask questions, post wins, and connect with other lead generation pros.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -238,7 +239,24 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.23,1,.32,1),transform .7s cubic-bezier(.23,1,.32,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
+.nav-signin{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .3s;padding:0 4px}.nav-signin:hover{color:var(--gold)}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ClientSniper">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Community Forum — ClientSniper">
+<meta property="og:description" content="Join 2,400+ lead generation pros. Ask questions, share wins, and learn what's working right now.">
+<meta property="og:url" content="https://clientsniper.com/forum.html">
+<meta property="og:image" content="https://clientsniper.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@clientsniper">
+<meta name="twitter:title" content="Community Forum — ClientSniper">
+<meta name="twitter:description" content="Join 2,400+ lead generation pros. Ask questions, share wins, and learn what's working right now.">
+<meta name="twitter:image" content="https://clientsniper.com/og-image.png">
+<link rel="canonical" href="https://clientsniper.com/forum.html">
 </head>
 <body>
 <div class="cursor-ring" id="cursorRing"></div>
@@ -257,6 +275,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
     <a href="index.html#contact">Contact</a>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
+      <a href="https://clientsniper-zwr3.vercel.app/" class="nav-signin">Sign In</a>
     <a href="payment.html" class="nav-cta">Get Started</a>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" onclick="toggleTheme()">☀️</button>
   </div>
@@ -268,6 +287,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
   <a href="blog.html" onclick="closeDrawer()">Blog</a>
   <a href="forum.html" onclick="closeDrawer()">Forum</a>
   <a href="payment.html" onclick="closeDrawer()">Plans</a>
+    <a href="https://clientsniper-zwr3.vercel.app/" onclick="closeDrawer()">Sign In</a>
   <a href="index.html#contact" onclick="closeDrawer()">Contact</a>
   <a href="payment.html" class="nav-cta" onclick="closeDrawer()">Get Started</a>
   <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
@@ -290,13 +310,13 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 <section class="section" style="padding-top:0;padding-bottom:16px">
   <div class="container">
     <div class="cat-row reveal">
-      <button class="cat-pill active" data-cat="all">🔥 All Threads <span class="cat-count">1,204</span></button>
-      <button class="cat-pill" data-cat="general">💬 General <span class="cat-count">312</span></button>
-      <button class="cat-pill" data-cat="maps">📍 Maps Tips <span class="cat-count">287</span></button>
-      <button class="cat-pill" data-cat="instagram">📸 Instagram <span class="cat-count">198</span></button>
-      <button class="cat-pill" data-cat="strategy">🧠 Strategy <span class="cat-count">224</span></button>
-      <button class="cat-pill" data-cat="showcase">🏆 Showcase <span class="cat-count">89</span></button>
-      <button class="cat-pill" data-cat="feature">✨ Feature Requests <span class="cat-count">94</span></button>
+      <button class="cat-pill active" data-cat="all">🔥 All <span class="cat-count" id="cnt-all">—</span></button>
+      <button class="cat-pill" data-cat="general">💬 General <span class="cat-count" id="cnt-general">—</span></button>
+      <button class="cat-pill" data-cat="maps">📍 Maps Tips <span class="cat-count" id="cnt-maps">—</span></button>
+      <button class="cat-pill" data-cat="outreach">✉️ Outreach <span class="cat-count" id="cnt-outreach">—</span></button>
+      <button class="cat-pill" data-cat="strategy">🧠 Strategy <span class="cat-count" id="cnt-strategy">—</span></button>
+      <button class="cat-pill" data-cat="showcase">🏆 Showcase <span class="cat-count" id="cnt-showcase">—</span></button>
+      <button class="cat-pill" data-cat="feature">✨ Feature Requests <span class="cat-count" id="cnt-feature">—</span></button>
     </div>
   </div>
 </section>
@@ -312,49 +332,50 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
         <button class="sort-tab">Top</button>
         <button class="sort-tab">Unanswered</button>
       </div>
-      <button class="new-thread-btn" onclick="alert('Sign in to create a thread')">+ New Thread</button>
+      <button class="new-thread-btn" onclick="openNewThread()">+ New Thread</button>
     </div>
 
     <div class="forum-layout">
-      <div class="thread-list reveal" id="threadList">
-
-        <div class="thread pinned" data-cat="general"><div class="thread-votes"><button class="vote-btn">▲</button><div class="vote-count">89</div><div class="vote-label">votes</div></div><div class="thread-content"><div class="thread-header"><span class="pin-badge">📌 Pinned</span></div><h3>Welcome to the ClientSniper Community — Start Here!</h3><p>New here? Read this first. Community guidelines, how to get the most out of the forum, links to our best resources, and how to get verified user flair.</p><div class="thread-tags"><span class="thread-tag">welcome</span><span class="thread-tag">rules</span><span class="thread-tag">resources</span></div><div class="thread-meta"><span class="author-link"><span class="avatar-xs">B</span> <strong>Ben</strong></span><span class="sep">·</span><span>47 replies</span><span class="sep">·</span><span>Pinned 3 months ago</span></div></div><div class="thread-stats"><div class="stat-val">47</div><div class="stat-lbl">replies</div></div></div>
-
-        <div class="thread" data-cat="maps"><div class="thread-votes"><button class="vote-btn">▲</button><div class="vote-count">47</div><div class="vote-label">votes</div></div><div class="thread-content"><div class="thread-header"><span class="thread-tag hot">🔥 Hot</span></div><h3>Best niches for Google Maps scraping in 2026?</h3><p>I've been killing it with dentists and plumbers, but looking for fresh verticals. What's working for everyone else?</p><div class="thread-tags"><span class="thread-tag">maps</span><span class="thread-tag">strategy</span><span class="thread-tag">niches</span></div><div class="thread-meta"><span class="author-link"><span class="avatar-xs">D</span> <strong>@dan_leads</strong></span><span class="sep">·</span><span>23 replies</span><span class="sep">·</span><span>2 hours ago</span></div></div><div class="thread-stats"><div class="stat-val">23</div><div class="stat-lbl">replies</div></div></div>
-
-        <div class="thread" data-cat="instagram"><div class="thread-votes"><button class="vote-btn">▲</button><div class="vote-count">38</div><div class="vote-label">votes</div></div><div class="thread-content"><div class="thread-header"><span class="thread-tag hot">🔥 Hot</span><span class="solved-badge">✓ Solved</span></div><h3>How I closed £8K in one week using Instagram scraping</h3><p>Case study — scraped 300 fitness coaches, sent cold DMs, landed 4 web design clients. Full breakdown with screenshots inside.</p><div class="thread-tags"><span class="thread-tag">instagram</span><span class="thread-tag">case-study</span><span class="thread-tag">wins</span></div><div class="thread-meta"><span class="author-link"><span class="avatar-xs">S</span> <strong>@sophie_builds</strong></span><span class="sep">·</span><span>18 replies</span><span class="sep">·</span><span>5 hours ago</span></div></div><div class="thread-stats"><div class="stat-val">18</div><div class="stat-lbl">replies</div></div></div>
-
-        <div class="thread" data-cat="feature"><div class="thread-votes"><button class="vote-btn">▲</button><div class="vote-count">31</div><div class="vote-label">votes</div></div><div class="thread-content"><h3>Feature request: bulk email verification after scraping</h3><p>Would love a one-click "verify all" button after scraping. Currently exporting and using a separate tool.</p><div class="thread-tags"><span class="thread-tag">feature-request</span><span class="thread-tag">maps</span><span class="thread-tag">verification</span></div><div class="thread-meta"><span class="author-link"><span class="avatar-xs">M</span> <strong>@outreach_mike</strong></span><span class="sep">·</span><span>12 replies</span><span class="sep">·</span><span>1 day ago</span></div></div><div class="thread-stats"><div class="stat-val">12</div><div class="stat-lbl">replies</div></div></div>
-
-        <div class="thread" data-cat="strategy"><div class="thread-votes"><button class="vote-btn">▲</button><div class="vote-count">24</div><div class="vote-label">votes</div></div><div class="thread-content"><h3>Cold email subject lines that got me 45% open rates</h3><p>Been A/B testing subject lines for 3 months. Here are my top 10 performers with exact open rates for each.</p><div class="thread-tags"><span class="thread-tag">outreach</span><span class="thread-tag">email</span><span class="thread-tag">results</span></div><div class="thread-meta"><span class="author-link"><span class="avatar-xs">J</span> <strong>@jack_agency</strong></span><span class="sep">·</span><span>15 replies</span><span class="sep">·</span><span>1 day ago</span></div></div><div class="thread-stats"><div class="stat-val">15</div><div class="stat-lbl">replies</div></div></div>
-
-        <div class="thread" data-cat="general"><div class="thread-votes"><button class="vote-btn">▲</button><div class="vote-count">19</div><div class="vote-label">votes</div></div><div class="thread-content"><div class="thread-header"><span class="solved-badge">✓ Solved</span></div><h3>New here — is the Bundle worth it over Maps only?</h3><p>I run a digital agency focused on local businesses. Mainly need Maps but Instagram sounds tempting. Worth the extra?</p><div class="thread-tags"><span class="thread-tag">beginner</span><span class="thread-tag">pricing</span><span class="thread-tag">advice</span></div><div class="thread-meta"><span class="author-link"><span class="avatar-xs">J</span> <strong>@jess_agency</strong></span><span class="sep">·</span><span>9 replies</span><span class="sep">·</span><span>1 day ago</span></div></div><div class="thread-stats"><div class="stat-val">9</div><div class="stat-lbl">replies</div></div></div>
-
-        <div class="thread" data-cat="showcase"><div class="thread-votes"><button class="vote-btn">▲</button><div class="vote-count">16</div><div class="vote-label">votes</div></div><div class="thread-content"><div class="thread-header"><span class="thread-tag new">🆕 New</span></div><h3>🎉 Just landed my biggest client — £4,200/mo retainer!</h3><p>Scraped wedding photographers in Leeds, sent 50 personalised cold emails, got 8 replies, booked 3 calls, closed 1 big deal.</p><div class="thread-tags"><span class="thread-tag">win</span><span class="thread-tag">showcase</span><span class="thread-tag">maps</span></div><div class="thread-meta"><span class="author-link"><span class="avatar-xs">A</span> <strong>@alex_closes</strong></span><span class="sep">·</span><span>7 replies</span><span class="sep">·</span><span>6 hours ago</span></div></div><div class="thread-stats"><div class="stat-val">7</div><div class="stat-lbl">replies</div></div></div>
-
-        <div class="thread" data-cat="maps"><div class="thread-votes"><button class="vote-btn">▲</button><div class="vote-count">14</div><div class="vote-label">votes</div></div><div class="thread-content"><h3>How to filter out low-quality leads before exporting?</h3><p>Getting lots of businesses with no website and no email. Is there a way to filter these out automatically?</p><div class="thread-tags"><span class="thread-tag">maps</span><span class="thread-tag">tips</span><span class="thread-tag">filters</span></div><div class="thread-meta"><span class="author-link"><span class="avatar-xs">R</span> <strong>@ryan_digital</strong></span><span class="sep">·</span><span>11 replies</span><span class="sep">·</span><span>2 days ago</span></div></div><div class="thread-stats"><div class="stat-val">11</div><div class="stat-lbl">replies</div></div></div>
-
-        <div class="thread" data-cat="instagram"><div class="thread-votes"><button class="vote-btn">▲</button><div class="vote-count">11</div><div class="vote-label">votes</div></div><div class="thread-content"><h3>Best hashtags to scrape for e-commerce brands?</h3><p>Looking to offer web design to small e-commerce brands. What hashtags do you target on Instagram?</p><div class="thread-tags"><span class="thread-tag">instagram</span><span class="thread-tag">ecommerce</span><span class="thread-tag">scraping</span></div><div class="thread-meta"><span class="author-link"><span class="avatar-xs">L</span> <strong>@lisa_designs</strong></span><span class="sep">·</span><span>6 replies</span><span class="sep">·</span><span>3 days ago</span></div></div><div class="thread-stats"><div class="stat-val">6</div><div class="stat-lbl">replies</div></div></div>
-
-        <div class="thread" data-cat="general"><div class="thread-votes"><button class="vote-btn">▲</button><div class="vote-count">8</div><div class="vote-label">votes</div></div><div class="thread-content"><h3>Does the free trial require a credit card?</h3><p>Just want to confirm if I need to enter payment details to start the 30-day trial.</p><div class="thread-tags"><span class="thread-tag">trial</span><span class="thread-tag">billing</span></div><div class="thread-meta"><span class="author-link"><span class="avatar-xs">C</span> <strong>@CuriousUser</strong></span><span class="sep">·</span><span>3 replies</span><span class="sep">·</span><span>4 days ago</span></div></div><div class="thread-stats"><div class="stat-val">3</div><div class="stat-lbl">replies</div></div></div>
-
+        <div id="threadList" class="thread-list reveal">
+          <div style="text-align:center;padding:60px 24px;color:var(--text-dim)">Loading threads&hellip;</div>
+        </div>
+        <!-- SIDEBAR -->
+        <div class="forum-sidebar reveal">
+          <div class="sidebar-card">
+            <h4>Community Stats</h4>
+            <div class="community-stats">
+              <div class="cs-item"><div class="cs-num" id="statThreads">—</div><div class="cs-label">Threads</div></div>
+              <div class="cs-item"><div class="cs-num" id="statReplies">—</div><div class="cs-label">Replies</div></div>
+            </div>
+          </div>
+          <div class="sidebar-card">
+            <h4>Trending Tags</h4>
+            <div class="trending-tags">
+              <span class="trend-tag" onclick="setSearch('cold-email')">cold-email</span>
+              <span class="trend-tag" onclick="setSearch('case-study')">case-study</span>
+              <span class="trend-tag" onclick="setSearch('niches')">niches</span>
+              <span class="trend-tag" onclick="setSearch('outreach')">outreach</span>
+              <span class="trend-tag" onclick="setSearch('win')">wins</span>
+              <span class="trend-tag" onclick="setSearch('maps')">maps</span>
+              <span class="trend-tag" onclick="setSearch('feature')">feature-req</span>
+              <span class="trend-tag" onclick="setSearch('agency')">agency</span>
+            </div>
+          </div>
+          <div class="sidebar-card">
+            <h4>Community Rules</h4>
+            <div class="rules-list">
+              <div class="rule"><span class="rule-num">1</span> Be respectful and constructive</div>
+              <div class="rule"><span class="rule-num">2</span> No spam or self-promotion</div>
+              <div class="rule"><span class="rule-num">3</span> Share real results, not hype</div>
+              <div class="rule"><span class="rule-num">4</span> Search before posting duplicates</div>
+              <div class="rule"><span class="rule-num">5</span> Help others when you can</div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <!-- SIDEBAR -->
-      <div class="forum-sidebar reveal">
-        <div class="sidebar-card"><h4>Community Stats</h4><div class="community-stats"><div class="cs-item"><div class="cs-num">2.8k</div><div class="cs-label">Members</div></div><div class="cs-item"><div class="cs-num">142</div><div class="cs-label">Online</div></div><div class="cs-item"><div class="cs-num">1.2k</div><div class="cs-label">Threads</div></div><div class="cs-item"><div class="cs-num">8.4k</div><div class="cs-label">Replies</div></div></div></div>
-        <div class="sidebar-card"><h4>🏆 Top Contributors</h4><div class="leaderboard"><div class="leader"><span class="leader-rank gold">1</span><div class="leader-avatar">D</div><div class="leader-info"><div class="leader-name">@dan_leads</div><div class="leader-pts">847 pts · 92 posts</div></div></div><div class="leader"><span class="leader-rank gold">2</span><div class="leader-avatar">S</div><div class="leader-info"><div class="leader-name">@sophie_builds</div><div class="leader-pts">723 pts · 64 posts</div></div></div><div class="leader"><span class="leader-rank gold">3</span><div class="leader-avatar">M</div><div class="leader-info"><div class="leader-name">@outreach_mike</div><div class="leader-pts">651 pts · 58 posts</div></div></div><div class="leader"><span class="leader-rank">4</span><div class="leader-avatar">J</div><div class="leader-info"><div class="leader-name">@jack_agency</div><div class="leader-pts">589 pts · 47 posts</div></div></div><div class="leader"><span class="leader-rank">5</span><div class="leader-avatar">A</div><div class="leader-info"><div class="leader-name">@alex_closes</div><div class="leader-pts">412 pts · 35 posts</div></div></div></div></div>
-        <div class="sidebar-card"><h4>Trending Tags</h4><div class="trending-tags"><span class="trend-tag">cold-email</span><span class="trend-tag">dentists</span><span class="trend-tag">instagram</span><span class="trend-tag">case-study</span><span class="trend-tag">ai-generator</span><span class="trend-tag">maps-tips</span><span class="trend-tag">outreach</span><span class="trend-tag">pricing</span><span class="trend-tag">freelancer</span><span class="trend-tag">agency</span></div></div>
-        <div class="sidebar-card"><h4>Community Rules</h4><div class="rules-list"><div class="rule"><span class="rule-num">1</span> Be respectful and constructive</div><div class="rule"><span class="rule-num">2</span> No spam or self-promotion</div><div class="rule"><span class="rule-num">3</span> Share real results, not hype</div><div class="rule"><span class="rule-num">4</span> Search before posting duplicates</div><div class="rule"><span class="rule-num">5</span> Help others when you can</div></div></div>
-      </div>
+      <div class="pagination reveal" id="pagination" style="margin-top:28px"></div>
     </div>
-
-    <div class="pagination reveal">
-      <button class="page-btn arrow">← Prev</button><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button><button class="page-btn">4</button><button class="page-btn">...</button><button class="page-btn">24</button><button class="page-btn arrow">Next →</button>
-    </div>
-  </div>
 </section>
-
 <div class="section-divider"></div>
 
 <!-- CTA -->
@@ -363,53 +384,283 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-grid">
-    <div><div class="footer-brand">Client<span style="color:#F0EBE0">Sniper</span></div><p class="footer-brand-text">Precision lead generation for modern businesses. Scrape verified leads from Google Maps &amp; Instagram in minutes.</p><div class="footer-social"><a href="javascript:void(0)" aria-label="Twitter">𝕏</a><a href="javascript:void(0)" aria-label="LinkedIn">in</a><a href="javascript:void(0)" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a><a href="javascript:void(0)" aria-label="YouTube">▶</a></div></div>
-    <div class="footer-col"><h4>Product</h4><a href="index.html#products">Google Maps Scraper</a><a href="index.html#insta-preview">Instagram Scraper</a><a href="features.html">All Features</a><a href="payment.html">Pricing</a></div>
+    <div><div class="footer-brand">Client<span style="color:#F0EBE0">Sniper</span></div><p class="footer-brand-text">The client acquisition platform for freelancers and agencies. Find local businesses that need better websites and win more clients.</p><div class="footer-social"><a href="https://x.com/clientsniper" target="_blank" rel="noopener" aria-label="X">𝕏</a><a href="https://www.instagram.com/clientsniperofficial/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a><a href="https://www.facebook.com/profile.php?id=61588980692276" target="_blank" rel="noopener" aria-label="Facebook"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a><a href="https://www.tiktok.com/@clientsniperltd" target="_blank" rel="noopener" aria-label="TikTok"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.53V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a></div></div>
+    <div class="footer-col"><h4>Product</h4><a href="index.html#products">Lead Discovery</a><a href="index.html#outreach-preview">Outreach Tools</a><a href="features.html">All Features</a><a href="payment.html">Pricing</a></div>
     <div class="footer-col"><h4>Company</h4><a href="index.html#about">About Us</a><a href="blog.html">Blog</a><a href="forum.html">Forum</a><a href="index.html#contact">Contact</a><a href="help.html">Help Centre</a></div>
     <div class="footer-col"><h4>Legal</h4><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a><a href="cookies.html">Cookie Policy</a></div>
   </div>
-  <div class="footer-bottom"><span>&copy; 2025 ClientSniper. All rights reserved.</span><span>Built with precision. 🎯</span></div>
+  <div class="footer-bottom"><span>&copy; 2026 ClientSniper. All rights reserved.</span><span>Made in London.</span></div>
 </footer>
 
+<!-- NEW THREAD MODAL -->
+<div id="newThreadModal" style="display:none;position:fixed;inset:0;z-index:99997;background:rgba(3,5,7,.9);backdrop-filter:blur(8px);align-items:flex-start;justify-content:center;padding-top:80px;overflow-y:auto">
+  <div style="background:#0a0d10;border:1px solid #1a1e24;width:100%;max-width:660px;margin:0 auto 40px;">
+    <div style="padding:22px 28px;border-bottom:1px solid #1a1e24;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#F0EBE0;">New Thread</div>
+      <button onclick="closeNewThread()" style="width:34px;height:34px;border:1px solid #1a1e24;background:none;color:#8a8578;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">&#215;</button>
+    </div>
+    <div style="padding:28px;">
+      <div id="ntError" style="display:none;padding:10px 14px;background:rgba(220,53,69,.08);border:1px solid rgba(220,53,69,.2);color:#ef4444;font-size:.82rem;margin-bottom:16px;border-radius:4px"></div>
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;margin-bottom:7px">Your Name *</label>
+        <input id="ntAuthor" type="text" placeholder="@yourhandle or your name" maxlength="60" style="width:100%;padding:11px 14px;background:#111519;border:1px solid #1a1e24;color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;border-radius:0;transition:border-color .2s" onfocus="this.style.borderColor='#C9A465'" onblur="this.style.borderColor='#1a1e24'">
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;margin-bottom:7px">Thread Title *</label>
+        <input id="ntTitle" type="text" placeholder="A clear, specific title" maxlength="200" style="width:100%;padding:11px 14px;background:#111519;border:1px solid #1a1e24;color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='#C9A465'" onblur="this.style.borderColor='#1a1e24'">
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;margin-bottom:7px">Category *</label>
+        <select id="ntCat" style="width:100%;padding:11px 14px;background:#111519;border:1px solid #1a1e24;color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;appearance:none;cursor:pointer">
+          <option value="general">&#128172; General</option>
+          <option value="maps">&#128205; Maps Tips</option>
+          <option value="outreach">&#9993; Outreach</option>
+          <option value="strategy">&#129504; Strategy</option>
+          <option value="showcase">&#127942; Showcase / Wins</option>
+          <option value="feature">&#10024; Feature Requests</option>
+        </select>
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;margin-bottom:7px">Your Post *</label>
+        <textarea id="ntBody" rows="7" placeholder="Share your question, insight, or win in detail..." maxlength="5000" style="width:100%;padding:12px 14px;background:#111519;border:1px solid #1a1e24;color:#F0EBE0;font-size:.9rem;font-family:inherit;resize:vertical;outline:none;transition:border-color .2s;line-height:1.6" onfocus="this.style.borderColor='#C9A465'" onblur="this.style.borderColor='#1a1e24'"></textarea>
+        <div id="ntCharCount" style="text-align:right;font-size:.7rem;color:#8a8578;margin-top:4px">0 / 5000</div>
+      </div>
+      <div id="teamPassRow" style="margin-bottom:20px;display:none">
+        <label style="display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:#C9A465;margin-bottom:7px">Team Password</label>
+        <input id="ntTeamPass" type="password" placeholder="ClientSniper team only" style="width:100%;padding:11px 14px;background:#111519;border:1px solid rgba(201,164,101,.3);color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='#C9A465'" onblur="this.style.borderColor='rgba(201,164,101,.3)'">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <button onclick="document.getElementById('teamPassRow').style.display=document.getElementById('teamPassRow').style.display==='none'?'block':'none'" style="font-size:.72rem;color:#8a8578;text-decoration:underline;background:none;border:none;cursor:pointer;padding:0">ClientSniper team?</button>
+        <button id="ntSubmit" onclick="submitThread()" style="padding:12px 32px;background:#C9A465;color:#030507;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:opacity .2s">Post Thread</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
+/* ── SUPABASE ─────────────────────────── */
+const SUPABASE_URL  = 'https://jxcahqkkcnqkmjjqdnuu.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U';
+const TEAM_PASS     = 'BenFinn12!';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_ANON);
+
 /* THEME */
-function toggleTheme(){
-  const html=document.documentElement;
-  const isDark=html.getAttribute('data-theme')==='dark';
-  const newTheme=isDark?'light':'dark';
-  html.setAttribute('data-theme',newTheme);
-  localStorage.setItem('cs-theme',newTheme);
-  document.querySelectorAll('.theme-toggle').forEach(b=>b.textContent=isDark?'🌙':'☀️');
-}
+function toggleTheme(){const html=document.documentElement;const isDark=html.getAttribute('data-theme')==='dark';const newTheme=isDark?'light':'dark';html.setAttribute('data-theme',newTheme);localStorage.setItem('cs-theme',newTheme);document.querySelectorAll('.theme-toggle').forEach(b=>b.textContent=isDark?'🌙':'☀️')}
 (function(){const saved=localStorage.getItem('cs-theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelectorAll('.theme-toggle').forEach(b=>b.textContent=saved==='light'?'🌙':'☀️')}})();
 
 /* PARTICLES */
 (function(){const c=document.getElementById('particles');if(!c)return;function spawn(){const p=document.createElement('div');p.className='particle';const s=Math.random()*3+1.5,d=Math.random()*12+10,l=Math.random()*100,dl=Math.random()*8;p.style.cssText=`width:${s}px;height:${s}px;left:${l}%;bottom:-10px;animation-duration:${d}s;animation-delay:${dl}s;opacity:0`;c.appendChild(p);setTimeout(()=>{if(p.parentNode)p.remove()},(d+dl)*1000)}for(let i=0;i<12;i++)spawn();setInterval(spawn,2000)})();
 
 /* CURSOR */
-(function(){const r=document.getElementById('cursorRing'),d=document.getElementById('cursorDot');let mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;d.style.left=mx+'px';d.style.top=my+'px'});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(a)})();document.querySelectorAll('a,button,.thread,.cat-pill,.sort-tab,.trend-tag,.leader,.page-btn').forEach(el=>{el.addEventListener('mouseenter',()=>r.classList.add('hover'));el.addEventListener('mouseleave',()=>r.classList.remove('hover'))})})();
+(function(){const r=document.getElementById('cursorRing'),d=document.getElementById('cursorDot');if(!r||!d)return;let mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;d.style.left=mx+'px';d.style.top=my+'px'});(function a(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;r.style.left=rx+'px';r.style.top=ry+'px';requestAnimationFrame(a)})();document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>r.classList.add('hover'));el.addEventListener('mouseleave',()=>r.classList.remove('hover'))})})();
 
 /* NAV */
-window.addEventListener('scroll',()=>{document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>40)});
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>40));
 const burger=document.getElementById('burger'),drawer=document.getElementById('drawer');
 burger.addEventListener('click',()=>{burger.classList.toggle('open');drawer.classList.toggle('open')});
 function closeDrawer(){burger.classList.remove('open');drawer.classList.remove('open')}
 
 /* REVEAL */
-const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target)}})},{threshold:.06});
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');ro.unobserve(x.target)}})},{threshold:.06});
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
+/* ── FORUM STATE ───────────────────────── */
+let currentCat='all', currentSort='hot', currentSearch='', currentPage=1;
+const PER_PAGE=15;
+const votedThreads=JSON.parse(localStorage.getItem('cs-voted-threads')||'{}');
+function saveVoted(){localStorage.setItem('cs-voted-threads',JSON.stringify(votedThreads))}
+
+function timeAgo(iso){
+  if(!iso)return '';
+  const s=Math.floor((Date.now()-new Date(iso).getTime())/1000);
+  if(s<60)return 'just now';
+  if(s<3600)return Math.floor(s/60)+'m ago';
+  if(s<86400)return Math.floor(s/3600)+'h ago';
+  if(s<604800)return Math.floor(s/86400)+'d ago';
+  return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+}
+
+function teamBadge(){return '<span style="background:rgba(201,164,101,.12);color:#C9A465;font-size:.55rem;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;font-weight:700;border:1px solid rgba(201,164,101,.25);margin-left:6px">Team</span>'}
+
+function renderCard(t){
+  const voted=!!votedThreads[t.id];
+  const tags=(t.tags||[]).map(tag=>`<span class="thread-tag">${tag}</span>`).join('');
+  const pin=t.pinned?'<span class="pin-badge">&#128204; Pinned</span>':'';
+  const rc=t.reply_count||0;
+  return `
+  <div class="thread${t.pinned?' pinned':''}" onclick="window.location='thread.html?id=${t.id}'">
+    <div class="thread-votes">
+      <button class="vote-btn${voted?' upvoted':''}" onclick="event.stopPropagation();voteThread(event,'${t.id}',this)">&#9650;</button>
+      <div class="vote-count" id="vc-${t.id}">${t.votes||0}</div>
+      <div class="vote-label">votes</div>
+    </div>
+    <div class="thread-content">
+      ${pin?'<div class="thread-header">'+pin+'</div>':''}
+      <h3>${t.title}</h3>
+      <p>${(t.body||'').substring(0,200)}${(t.body||'').length>200?'&#8230;':''}</p>
+      ${tags?`<div class="thread-tags">${tags}</div>`:''}
+      <div class="thread-meta">
+        <span class="author-link">
+          <span class="avatar-xs">${(t.author||'?')[0].toUpperCase()}</span>
+          <strong>${t.author}</strong>${t.is_team?teamBadge():''}
+        </span>
+        <span class="sep">&#183;</span>
+        <span>${rc} ${rc===1?'reply':'replies'}</span>
+        <span class="sep">&#183;</span>
+        <span>${timeAgo(t.created_at)}</span>
+      </div>
+    </div>
+    <div class="thread-stats">
+      <div class="stat-val">${rc}</div>
+      <div class="stat-lbl">replies</div>
+    </div>
+  </div>`;
+}
+
+/* ── LOAD THREADS ──────────────────────── */
+async function loadThreads(){
+  const list=document.getElementById('threadList');
+  list.innerHTML='<div style="text-align:center;padding:40px 24px;color:var(--text-dim)">Loading&#8230;</div>';
+
+  const from=(currentPage-1)*PER_PAGE, to=from+PER_PAGE-1;
+  const src=currentSort==='hot'?'forum_threads_hot':'forum_threads';
+
+  let q=db.from(src).select('*',{count:'exact'});
+  if(currentCat!=='all') q=q.eq('category',currentCat);
+  if(currentSearch) q=q.or(`title.ilike.%${currentSearch}%,body.ilike.%${currentSearch}%`);
+  if(currentSort==='unanswered') q=q.eq('reply_count',0);
+
+  if(currentSort==='hot') q=q.order('hot_score',{ascending:false});
+  else if(currentSort==='top') q=q.order('votes',{ascending:false});
+  else q=q.order('created_at',{ascending:false});
+
+  q=q.range(from,to);
+  const {data:threads,error,count}=await q;
+
+  if(error){
+    console.error(error);
+    list.innerHTML='<div style="text-align:center;padding:40px;color:#ef4444">Error loading threads. Check console.</div>';
+    return;
+  }
+
+  // Category counts
+  const {data:catData}=await db.from('forum_threads').select('category');
+  const cats={};let total=0;
+  (catData||[]).forEach(t=>{cats[t.category]=(cats[t.category]||0)+1;total++;});
+  const cntAll=document.getElementById('cnt-all');if(cntAll)cntAll.textContent=total;
+  ['general','maps','outreach','strategy','showcase','feature'].forEach(c=>{
+    const el=document.getElementById('cnt-'+c);if(el)el.textContent=cats[c]||0;
+  });
+
+  // Stats
+  const {count:rc}=await db.from('forum_replies').select('*',{count:'exact',head:true});
+  const st=document.getElementById('statThreads');if(st)st.textContent=total;
+  const sr=document.getElementById('statReplies');if(sr)sr.textContent=rc||0;
+  const ht=document.getElementById('heroThreads');if(ht)ht.textContent=total.toLocaleString();
+  const hr=document.getElementById('heroReplies');if(hr)hr.textContent=(rc||0).toLocaleString();
+
+  if(!threads||threads.length===0){
+    list.innerHTML='<div style="text-align:center;padding:60px 24px;color:var(--text-dim)">No threads found. Be the first to post!</div>';
+  } else {
+    list.innerHTML=threads.map(renderCard).join('');
+  }
+  renderPagination(currentPage,Math.ceil((count||0)/PER_PAGE));
+}
+
+/* PAGINATION */
+function renderPagination(page,pages){
+  const el=document.getElementById('pagination');if(!el)return;
+  if(pages<=1){el.innerHTML='';return;}
+  let html=`<button class="page-btn arrow" onclick="goPage(${page-1})" ${page<=1?'disabled style="opacity:.4"':''}>&#8592; Prev</button>`;
+  const range=[];
+  for(let i=Math.max(1,page-2);i<=Math.min(pages,page+2);i++)range.push(i);
+  if(range[0]>1){html+=`<button class="page-btn" onclick="goPage(1)">1</button>`;if(range[0]>2)html+=`<span class="page-btn" style="border:none;cursor:default">&#8230;</span>`;}
+  range.forEach(i=>{html+=`<button class="page-btn${i===page?' active':''}" onclick="goPage(${i})">${i}</button>`;});
+  if(range[range.length-1]<pages){if(range[range.length-1]<pages-1)html+=`<span class="page-btn" style="border:none;cursor:default">&#8230;</span>`;html+=`<button class="page-btn" onclick="goPage(${pages})">${pages}</button>`;}
+  html+=`<button class="page-btn arrow" onclick="goPage(${page+1})" ${page>=pages?'disabled style="opacity:.4"':''}>Next &#8594;</button>`;
+  el.innerHTML=html;
+}
+function goPage(p){currentPage=p;loadThreads();window.scrollTo(0,400)}
+
+/* VOTE */
+async function voteThread(e,id,btn){
+  e.stopPropagation();
+  const direction=votedThreads[id]?'down':'up';
+  const {data,error}=await db.rpc('vote_on_thread',{p_id:id,p_delta:direction==='up'?1:-1});
+  if(error){console.error(error);return;}
+  document.getElementById('vc-'+id).textContent=data;
+  if(direction==='up'){votedThreads[id]=true;btn.classList.add('upvoted');}
+  else{delete votedThreads[id];btn.classList.remove('upvoted');}
+  saveVoted();
+}
+
+/* CATEGORY */
+document.querySelectorAll('.cat-pill').forEach(pill=>{
+  pill.addEventListener('click',()=>{
+    document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+    pill.classList.add('active');
+    currentCat=pill.dataset.cat;currentPage=1;loadThreads();
+  });
+});
+
 /* SORT */
-document.querySelectorAll('.sort-tab').forEach(tab=>{tab.addEventListener('click',()=>{document.querySelectorAll('.sort-tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active')})});
+document.querySelectorAll('.sort-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.sort-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    const map={'Hot':'hot','New':'new','Top':'top','Unanswered':'unanswered'};
+    currentSort=map[tab.textContent.trim()]||'hot';currentPage=1;loadThreads();
+  });
+});
 
-/* CATEGORY FILTER */
-document.querySelectorAll('.cat-pill').forEach(pill=>{pill.addEventListener('click',()=>{document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));pill.classList.add('active');const cat=pill.dataset.cat;document.querySelectorAll('.thread').forEach(t=>{if(cat==='all'||t.dataset.cat===cat){t.style.display='';requestAnimationFrame(()=>{t.style.opacity='1';t.style.transform='translateY(0)'})}else{t.style.opacity='0';t.style.transform='translateY(6px)';setTimeout(()=>t.style.display='none',280)}})})});
+/* SEARCH */
+let searchTimer;
+document.getElementById('forumSearch').addEventListener('input',e=>{
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(()=>{currentSearch=e.target.value.trim();currentPage=1;loadThreads();},400);
+});
+function setSearch(q){document.getElementById('forumSearch').value=q;currentSearch=q;currentPage=1;loadThreads();}
 
-/* VOTES */
-document.querySelectorAll('.vote-btn').forEach(btn=>{btn.addEventListener('click',e=>{e.stopPropagation();const el=btn.parentElement.querySelector('.vote-count');if(btn.classList.contains('upvoted')){btn.classList.remove('upvoted');el.textContent=parseInt(el.textContent)-1}else{btn.classList.add('upvoted');el.textContent=parseInt(el.textContent)+1}})});
+/* NEW THREAD MODAL */
+function openNewThread(){
+  document.getElementById('newThreadModal').style.display='flex';
+  document.body.style.overflow='hidden';
+  document.getElementById('ntAuthor').focus();
+}
+function closeNewThread(){
+  document.getElementById('newThreadModal').style.display='none';
+  document.body.style.overflow='';
+}
+document.getElementById('newThreadModal').addEventListener('click',function(e){if(e.target===this)closeNewThread();});
+document.getElementById('ntBody').addEventListener('input',function(){
+  document.getElementById('ntCharCount').textContent=this.value.length+' / 5000';
+});
 
-/* PAGES */
-document.querySelectorAll('.page-btn:not(.arrow)').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.page-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')})});
+async function submitThread(){
+  const btn=document.getElementById('ntSubmit');
+  const errEl=document.getElementById('ntError');
+  errEl.style.display='none';
+  const author=document.getElementById('ntAuthor').value.trim();
+  const title=document.getElementById('ntTitle').value.trim();
+  const body=document.getElementById('ntBody').value.trim();
+  const cat=document.getElementById('ntCat').value;
+  const tpass=document.getElementById('ntTeamPass').value.trim();
+  if(!author||!title||!body){errEl.textContent='Please fill in name, title, and post.';errEl.style.display='block';return;}
+  btn.textContent='Posting…';btn.style.opacity='.6';
+  const {data,error}=await db.from('forum_threads')
+    .insert({title,body,author,category:cat,is_team:tpass===TEAM_PASS,tags:[],votes:0,reply_count:0})
+    .select().single();
+  if(error){errEl.textContent='Error posting. Please try again.';errEl.style.display='block';btn.textContent='Post Thread';btn.style.opacity='1';return;}
+  closeNewThread();
+  ['ntAuthor','ntTitle','ntBody','ntTeamPass'].forEach(id=>document.getElementById(id).value='');
+  window.location='thread.html?id='+data.id;
+}
+
+/* INIT */
+loadThreads();
 </script>
+  <script defer data-domain="clientsniper.com" src="https://plausible.io/js/script.js"></script>
+  <script src="/cookie-consent.js"></script>
 </body>
 </html>

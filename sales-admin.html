@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Sales Reps | ClientSniper</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#030507;--surface:#0a0d10;--surface2:#111519;--surface3:#161b20;
+      --border:#1a1e24;--gold:#C9A465;--gold-dim:rgba(201,164,101,.12);
+      --text:#F0EBE0;--text-dim:#8a8578;--text-muted:#4a4840;
+      --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--amber:#f59e0b;
+      --serif:'Cormorant Garamond',Georgia,serif;
+      --sans:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;
+      --sidebar:230px;
+    }
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden}
+    a{color:inherit;text-decoration:none}
+
+    /* AUTH */
+    #authGate{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;align-items:center;justify-content:center}
+    .auth-box{background:var(--surface);border:1px solid var(--border);padding:48px;width:100%;max-width:400px}
+    .auth-logo{font-family:var(--serif);font-size:1.5rem;color:var(--gold);font-weight:700;letter-spacing:2px;margin-bottom:4px}
+    .auth-logo span{color:var(--text)}
+    .auth-sub{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:32px}
+    .auth-field{margin-bottom:16px}
+    .auth-field label{display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px}
+    .auth-field input{width:100%;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:.9rem}
+    .auth-field input:focus{outline:none;border-color:var(--gold)}
+    .auth-btn{width:100%;padding:14px;background:var(--gold);color:var(--bg);font-family:var(--sans);font-size:.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;transition:opacity .2s}
+    .auth-btn:hover{opacity:.88}
+    .auth-err{color:var(--red);font-size:.82rem;margin-top:10px;display:none}
+
+    /* LAYOUT */
+    #app{display:none;height:100vh;overflow:hidden}
+    .layout{display:grid;grid-template-columns:var(--sidebar) 1fr;height:100%}
+
+    /* SIDEBAR */
+    .sidebar{background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column}
+    .sidebar-logo{padding:24px 20px;border-bottom:1px solid var(--border)}
+    .sidebar-logo-text{font-family:var(--serif);font-size:1.1rem;color:var(--gold);font-weight:700;letter-spacing:1.5px}
+    .sidebar-logo-text span{color:var(--text)}
+    .admin-badge{font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-top:2px}
+    nav.snav{padding:12px 0;flex:1}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:.8rem;color:var(--text-dim);cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+    .nav-item:hover{color:var(--text);background:rgba(255,255,255,.02)}
+    .nav-item.active{color:var(--gold);background:var(--gold-dim);border-left-color:var(--gold)}
+    .nav-icon{font-size:.95rem;width:16px;text-align:center}
+    .sidebar-footer{padding:16px 20px;border-top:1px solid var(--border)}
+    .signout-btn{width:100%;padding:9px;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);background:none;border:1px solid var(--border);cursor:pointer;font-family:var(--sans);transition:all .2s}
+    .signout-btn:hover{border-color:var(--red);color:var(--red)}
+
+    /* MAIN */
+    .main{overflow-y:auto}
+    .page{display:none;padding:40px;min-height:100%}
+    .page.active{display:block}
+    .page-header{margin-bottom:28px}
+    .page-title{font-family:var(--serif);font-size:2rem;margin-bottom:4px}
+    .page-sub{color:var(--text-dim);font-size:.88rem}
+
+    /* STATS */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:28px}
+    .stat-card{background:var(--surface);border:1px solid var(--border);padding:20px}
+    .stat-label{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px}
+    .stat-value{font-family:var(--serif);font-size:1.9rem;color:var(--gold);font-weight:700;line-height:1}
+
+    /* TABLE */
+    .table-wrap{background:var(--surface);border:1px solid var(--border);overflow-x:auto;margin-bottom:24px}
+    table{width:100%;border-collapse:collapse;font-size:.82rem}
+    thead th{padding:12px 16px;text-align:left;font-size:.65rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border);font-weight:500;white-space:nowrap}
+    tbody td{padding:12px 16px;border-bottom:1px solid rgba(26,30,36,.5);color:var(--text);vertical-align:middle}
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover{background:rgba(255,255,255,.015)}
+    .empty-state{padding:48px;text-align:center;color:var(--text-muted);font-size:.85rem}
+    .status-pill{display:inline-block;padding:3px 10px;font-size:.62rem;letter-spacing:1px;text-transform:uppercase}
+    .pill-green{background:rgba(34,197,94,.1);color:var(--green)}
+    .pill-amber{background:rgba(245,158,11,.1);color:var(--amber)}
+    .pill-red{background:rgba(239,68,68,.1);color:var(--red)}
+    .pill-blue{background:rgba(59,130,246,.1);color:var(--blue)}
+
+    /* ACTION BTNS */
+    .act-btn{padding:5px 12px;font-size:.65rem;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;font-family:var(--sans);font-weight:600;transition:opacity .2s}
+    .act-btn:hover{opacity:.78}
+    .btn-approve{background:rgba(34,197,94,.15);color:var(--green)}
+    .btn-reject{background:rgba(239,68,68,.12);color:var(--red);margin-left:4px}
+    .btn-gold{background:var(--gold);color:var(--bg)}
+    .btn-sm{padding:7px 16px;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;font-family:var(--sans);font-weight:700;transition:opacity .2s}
+    .btn-sm:hover{opacity:.85}
+
+    /* FORM */
+    .form-card{background:var(--surface);border:1px solid var(--border);padding:28px;margin-bottom:24px}
+    .form-card h3{font-family:var(--serif);font-size:1.2rem;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+    .f-field{margin-bottom:14px}
+    .f-field label{display:block;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px}
+    .f-field input,.f-field textarea,.f-field select{width:100%;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:.87rem}
+    .f-field input:focus,.f-field textarea:focus,.f-field select:focus{outline:none;border-color:var(--gold)}
+    .f-field textarea{min-height:90px;resize:vertical}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .msg-ok{color:var(--green);font-size:.82rem;margin-bottom:10px;display:none}
+    .msg-err{color:var(--red);font-size:.82rem;margin-bottom:10px;display:none}
+
+    /* MODAL */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:center;justify-content:center}
+    .modal-backdrop.open{display:flex}
+    .modal{background:var(--surface);border:1px solid var(--border);padding:36px;width:90%;max-width:560px;max-height:80vh;overflow-y:auto}
+    .modal h3{font-family:var(--serif);font-size:1.4rem;margin-bottom:16px}
+    .modal-close{float:right;background:none;border:none;color:var(--text-dim);font-size:1.3rem;cursor:pointer;margin-top:-4px}
+    .detail-row{display:flex;gap:8px;margin-bottom:10px;font-size:.85rem}
+    .detail-label{color:var(--text-dim);min-width:120px;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;padding-top:2px}
+    .detail-value{color:var(--text);line-height:1.5;flex:1}
+  </style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<div id="authGate">
+  <div class="auth-box">
+    <div class="auth-logo">Client<span>Sniper</span></div>
+    <div class="auth-sub">Admin Panel — Sales Reps</div>
+    <div class="auth-field"><label>Email</label><input type="email" id="a-email" placeholder="admin@clientsniper.com"></div>
+    <div class="auth-field"><label>Password</label><input type="password" id="a-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="auth-btn" id="a-btn" onclick="doLogin()">Sign In →</button>
+    <div class="auth-err" id="a-err"></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="appModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3 id="modalTitle">Application</h3>
+    <div id="modalBody"></div>
+    <div style="margin-top:24px;display:flex;gap:10px" id="modalActions"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-text">Client<span>Sniper</span></div>
+        <div class="admin-badge">Admin Panel</div>
+      </div>
+      <nav class="snav">
+        <div class="nav-item active" data-page="overview"><span class="nav-icon">◈</span> Overview</div>
+        <div class="nav-item" data-page="applications"><span class="nav-icon">📋</span> Applications</div>
+        <div class="nav-item" data-page="reps"><span class="nav-icon">👥</span> Active Reps</div>
+        <div class="nav-item" data-page="commissions"><span class="nav-icon">£</span> Commissions</div>
+        <div class="nav-item" data-page="payouts"><span class="nav-icon">💸</span> Payouts</div>
+        <div class="nav-item" data-page="announcements"><span class="nav-icon">📢</span> Announcements</div>
+        <div class="nav-item" data-page="support"><span class="nav-icon">💬</span> Support Tickets</div>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="signout-btn" onclick="doSignOut()">Sign Out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+
+      <!-- OVERVIEW -->
+      <div class="page active" id="page-overview">
+        <div class="page-header">
+          <h1 class="page-title">Overview</h1>
+          <p class="page-sub">Sales rep programme at a glance.</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-label">Pending Applications</div><div class="stat-value" id="ov-apps">—</div></div>
+          <div class="stat-card"><div class="stat-label">Active Reps</div><div class="stat-value" id="ov-reps">—</div></div>
+          <div class="stat-card"><div class="stat-label">Total Customers</div><div class="stat-value" id="ov-customers">—</div></div>
+          <div class="stat-card"><div class="stat-label">Commissions Pending</div><div class="stat-value" id="ov-pending">£—</div></div>
+          <div class="stat-card"><div class="stat-label">Total Paid Out</div><div class="stat-value" id="ov-paid">£—</div></div>
+          <div class="stat-card"><div class="stat-label">Open Tickets</div><div class="stat-value" id="ov-tickets">—</div></div>
+        </div>
+      </div>
+
+      <!-- APPLICATIONS -->
+      <div class="page" id="page-applications">
+        <div class="page-header">
+          <h1 class="page-title">Applications</h1>
+          <p class="page-sub">Review and approve pending sales rep applications.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Email</th><th>Country</th><th>Applied</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="appsBody"><tr><td colspan="6" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REPS -->
+      <div class="page" id="page-reps">
+        <div class="page-header">
+          <h1 class="page-title">Active Reps</h1>
+          <p class="page-sub">All approved sales representatives.</p>
+        </div>
+        <div class="form-card" id="addRepCard">
+          <h3>Manually Add Rep</h3>
+          <p style="font-size:.82rem;color:var(--text-dim);margin-bottom:16px">When you approve an application, create their Supabase auth account first, then add them here.</p>
+          <div class="row2">
+            <div class="f-field"><label>Name</label><input type="text" id="new-name" placeholder="Full name"></div>
+            <div class="f-field"><label>Email</label><input type="email" id="new-email" placeholder="their@email.com"></div>
+          </div>
+          <div class="row2">
+            <div class="f-field"><label>Supabase User ID</label><input type="text" id="new-uid" placeholder="UUID from Supabase Auth"></div>
+            <div class="f-field"><label>Referral Code</label><input type="text" id="new-code" placeholder="CS-XXXXXX (auto-generated if blank)"></div>
+          </div>
+          <div class="msg-ok" id="addRepOk">Rep added! They can now log in to the portal.</div>
+          <div class="msg-err" id="addRepErr"></div>
+          <button class="btn-sm btn-gold" onclick="addRep()">Add Rep</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Email</th><th>Code</th><th>Tier</th><th>Customers</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="repsBody"><tr><td colspan="8" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- COMMISSIONS -->
+      <div class="page" id="page-commissions">
+        <div class="page-header">
+          <h1 class="page-title">Commissions</h1>
+          <p class="page-sub">All commission records — updated automatically via Stripe webhook.</p>
+        </div>
+        <div class="form-card">
+          <h3>Manual Commission Entry</h3>
+          <p style="font-size:.82rem;color:var(--text-dim);margin-bottom:16px">Use this to add corrections or manual referrals.</p>
+          <div class="row2">
+            <div class="f-field"><label>Rep</label><select id="mc-rep"><option value="">Select rep...</option></select></div>
+            <div class="f-field"><label>Customer Email</label><input type="email" id="mc-cemail" placeholder="customer@email.com"></div>
+          </div>
+          <div class="row2">
+            <div class="f-field"><label>Invoice Amount (£)</label><input type="number" id="mc-inv" placeholder="25.00" step="0.01"></div>
+            <div class="f-field"><label>Period</label><input type="text" id="mc-period" placeholder="Aug 2026"></div>
+          </div>
+          <div class="msg-ok" id="mcOk">Commission added.</div>
+          <div class="msg-err" id="mcErr"></div>
+          <button class="btn-sm btn-gold" onclick="addCommission()">Add Commission</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Rep</th><th>Customer</th><th>Invoice</th><th>Commission</th><th>Period</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="commsBody"><tr><td colspan="8" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAYOUTS -->
+      <div class="page" id="page-payouts">
+        <div class="page-header">
+          <h1 class="page-title">Payouts</h1>
+          <p class="page-sub">Record and manage commission payouts.</p>
+        </div>
+        <div class="form-card">
+          <h3>Record Payout</h3>
+          <div class="row2">
+            <div class="f-field"><label>Rep</label><select id="po-rep"><option value="">Select rep...</option></select></div>
+            <div class="f-field"><label>Amount (£)</label><input type="number" id="po-amt" placeholder="0.00" step="0.01"></div>
+          </div>
+          <div class="row2">
+            <div class="f-field"><label>Method</label>
+              <select id="po-method">
+                <option>Bank Transfer</option><option>PayPal</option><option>Wise</option>
+              </select>
+            </div>
+            <div class="f-field"><label>Reference</label><input type="text" id="po-ref" placeholder="Bank ref or PayPal ID"></div>
+          </div>
+          <div class="msg-ok" id="poOk">Payout recorded and rep commissions marked paid.</div>
+          <div class="msg-err" id="poErr"></div>
+          <button class="btn-sm btn-gold" onclick="recordPayout()">Record Payout</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Rep</th><th>Amount</th><th>Method</th><th>Reference</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="payoutsBody"><tr><td colspan="7" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ANNOUNCEMENTS -->
+      <div class="page" id="page-announcements">
+        <div class="page-header">
+          <h1 class="page-title">Announcements</h1>
+          <p class="page-sub">Post updates visible to all sales reps.</p>
+        </div>
+        <div class="form-card">
+          <h3>New Announcement</h3>
+          <div class="row2">
+            <div class="f-field"><label>Emoji</label><input type="text" id="ann-emoji" placeholder="📢" value="📢"></div>
+            <div class="f-field"><label>Title</label><input type="text" id="ann-title" placeholder="Announcement title"></div>
+          </div>
+          <div class="f-field"><label>Message</label><textarea id="ann-body" placeholder="Write your announcement..."></textarea></div>
+          <div class="msg-ok" id="annOk">Announcement posted!</div>
+          <div class="msg-err" id="annErr"></div>
+          <button class="btn-sm btn-gold" onclick="postAnnouncement()">Post Announcement</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Emoji</th><th>Title</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody id="annBody"><tr><td colspan="4" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SUPPORT -->
+      <div class="page" id="page-support">
+        <div class="page-header">
+          <h1 class="page-title">Support Tickets</h1>
+          <p class="page-sub">Reply to tickets and update their status.</p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Rep</th><th>Subject</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="ticketsBody"><tr><td colspan="5" class="empty-state">Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+  const SUPABASE_URL  = 'https://jxcahqkkcnqkmjjqdnuu.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U';
+  const ADMIN_EMAIL = 'clientsniper.official@gmail.com';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  let ALL_REPS = [];
+
+  async function doLogin() {
+    const btn = document.getElementById('a-btn');
+    const err = document.getElementById('a-err');
+    btn.disabled = true; err.style.display = 'none';
+    const email = document.getElementById('a-email').value.trim();
+    const pass  = document.getElementById('a-pass').value;
+    const { error, data } = await db.auth.signInWithPassword({ email, password: pass });
+    if (error) { err.textContent = error.message; err.style.display = 'block'; btn.disabled = false; return; }
+    if (data.user.email !== ADMIN_EMAIL) {
+      err.textContent = 'Access denied. Admin only.';
+      err.style.display = 'block';
+      await db.auth.signOut();
+      btn.disabled = false;
+      return;
+    }
+    initApp();
+  }
+
+  async function doSignOut() { await db.auth.signOut(); location.reload(); }
+
+  function initApp() {
+    document.getElementById('authGate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    setupNav();
+    loadOverview();
+    loadApplications();
+    loadReps();
+    loadAllCommissions();
+    loadAllPayouts();
+    loadAnnouncements();
+    loadTickets();
+  }
+
+  function setupNav() {
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        item.classList.add('active');
+        document.getElementById('page-' + item.dataset.page).classList.add('active');
+      });
+    });
+  }
+
+  async function loadOverview() {
+    const [
+      { count: appCount },
+      { count: repCount },
+      { count: custCount },
+      { data: comms },
+      { data: pays },
+      { count: tickCount },
+    ] = await Promise.all([
+      db.from('rep_applications').select('*',{count:'exact',head:true}).eq('status','pending'),
+      db.from('sales_reps').select('*',{count:'exact',head:true}).eq('status','active'),
+      db.from('referrals').select('*',{count:'exact',head:true}).eq('status','active'),
+      db.from('commissions').select('amount,status'),
+      db.from('payouts').select('amount,status'),
+      db.from('rep_support_tickets').select('*',{count:'exact',head:true}).eq('status','open'),
+    ]);
+    document.getElementById('ov-apps').textContent     = appCount ?? 0;
+    document.getElementById('ov-reps').textContent     = repCount ?? 0;
+    document.getElementById('ov-customers').textContent= custCount ?? 0;
+    const pending = (comms||[]).filter(c=>c.status==='pending').reduce((s,c)=>s+Number(c.amount),0);
+    const paid    = (pays||[]).filter(p=>p.status==='paid').reduce((s,p)=>s+Number(p.amount),0);
+    document.getElementById('ov-pending').textContent = '£'+pending.toFixed(2);
+    document.getElementById('ov-paid').textContent    = '£'+paid.toFixed(2);
+    document.getElementById('ov-tickets').textContent = tickCount ?? 0;
+  }
+
+  async function loadApplications() {
+    const { data: apps } = await db.from('rep_applications').select('*').order('applied_at',{ascending:false});
+    const tbody = document.getElementById('appsBody');
+    if (!apps?.length) { tbody.innerHTML='<tr><td colspan="6" class="empty-state">No applications yet.</td></tr>'; return; }
+    tbody.innerHTML = apps.map(a => `<tr>
+      <td>${a.name}</td>
+      <td>${a.email}</td>
+      <td>${a.country||'—'}</td>
+      <td>${fmt(a.applied_at)}</td>
+      <td><span class="status-pill ${a.status==='pending'?'pill-amber':a.status==='approved'?'pill-green':'pill-red'}">${a.status}</span></td>
+      <td>
+        <button class="act-btn" onclick="viewApp('${a.id}')">View</button>
+        ${a.status==='pending'?`<button class="act-btn btn-approve" onclick="approveApp('${a.id}','${esc(a.name)}','${a.email}')">Approve</button>
+        <button class="act-btn btn-reject" onclick="updateAppStatus('${a.id}','rejected')">Reject</button>`:''}
+      </td>
+    </tr>`).join('');
+  }
+
+  async function viewApp(id) {
+    const { data: a } = await db.from('rep_applications').select('*').eq('id',id).single();
+    if (!a) return;
+    document.getElementById('modalTitle').textContent = 'Application: ' + a.name;
+    document.getElementById('modalBody').innerHTML = `
+      <div class="detail-row"><div class="detail-label">Email</div><div class="detail-value">${a.email}</div></div>
+      <div class="detail-row"><div class="detail-label">Country</div><div class="detail-value">${a.country||'—'}</div></div>
+      <div class="detail-row"><div class="detail-label">LinkedIn</div><div class="detail-value">${a.linkedin?`<a href="${a.linkedin}" target="_blank" style="color:var(--gold)">${a.linkedin}</a>`:'—'}</div></div>
+      <div class="detail-row"><div class="detail-label">Experience</div><div class="detail-value" style="white-space:pre-wrap">${a.experience||'—'}</div></div>
+      <div class="detail-row"><div class="detail-label">Why Join</div><div class="detail-value" style="white-space:pre-wrap">${a.why_join||'—'}</div></div>
+      <div class="detail-row"><div class="detail-label">Applied</div><div class="detail-value">${fmt(a.applied_at)}</div></div>
+    `;
+    document.getElementById('modalActions').innerHTML = a.status==='pending' ? `
+      <button class="btn-sm btn-approve" onclick="approveApp('${a.id}','${esc(a.name)}','${a.email}');closeModal()">Approve</button>
+      <button class="btn-sm btn-reject" onclick="updateAppStatus('${a.id}','rejected');closeModal()">Reject</button>
+    ` : '';
+    document.getElementById('appModal').classList.add('open');
+  }
+
+  async function updateAppStatus(id, status) {
+    await db.from('rep_applications').update({status}).eq('id',id);
+    loadApplications(); loadOverview();
+  }
+
+  async function approveApp(id, name, email) {
+    await updateAppStatus(id,'approved');
+    document.getElementById('new-name').value = name;
+    document.getElementById('new-email').value = email;
+    document.querySelector('.nav-item[data-page="reps"]').click();
+    document.getElementById('addRepCard').scrollIntoView({behavior:'smooth'});
+    alert(`Application approved!\n\nNext steps:\n1. Create a Supabase Auth user for ${email} (Authentication → Users → Invite)\n2. Copy their User UUID\n3. Fill in the "Manually Add Rep" form with that UUID\n4. Click Add Rep`);
+  }
+
+  async function loadReps() {
+    const { data: reps } = await db.from('sales_reps').select('*').order('joined_at',{ascending:false});
+    ALL_REPS = reps || [];
+    updateRepSelects();
+    const { data: refs } = await db.from('referrals').select('rep_id,status');
+    const custMap = {};
+    (refs||[]).forEach(r => { if(r.status==='active') custMap[r.rep_id]=(custMap[r.rep_id]||0)+1; });
+
+    const tbody = document.getElementById('repsBody');
+    if (!reps?.length) { tbody.innerHTML='<tr><td colspan="8" class="empty-state">No reps yet.</td></tr>'; return; }
+    tbody.innerHTML = reps.map(r => `<tr>
+      <td>${r.name}</td>
+      <td>${r.email}</td>
+      <td style="font-family:monospace;color:var(--gold)">${r.referral_code}</td>
+      <td><span class="status-pill pill-amber">${r.tier}</span></td>
+      <td>${custMap[r.id]||0}</td>
+      <td>${fmt(r.joined_at)}</td>
+      <td><span class="status-pill ${r.status==='active'?'pill-green':'pill-red'}">${r.status}</span></td>
+      <td>
+        ${r.status==='active'
+          ? `<button class="act-btn btn-reject" onclick="toggleRep('${r.id}','suspended')">Suspend</button>`
+          : `<button class="act-btn btn-approve" onclick="toggleRep('${r.id}','active')">Activate</button>`}
+      </td>
+    </tr>`).join('');
+  }
+
+  async function addRep() {
+    const ok = document.getElementById('addRepOk');
+    const err = document.getElementById('addRepErr');
+    ok.style.display='none'; err.style.display='none';
+    const name  = document.getElementById('new-name').value.trim();
+    const email = document.getElementById('new-email').value.trim();
+    const uid   = document.getElementById('new-uid').value.trim();
+    const code  = document.getElementById('new-code').value.trim() || 'CS-' + Math.random().toString(36).substr(2,6).toUpperCase();
+    if (!name||!email||!uid) { err.textContent='Name, email, and User ID are required.'; err.style.display='block'; return; }
+    const { error } = await db.from('sales_reps').insert({ name, email, user_id:uid, referral_code:code });
+    if (error) { err.textContent=error.message; err.style.display='block'; }
+    else {
+      ok.textContent=`Rep added! Referral code: ${code}`;
+      ok.style.display='block';
+      document.getElementById('new-name').value='';
+      document.getElementById('new-email').value='';
+      document.getElementById('new-uid').value='';
+      document.getElementById('new-code').value='';
+      loadReps(); loadOverview();
+    }
+  }
+
+  async function toggleRep(id, status) {
+    await db.from('sales_reps').update({status}).eq('id',id);
+    loadReps();
+  }
+
+  function updateRepSelects() {
+    const opts = ALL_REPS.map(r => `<option value="${r.id}">${r.name} (${r.referral_code})</option>`).join('');
+    document.getElementById('mc-rep').innerHTML = '<option value="">Select rep...</option>' + opts;
+    document.getElementById('po-rep').innerHTML = '<option value="">Select rep...</option>' + opts;
+  }
+
+  async function loadAllCommissions() {
+    const [{ data: comms }, { data: reps }, { data: refs }] = await Promise.all([
+      db.from('commissions').select('*').order('earned_at',{ascending:false}),
+      db.from('sales_reps').select('id,name'),
+      db.from('referrals').select('id,customer_email,customer_name'),
+    ]);
+    const repMap={}, refMap={};
+    (reps||[]).forEach(r=>repMap[r.id]=r.name);
+    (refs||[]).forEach(r=>refMap[r.id]=r);
+    const tbody=document.getElementById('commsBody');
+    if (!comms?.length) { tbody.innerHTML='<tr><td colspan="8" class="empty-state">No commissions yet.</td></tr>'; return; }
+    tbody.innerHTML = comms.map(c => {
+      const ref=refMap[c.referral_id]||{};
+      return `<tr>
+        <td>${repMap[c.rep_id]||'—'}</td>
+        <td>${ref.customer_name||ref.customer_email||'—'}</td>
+        <td>£${Number(c.invoice_amount||0).toFixed(2)}</td>
+        <td>£${Number(c.amount).toFixed(2)}</td>
+        <td>${c.period||'—'}</td>
+        <td>${fmt(c.earned_at)}</td>
+        <td><span class="status-pill ${c.status==='paid'?'pill-green':'pill-amber'}">${c.status}</span></td>
+        <td>${c.status==='pending'?`<button class="act-btn btn-approve" onclick="markCommPaid('${c.id}')">Mark Paid</button>`:'—'}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  async function addCommission() {
+    const ok=document.getElementById('mcOk'), err=document.getElementById('mcErr');
+    ok.style.display='none'; err.style.display='none';
+    const rep_id  = document.getElementById('mc-rep').value;
+    const cemail  = document.getElementById('mc-cemail').value.trim();
+    const inv     = parseFloat(document.getElementById('mc-inv').value)||0;
+    const period  = document.getElementById('mc-period').value.trim();
+    if (!rep_id||!cemail||!inv) { err.textContent='Rep, customer email, and invoice amount required.'; err.style.display='block'; return; }
+    let { data: ref } = await db.from('referrals').select('id').eq('rep_id',rep_id).eq('customer_email',cemail).maybeSingle();
+    if (!ref) {
+      const { data: newRef, error: refErr } = await db.from('referrals').insert({rep_id,customer_email:cemail,monthly_value:inv}).select().single();
+      if (refErr) { err.textContent=refErr.message; err.style.display='block'; return; }
+      ref = newRef;
+    }
+    const { error } = await db.from('commissions').insert({ rep_id, referral_id:ref.id, amount:inv*0.2, invoice_amount:inv, period });
+    if (error) { err.textContent=error.message; err.style.display='block'; }
+    else { ok.style.display='block'; loadAllCommissions(); loadOverview(); }
+  }
+
+  async function markCommPaid(id) {
+    await db.from('commissions').update({status:'paid'}).eq('id',id);
+    loadAllCommissions();
+  }
+
+  async function loadAllPayouts() {
+    const [{ data: pays }, { data: reps }] = await Promise.all([
+      db.from('payouts').select('*').order('created_at',{ascending:false}),
+      db.from('sales_reps').select('id,name'),
+    ]);
+    const repMap={};
+    (reps||[]).forEach(r=>repMap[r.id]=r.name);
+    const tbody=document.getElementById('payoutsBody');
+    if (!pays?.length) { tbody.innerHTML='<tr><td colspan="7" class="empty-state">No payouts recorded yet.</td></tr>'; return; }
+    tbody.innerHTML = pays.map(p=>`<tr>
+      <td>${repMap[p.rep_id]||'—'}</td>
+      <td>£${Number(p.amount).toFixed(2)}</td>
+      <td>${p.method||'—'}</td>
+      <td style="font-family:monospace;font-size:.78rem">${p.reference||'—'}</td>
+      <td>${fmt(p.created_at)}</td>
+      <td><span class="status-pill ${p.status==='paid'?'pill-green':'pill-amber'}">${p.status}</span></td>
+      <td>${p.status!=='paid'?`<button class="act-btn btn-approve" onclick="markPayoutPaid('${p.id}','${p.rep_id}',${p.amount})">Mark Paid</button>`:'—'}</td>
+    </tr>`).join('');
+  }
+
+  async function recordPayout() {
+    const ok=document.getElementById('poOk'), err=document.getElementById('poErr');
+    ok.style.display='none'; err.style.display='none';
+    const rep_id = document.getElementById('po-rep').value;
+    const amount = parseFloat(document.getElementById('po-amt').value)||0;
+    const method = document.getElementById('po-method').value;
+    const ref    = document.getElementById('po-ref').value.trim();
+    if (!rep_id||!amount) { err.textContent='Rep and amount required.'; err.style.display='block'; return; }
+    const { error } = await db.from('payouts').insert({ rep_id, amount, method, reference:ref, status:'pending' });
+    if (error) { err.textContent=error.message; err.style.display='block'; }
+    else { ok.style.display='block'; loadAllPayouts(); loadOverview(); }
+  }
+
+  async function markPayoutPaid(id, repId, amount) {
+    await db.from('payouts').update({ status:'paid', paid_at: new Date().toISOString() }).eq('id',id);
+    await db.from('commissions').update({ status:'paid' }).eq('rep_id',repId).eq('status','pending');
+    loadAllPayouts(); loadAllCommissions(); loadOverview();
+  }
+
+  async function loadAnnouncements() {
+    const { data: anns } = await db.from('announcements').select('*').order('created_at',{ascending:false});
+    const tbody=document.getElementById('annBody');
+    if (!anns?.length) { tbody.innerHTML='<tr><td colspan="4" class="empty-state">No announcements.</td></tr>'; return; }
+    tbody.innerHTML=anns.map(a=>`<tr>
+      <td>${a.emoji||'📢'}</td>
+      <td>${a.title}</td>
+      <td>${fmt(a.created_at)}</td>
+      <td><button class="act-btn btn-reject" onclick="deleteAnn('${a.id}')">Delete</button></td>
+    </tr>`).join('');
+  }
+
+  async function postAnnouncement() {
+    const ok=document.getElementById('annOk'), err=document.getElementById('annErr');
+    ok.style.display='none'; err.style.display='none';
+    const emoji=document.getElementById('ann-emoji').value.trim()||'📢';
+    const title=document.getElementById('ann-title').value.trim();
+    const body =document.getElementById('ann-body').value.trim();
+    if (!title||!body) { err.textContent='Title and message required.'; err.style.display='block'; return; }
+    const { error }=await db.from('announcements').insert({emoji,title,body});
+    if (error) { err.textContent=error.message; err.style.display='block'; }
+    else { ok.style.display='block'; document.getElementById('ann-title').value=''; document.getElementById('ann-body').value=''; loadAnnouncements(); }
+  }
+
+  async function deleteAnn(id) {
+    if (!confirm('Delete this announcement?')) return;
+    await db.from('announcements').delete().eq('id',id);
+    loadAnnouncements();
+  }
+
+  async function loadTickets() {
+    const [{ data: tickets }, { data: reps }] = await Promise.all([
+      db.from('rep_support_tickets').select('*').order('created_at',{ascending:false}),
+      db.from('sales_reps').select('id,name,email'),
+    ]);
+    const repMap={};
+    (reps||[]).forEach(r=>repMap[r.id]={name:r.name,email:r.email});
+    const tbody=document.getElementById('ticketsBody');
+    if (!tickets?.length) { tbody.innerHTML='<tr><td colspan="5" class="empty-state">No tickets.</td></tr>'; return; }
+    tbody.innerHTML=tickets.map(t=>`<tr>
+      <td>${repMap[t.rep_id]?.name||'—'}<br><small style="color:var(--text-muted)">${repMap[t.rep_id]?.email||''}</small></td>
+      <td>${t.subject}<br><small style="color:var(--text-muted)">${t.message?.substring(0,60)}${t.message?.length>60?'...':''}</small></td>
+      <td>${fmt(t.created_at)}</td>
+      <td><span class="status-pill ${t.status==='open'?'pill-amber':'pill-green'}">${t.status}</span></td>
+      <td>${t.status==='open'?`<button class="act-btn btn-approve" onclick="closeTicket('${t.id}')">Close</button>`:'—'}</td>
+    </tr>`).join('');
+  }
+
+  async function closeTicket(id) {
+    await db.from('rep_support_tickets').update({status:'resolved'}).eq('id',id);
+    loadTickets(); loadOverview();
+  }
+
+  function closeModal() { document.getElementById('appModal').classList.remove('open'); }
+
+  function fmt(iso) {
+    if(!iso) return '—';
+    return new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  }
+
+  function esc(str) { return (str||'').replace(/'/g,"\\'"); }
+
+  db.auth.onAuthStateChange((event, session) => {
+    if (session?.user?.email === ADMIN_EMAIL) initApp();
+  });
+</script>
+</body>
+</html>
