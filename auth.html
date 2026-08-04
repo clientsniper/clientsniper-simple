@@ -36,6 +36,11 @@
 
     html { background: var(--bg); color: var(--text); font-family: var(--sans); }
 
+    /* SCROLLBAR */
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold),var(--gold-dim));border-radius:2px}
+
     body {
       min-height: 100vh;
       display: grid;
@@ -165,17 +170,22 @@
     .eye-btn {
       position: absolute;
       right: 12px;
-      top: 11px;
+      top: 9px;
       background: none;
       border: none;
       color: var(--text-muted);
       cursor: pointer;
       padding: 0;
-      font-size: 15px;
       line-height: 1;
+      display: flex;
+      align-items: center;
     }
 
     .eye-btn:hover { color: var(--text-dim); }
+    .eye-btn svg { width: 17px; height: 17px; }
+    .eye-btn .icon-eye-off { display: none; }
+    .eye-btn.showing .icon-eye { display: none; }
+    .eye-btn.showing .icon-eye-off { display: block; }
 
     .field-group input { padding-right: 40px; }
 
@@ -349,7 +359,10 @@
       <label for="login-pass">Password</label>
       <div class="field-group">
         <input id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password" required>
-        <button type="button" class="eye-btn" data-target="login-pass">👁</button>
+        <button type="button" class="eye-btn" data-target="login-pass" aria-label="Show password">
+          <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-7-11-7a18.7 18.7 0 015.06-5.94M9.9 4.24A10.4 10.4 0 0112 4c7 0 11 7 11 7a18.7 18.7 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
       </div>
 
       <a href="#" class="forgot" id="forgot-link">Forgot password?</a>
@@ -385,7 +398,10 @@
       <label for="signup-pass">Password</label>
       <div class="field-group">
         <input id="signup-pass" type="password" placeholder="Min. 8 characters" autocomplete="new-password" required minlength="8">
-        <button type="button" class="eye-btn" data-target="signup-pass">👁</button>
+        <button type="button" class="eye-btn" data-target="signup-pass" aria-label="Show password">
+          <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-7-11-7a18.7 18.7 0 015.06-5.94M9.9 4.24A10.4 10.4 0 0112 4c7 0 11 7 11 7a18.7 18.7 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
       </div>
 
       <button type="submit" class="btn-primary" id="btn-signup">Create account</button>
@@ -412,7 +428,6 @@
 
   <!-- EMAIL VERIFICATION PANEL -->
   <div class="panel" id="panel-verify">
-    <div class="verify-icon">📬</div>
     <h2>Check your inbox</h2>
     <p class="subtitle">
       We've sent a confirmation link to <strong id="verify-email-display"></strong>.
@@ -484,8 +499,10 @@
   document.querySelectorAll('.eye-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const input = document.getElementById(btn.dataset.target);
-      input.type = input.type === 'password' ? 'text' : 'password';
-      btn.textContent = input.type === 'password' ? '👁' : '🙈';
+      const showing = input.type === 'password';
+      input.type = showing ? 'text' : 'password';
+      btn.classList.toggle('showing', showing);
+      btn.setAttribute('aria-label', showing ? 'Hide password' : 'Show password');
     });
   });
 

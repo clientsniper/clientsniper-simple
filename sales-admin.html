@@ -21,15 +21,43 @@
     a{color:inherit;text-decoration:none}
 
     /* AUTH */
-    #authGate{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;align-items:center;justify-content:center}
-    .auth-box{background:var(--surface);border:1px solid var(--border);padding:48px;width:100%;max-width:400px}
-    .auth-logo{font-family:var(--serif);font-size:1.5rem;color:var(--gold);font-weight:700;letter-spacing:2px;margin-bottom:4px}
+    #authGate{
+      position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;
+      background:
+        radial-gradient(ellipse 60% 45% at 50% 0%, rgba(201,164,101,.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 100% 100%, rgba(201,164,101,.04) 0%, transparent 70%),
+        var(--bg);
+    }
+    .auth-box{
+      background:var(--surface);border:1px solid var(--border);padding:48px;width:100%;max-width:400px;
+      position:relative;box-shadow:0 24px 80px -24px rgba(0,0,0,.6),0 0 0 1px rgba(201,164,101,.03);
+      animation:authIn .5s ease-out;
+    }
+    @keyframes authIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .auth-badge{
+      width:44px;height:44px;border:1px solid rgba(201,164,101,.3);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;margin:0 auto 20px;
+      background:rgba(201,164,101,.06);color:var(--gold);
+    }
+    .auth-badge svg{width:20px;height:20px}
+    .auth-logo{font-family:var(--serif);font-size:1.5rem;color:var(--gold);font-weight:700;letter-spacing:2px;margin-bottom:4px;text-align:center}
     .auth-logo span{color:var(--text)}
-    .auth-sub{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:32px}
+    .auth-sub{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:32px;text-align:center}
+    .auth-foot{margin-top:24px;padding-top:20px;border-top:1px solid var(--border);text-align:center;font-size:.78rem;color:var(--text-muted)}
+    .auth-foot a{color:var(--gold);transition:opacity .2s}
+    .auth-foot a:hover{opacity:.8}
     .auth-field{margin-bottom:16px}
     .auth-field label{display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px}
     .auth-field input{width:100%;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:.9rem}
     .auth-field input:focus{outline:none;border-color:var(--gold)}
+    .auth-field.pass-field{position:relative}
+    .auth-field.pass-field input{padding-right:42px}
+    .eye-btn{position:absolute;right:12px;top:37px;background:none;border:none;color:var(--text-muted);cursor:pointer;padding:0;line-height:1;display:flex;align-items:center}
+    .eye-btn:hover{color:var(--text-dim)}
+    .eye-btn svg{width:17px;height:17px}
+    .eye-btn .icon-eye-off{display:none}
+    .eye-btn.showing .icon-eye{display:none}
+    .eye-btn.showing .icon-eye-off{display:block}
     .auth-btn{width:100%;padding:14px;background:var(--gold);color:var(--bg);font-family:var(--sans);font-size:.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;transition:opacity .2s}
     .auth-btn:hover{opacity:.88}
     .auth-err{color:var(--red);font-size:.82rem;margin-top:10px;display:none}
@@ -111,6 +139,32 @@
     .detail-row{display:flex;gap:8px;margin-bottom:10px;font-size:.85rem}
     .detail-label{color:var(--text-dim);min-width:120px;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;padding-top:2px}
     .detail-value{color:var(--text);line-height:1.5;flex:1}
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold),#8a6d3b);border-radius:2px}
+
+    /* MOBILE */
+    .mobile-header{display:none;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+    .hamburger{background:none;border:none;color:var(--text);font-size:1.3rem;cursor:pointer}
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:80}
+    .sidebar.mobile-open{transform:translateX(0)}
+
+    @media(max-width:768px){
+      html,body{overflow:auto}
+      #app{height:auto;overflow:auto}
+      .layout{grid-template-columns:1fr}
+      .sidebar{position:fixed;top:0;left:0;bottom:0;z-index:90;transform:translateX(-100%);transition:transform .25s}
+      .sidebar.mobile-open{transform:translateX(0)}
+      .sidebar-overlay{display:block;opacity:0;pointer-events:none;transition:opacity .25s}
+      .sidebar-overlay.visible{opacity:1;pointer-events:all}
+      .mobile-header{display:flex}
+      .main{overflow:auto;height:auto}
+      .page{padding:24px 16px}
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .row2{grid-template-columns:1fr}
+    }
   </style>
 </head>
 <body>
@@ -118,12 +172,23 @@
 <!-- AUTH GATE -->
 <div id="authGate">
   <div class="auth-box">
+    <div class="auth-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.4 8.7-8 11-4.6-2.3-8-6-8-11V5z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
+    </div>
     <div class="auth-logo">Client<span>Sniper</span></div>
     <div class="auth-sub">Admin Panel — Sales Reps</div>
     <div class="auth-field"><label>Email</label><input type="email" id="a-email" placeholder="admin@clientsniper.com"></div>
-    <div class="auth-field"><label>Password</label><input type="password" id="a-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="auth-field pass-field">
+      <label>Password</label>
+      <input type="password" id="a-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      <button type="button" class="eye-btn" data-target="a-pass" aria-label="Show password">
+        <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-7-11-7a18.7 18.7 0 015.06-5.94M9.9 4.24A10.4 10.4 0 0112 4c7 0 11 7 11 7a18.7 18.7 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+      </button>
+    </div>
     <button class="auth-btn" id="a-btn" onclick="doLogin()">Sign In →</button>
     <div class="auth-err" id="a-err"></div>
+    <div class="auth-foot">Sales rep? <a href="sales-portal.html">Go to Rep Portal →</a></div>
   </div>
 </div>
 
@@ -139,20 +204,21 @@
 
 <!-- APP -->
 <div id="app">
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
   <div class="layout">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-logo">
         <div class="sidebar-logo-text">Client<span>Sniper</span></div>
         <div class="admin-badge">Admin Panel</div>
       </div>
       <nav class="snav">
         <div class="nav-item active" data-page="overview"><span class="nav-icon">◈</span> Overview</div>
-        <div class="nav-item" data-page="applications"><span class="nav-icon">📋</span> Applications</div>
-        <div class="nav-item" data-page="reps"><span class="nav-icon">👥</span> Active Reps</div>
+        <div class="nav-item" data-page="applications">Applications</div>
+        <div class="nav-item" data-page="reps">Active Reps</div>
         <div class="nav-item" data-page="commissions"><span class="nav-icon">£</span> Commissions</div>
-        <div class="nav-item" data-page="payouts"><span class="nav-icon">💸</span> Payouts</div>
-        <div class="nav-item" data-page="announcements"><span class="nav-icon">📢</span> Announcements</div>
-        <div class="nav-item" data-page="support"><span class="nav-icon">💬</span> Support Tickets</div>
+        <div class="nav-item" data-page="payouts">Payouts</div>
+        <div class="nav-item" data-page="announcements">Announcements</div>
+        <div class="nav-item" data-page="support">Support Tickets</div>
       </nav>
       <div class="sidebar-footer">
         <button class="signout-btn" onclick="doSignOut()">Sign Out</button>
@@ -160,6 +226,11 @@
     </aside>
 
     <main class="main">
+      <div class="mobile-header" id="mobileHeader">
+        <button class="hamburger" onclick="openSidebar()">☰</button>
+        <span style="font-family:var(--serif);color:var(--gold);font-size:1.1rem;font-weight:700">ClientSniper</span>
+        <span style="width:32px"></span>
+      </div>
 
       <!-- OVERVIEW -->
       <div class="page active" id="page-overview">
@@ -199,7 +270,7 @@
         </div>
         <div class="form-card" id="addRepCard">
           <h3>Manually Add Rep</h3>
-          <p style="font-size:.82rem;color:var(--text-dim);margin-bottom:16px">When you approve an application, create their Supabase auth account first, then add them here.</p>
+          <p style="font-size:.82rem;color:var(--text-dim);margin-bottom:16px">Approving an application on the Applications tab now creates the rep's login and this record automatically. Only use this form as a manual fallback (e.g. if auto-approve fails).</p>
           <div class="row2">
             <div class="f-field"><label>Name</label><input type="text" id="new-name" placeholder="Full name"></div>
             <div class="f-field"><label>Email</label><input type="email" id="new-email" placeholder="their@email.com"></div>
@@ -290,7 +361,7 @@
         <div class="form-card">
           <h3>New Announcement</h3>
           <div class="row2">
-            <div class="f-field"><label>Emoji</label><input type="text" id="ann-emoji" placeholder="📢" value="📢"></div>
+            <div class="f-field"><label>Emoji</label><input type="text" id="ann-emoji" placeholder="" value=""></div>
             <div class="f-field"><label>Title</label><input type="text" id="ann-title" placeholder="Announcement title"></div>
           </div>
           <div class="f-field"><label>Message</label><textarea id="ann-body" placeholder="Write your announcement..."></textarea></div>
@@ -333,6 +404,16 @@
 
   let ALL_REPS = [];
 
+  document.querySelectorAll('.eye-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      const showing = input.type === 'password';
+      input.type = showing ? 'text' : 'password';
+      btn.classList.toggle('showing', showing);
+      btn.setAttribute('aria-label', showing ? 'Hide password' : 'Show password');
+    });
+  });
+
   async function doLogin() {
     const btn = document.getElementById('a-btn');
     const err = document.getElementById('a-err');
@@ -373,8 +454,18 @@
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         item.classList.add('active');
         document.getElementById('page-' + item.dataset.page).classList.add('active');
+        closeSidebar();
       });
     });
+  }
+
+  function openSidebar() {
+    document.getElementById('sidebar').classList.add('mobile-open');
+    document.getElementById('sidebarOverlay').classList.add('visible');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('mobile-open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
   }
 
   async function loadOverview() {
@@ -446,12 +537,27 @@
   }
 
   async function approveApp(id, name, email) {
-    await updateAppStatus(id,'approved');
-    document.getElementById('new-name').value = name;
-    document.getElementById('new-email').value = email;
-    document.querySelector('.nav-item[data-page="reps"]').click();
-    document.getElementById('addRepCard').scrollIntoView({behavior:'smooth'});
-    alert(`Application approved!\n\nNext steps:\n1. Create a Supabase Auth user for ${email} (Authentication → Users → Invite)\n2. Copy their User UUID\n3. Fill in the "Manually Add Rep" form with that UUID\n4. Click Add Rep`);
+    const btns = document.querySelectorAll(`[onclick*="approveApp('${id}'"]`);
+    btns.forEach(b => { b.disabled = true; b.textContent = 'Approving…'; });
+
+    const { data: { session } } = await db.auth.getSession();
+    const { data, error } = await db.functions.invoke('approve-rep', {
+      body: { applicationId: id, name, email },
+      headers: { Authorization: `Bearer ${session.access_token}` },
+    });
+
+    if (error || data?.error) {
+      alert(`Could not auto-approve: ${data?.error || error.message}\n\nFalling back to manual setup:\n1. Create a Supabase Auth user for ${email} (Authentication → Users → Invite)\n2. Copy their User UUID\n3. Fill in the "Manually Add Rep" form with that UUID\n4. Click Add Rep`);
+      await updateAppStatus(id,'approved');
+      document.getElementById('new-name').value = name;
+      document.getElementById('new-email').value = email;
+      document.querySelector('.nav-item[data-page="reps"]').click();
+      document.getElementById('addRepCard').scrollIntoView({behavior:'smooth'});
+      return;
+    }
+
+    alert(`Approved! ${name} was invited by email and can now sign in at sales-portal.html once they set a password.\n\nReferral code: ${data.referral_code}`);
+    loadApplications(); loadOverview(); loadReps();
   }
 
   async function loadReps() {
@@ -607,7 +713,7 @@
     const tbody=document.getElementById('annBody');
     if (!anns?.length) { tbody.innerHTML='<tr><td colspan="4" class="empty-state">No announcements.</td></tr>'; return; }
     tbody.innerHTML=anns.map(a=>`<tr>
-      <td>${a.emoji||'📢'}</td>
+      <td>${a.emoji||''}</td>
       <td>${a.title}</td>
       <td>${fmt(a.created_at)}</td>
       <td><button class="act-btn btn-reject" onclick="deleteAnn('${a.id}')">Delete</button></td>
@@ -617,7 +723,7 @@
   async function postAnnouncement() {
     const ok=document.getElementById('annOk'), err=document.getElementById('annErr');
     ok.style.display='none'; err.style.display='none';
-    const emoji=document.getElementById('ann-emoji').value.trim()||'📢';
+    const emoji=document.getElementById('ann-emoji').value.trim();
     const title=document.getElementById('ann-title').value.trim();
     const body =document.getElementById('ann-body').value.trim();
     if (!title||!body) { err.textContent='Title and message required.'; err.style.display='block'; return; }

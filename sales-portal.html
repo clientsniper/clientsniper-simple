@@ -18,6 +18,9 @@
       --sidebar:220px;
     }
     html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden}
+    ::-webkit-scrollbar{width:4px}
+    ::-webkit-scrollbar-track{background:var(--bg)}
+    ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold),#8a6d3b);border-radius:2px}
     a{color:inherit;text-decoration:none}
 
     /* AUTH GATE */
@@ -33,6 +36,14 @@
     .auth-field label{display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px}
     .auth-field input{width:100%;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:.9rem;transition:border-color .2s}
     .auth-field input:focus{outline:none;border-color:var(--gold)}
+    .auth-field.pass-field,.s-field.pass-field{position:relative}
+    .auth-field.pass-field input,.s-field.pass-field input{padding-right:42px}
+    .eye-btn{position:absolute;right:12px;top:37px;background:none;border:none;color:var(--text-muted);cursor:pointer;padding:0;line-height:1;display:flex;align-items:center}
+    .eye-btn:hover{color:var(--text-dim)}
+    .eye-btn svg{width:17px;height:17px}
+    .eye-btn .icon-eye-off{display:none}
+    .eye-btn.showing .icon-eye{display:none}
+    .eye-btn.showing .icon-eye-off{display:block}
     .auth-btn{width:100%;padding:14px;background:var(--gold);color:var(--bg);font-family:var(--sans);font-size:.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;margin-top:4px;transition:opacity .2s}
     .auth-btn:hover{opacity:.88}
     .auth-btn:disabled{opacity:.5;cursor:not-allowed}
@@ -183,7 +194,14 @@
     </div>
     <div id="loginForm">
       <div class="auth-field"><label>Email</label><input type="email" id="loginEmail" placeholder="you@email.com"></div>
-      <div class="auth-field"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••"></div>
+      <div class="auth-field pass-field">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="••••••••">
+        <button type="button" class="eye-btn" data-target="loginPass" aria-label="Show password">
+          <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-7-11-7a18.7 18.7 0 015.06-5.94M9.9 4.24A10.4 10.4 0 0112 4c7 0 11 7 11 7a18.7 18.7 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
+      </div>
       <button class="auth-btn" id="loginBtn" onclick="doLogin()">Sign In →</button>
       <div class="auth-err" id="loginErr"></div>
       <div class="auth-pending" id="pendingMsg">
@@ -218,14 +236,14 @@
       </div>
       <nav class="sidebar-nav">
         <div class="nav-item active" data-page="dashboard"><span class="nav-icon">◈</span> Dashboard</div>
-        <div class="nav-item" data-page="referral"><span class="nav-icon">🔗</span> Referral Centre</div>
-        <div class="nav-item" data-page="customers"><span class="nav-icon">👤</span> My Customers</div>
+        <div class="nav-item" data-page="referral">Referral Centre</div>
+        <div class="nav-item" data-page="customers">My Customers</div>
         <div class="nav-item" data-page="earnings"><span class="nav-icon">£</span> Earnings</div>
-        <div class="nav-item" data-page="sales"><span class="nav-icon">📁</span> Sales Centre</div>
-        <div class="nav-item" data-page="leaderboard"><span class="nav-icon">🏆</span> Leaderboard</div>
-        <div class="nav-item" data-page="announcements"><span class="nav-icon">📢</span> Announcements</div>
-        <div class="nav-item" data-page="support"><span class="nav-icon">💬</span> Support</div>
-        <div class="nav-item" data-page="settings"><span class="nav-icon">⚙</span> Settings</div>
+        <div class="nav-item" data-page="sales">Sales Centre</div>
+        <div class="nav-item" data-page="leaderboard">Leaderboard</div>
+        <div class="nav-item" data-page="announcements">Announcements</div>
+        <div class="nav-item" data-page="support">Support</div>
+        <div class="nav-item" data-page="settings">Settings</div>
       </nav>
       <div class="sidebar-footer">
         <button class="signout-btn" onclick="doSignOut()">Sign Out</button>
@@ -347,37 +365,31 @@
         </div>
         <div class="resources-grid">
           <div class="resource-card">
-            <div class="resource-icon">📋</div>
             <div class="resource-title">Cold Outreach Script</div>
             <div class="resource-desc">Proven DM and email script to introduce ClientSniper to freelancers and agencies.</div>
             <a id="scriptToggle" class="resource-link" onclick="toggleScript()" style="cursor:pointer">View Script →</a>
           </div>
           <div class="resource-card">
-            <div class="resource-icon">💰</div>
             <div class="resource-title">Pricing Breakdown</div>
             <div class="resource-desc">Know the plans inside out — Starter at £25/mo, Growth at £45/mo. Use this in conversations.</div>
             <a href="payment.html" target="_blank" class="resource-link">View Pricing →</a>
           </div>
           <div class="resource-card">
-            <div class="resource-icon">🎯</div>
             <div class="resource-title">Ideal Customer Profile</div>
             <div class="resource-desc">Freelancers, marketing agencies, estate agents, consultants — anyone needing B2B leads.</div>
             <a id="icpToggle" class="resource-link" onclick="toggleICP()" style="cursor:pointer">View ICP →</a>
           </div>
           <div class="resource-card">
-            <div class="resource-icon">❓</div>
             <div class="resource-title">Objection Handling</div>
             <div class="resource-desc">Common objections and how to address them confidently.</div>
             <a id="objToggle" class="resource-link" onclick="toggleObj()" style="cursor:pointer">View Guide →</a>
           </div>
           <div class="resource-card">
-            <div class="resource-icon">🔢</div>
             <div class="resource-title">Commission Calculator</div>
             <div class="resource-desc">See what you'd earn based on number of customers and plans.</div>
             <a id="calcToggle" class="resource-link" onclick="toggleCalc()" style="cursor:pointer">Open Calculator →</a>
           </div>
           <div class="resource-card">
-            <div class="resource-icon">📊</div>
             <div class="resource-title">Key Stats</div>
             <div class="resource-desc">Data points to use in conversations — lead generation results, ROI, time saved.</div>
             <a id="statsToggle" class="resource-link" onclick="toggleStats()" style="cursor:pointer">View Stats →</a>
@@ -530,7 +542,14 @@ Let me know if you have any questions — happy to walk you through it.</div>
         <div class="settings-card">
           <h3>Account</h3>
           <div class="s-field"><label>Email</label><input type="email" id="set-email" readonly style="opacity:.6;cursor:not-allowed"></div>
-          <div class="s-field"><label>New Password</label><input type="password" id="set-newpass" placeholder="Leave blank to keep current"></div>
+          <div class="s-field pass-field">
+            <label>New Password</label>
+            <input type="password" id="set-newpass" placeholder="Leave blank to keep current">
+            <button type="button" class="eye-btn" data-target="set-newpass" aria-label="Show password">
+              <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-7-11-7a18.7 18.7 0 015.06-5.94M9.9 4.24A10.4 10.4 0 0112 4c7 0 11 7 11 7a18.7 18.7 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
           <div id="pwErr" style="color:var(--red);font-size:.82rem;margin-bottom:10px;display:none"></div>
           <div id="pwOk" style="color:var(--green);font-size:.82rem;margin-bottom:10px;display:none">Password updated!</div>
           <button class="btn-primary" onclick="changePassword()">Update Password</button>
@@ -546,6 +565,16 @@ Let me know if you have any questions — happy to walk you through it.</div>
   const SUPABASE_URL  = 'https://jxcahqkkcnqkmjjqdnuu.supabase.co';
   const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U';
   const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  document.querySelectorAll('.eye-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      const showing = input.type === 'password';
+      input.type = showing ? 'text' : 'password';
+      btn.classList.toggle('showing', showing);
+      btn.setAttribute('aria-label', showing ? 'Hide password' : 'Show password');
+    });
+  });
 
   let REP = null;
 
@@ -775,7 +804,7 @@ Let me know if you have any questions — happy to walk you through it.</div>
     el.innerHTML = `<div class="announce-list">${anns.map(a => `
       <div class="announce-card">
         <div class="announce-head">
-          <div class="announce-emoji">${a.emoji || '📢'}</div>
+          <div class="announce-emoji">${a.emoji || ''}</div>
           <div class="announce-title">${a.title}</div>
           <div class="announce-date">${fmt(a.created_at)}</div>
         </div>

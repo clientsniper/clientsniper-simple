@@ -52,9 +52,18 @@ a{color:inherit;text-decoration:none}
 .footer-col a{font-size:.8rem;color:var(--text-dim);transition:color .2s}
 .footer-col a:hover{color:var(--gold)}
 .footer-bottom{max-width:1200px;margin:40px auto 0;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-dim)}
-@media(max-width:800px){.nav-links{display:none}.footer-grid{grid-template-columns:1fr 1fr}.legal-hero h1{font-size:2rem}}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
+.burger span{width:22px;height:1.5px;background:var(--text);transition:transform .3s,opacity .3s}
+.burger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+.mobile-drawer{position:fixed;inset:0;z-index:999;background:rgba(3,5,7,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.mobile-drawer.open{opacity:1;visibility:visible}
+.mobile-drawer a{font-size:1.1rem;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;transition:color .3s}
+.mobile-drawer a:hover{color:var(--gold)}
+@media(max-width:800px){.nav-links{display:none}.burger{display:flex}.footer-grid{grid-template-columns:1fr 1fr}.legal-hero h1{font-size:2rem}}
 
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#030507}::-webkit-scrollbar-thumb{background:#2a2e34;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#C9A465}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold),var(--gold-dim));border-radius:2px}
 .nav-signin{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .3s;padding:0 4px}.nav-signin:hover{color:var(--gold)}
 </style>
 <meta property="og:type" content="website">
@@ -85,7 +94,16 @@ a{color:inherit;text-decoration:none}
     <a href="https://clientsniper-zwr3.vercel.app/" class="nav-signin">Sign In</a>
     <a href="payment.html" class="nav-cta">Get Started</a>
   </div>
+  <div class="burger" id="burger"><span></span><span></span><span></span></div>
 </nav>
+<div class="mobile-drawer" id="drawer">
+  <a href="index.html#products" onclick="closeDrawer()">Products</a>
+  <a href="features.html" onclick="closeDrawer()">Features</a>
+  <a href="payment.html" onclick="closeDrawer()">Pricing</a>
+  <a href="index.html#contact" onclick="closeDrawer()">Contact</a>
+  <a href="https://clientsniper-zwr3.vercel.app/" onclick="closeDrawer()">Sign In</a>
+  <a href="payment.html" onclick="closeDrawer()">Get Started</a>
+</div>
 
 <div class="legal-hero">
   <h1>Cookie Policy</h1>
@@ -190,11 +208,16 @@ a{color:inherit;text-decoration:none}
   </div>
   <div class="footer-bottom">
     <span>&copy; 2025 ClientSniper. All rights reserved.</span>
-    <span>Built with precision. 🎯</span>
+    <span>Built with precision.</span>
   </div>
 </footer>
 
   <script defer data-domain="clientsniper.com" src="https://plausible.io/js/script.js"></script>
   <script src="/cookie-consent.js"></script>
+  <script>
+    const burger = document.getElementById('burger'), drawer = document.getElementById('drawer');
+    burger.addEventListener('click', () => { burger.classList.toggle('open'); drawer.classList.toggle('open'); });
+    function closeDrawer() { burger.classList.remove('open'); drawer.classList.remove('open'); }
+  </script>
 </body>
 </html>

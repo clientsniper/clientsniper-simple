@@ -51,7 +51,7 @@
       --shadow-md: 0 4px 20px rgba(0, 0, 0, .4);
       --shadow-lg: 0 12px 40px rgba(0, 0, 0, .5);
       --thumb-overlay: linear-gradient(180deg, transparent 50%, rgba(3, 5, 7, .6) 100%);
-      --toggle-icon: '☀️';
+      --toggle-icon: '';
       --serif: 'Cormorant Garamond', Georgia, serif;
       --sans: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
     }
@@ -84,7 +84,7 @@
       --shadow-md: 0 4px 16px rgba(0, 0, 0, .08);
       --shadow-lg: 0 12px 40px rgba(0, 0, 0, .1);
       --thumb-overlay: linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, .3) 100%);
-      --toggle-icon: '🌙';
+      --toggle-icon: '';
     }
 
     html {
@@ -161,7 +161,8 @@
       height: 6px;
       top: -4px;
       left: 50%;
-      transform: translateX(-50%)
+      transform: translateX(-50%);
+      box-shadow: 0 38px 0 0 rgba(201, 164, 101, .35)
     }
 
     .cursor-ring::after {
@@ -169,7 +170,8 @@
       height: 1px;
       left: -4px;
       top: 50%;
-      transform: translateY(-50%)
+      transform: translateY(-50%);
+      box-shadow: 38px 0 0 0 rgba(201, 164, 101, .35)
     }
 
     .cursor-dot {
@@ -1561,11 +1563,10 @@
       const newTheme = isDark ? 'light' : 'dark';
       html.setAttribute('data-theme', newTheme);
       localStorage.setItem('cs-theme', newTheme);
-      document.querySelectorAll('.theme-toggle').forEach(b => b.textContent = isDark ? '🌙' : '☀️');
     }
     (function () {
       const saved = localStorage.getItem('cs-theme');
-      if (saved) { document.documentElement.setAttribute('data-theme', saved); document.querySelectorAll('.theme-toggle').forEach(b => b.textContent = saved === 'light' ? '🌙' : '☀️') }
+      if (saved) { document.documentElement.setAttribute('data-theme', saved) }
     })();
 
     /* PARTICLES */

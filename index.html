@@ -174,7 +174,8 @@
       height: 6px;
       top: -4px;
       left: 50%;
-      transform: translateX(-50%)
+      transform: translateX(-50%);
+      box-shadow: 0 38px 0 0 rgba(201, 164, 101, .35)
     }
 
     #cr::after {
@@ -182,7 +183,8 @@
       height: 1px;
       left: -4px;
       top: 50%;
-      transform: translateY(-50%)
+      transform: translateY(-50%);
+      box-shadow: 38px 0 0 0 rgba(201, 164, 101, .35)
     }
 
     #cr.h {
@@ -335,6 +337,10 @@
 
       .burger {
         display: flex
+      }
+
+      .nav-right {
+        gap: 20px
       }
     }
 
@@ -595,7 +601,7 @@
     /* ───── HOW IT WORKS ───── */
     .steps {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 40px;
       margin-top: 48px;
       counter-reset: step
@@ -627,7 +633,13 @@
       line-height: 1.7
     }
 
-    @media(max-width:800px) {
+    @media(max-width:900px) {
+      .steps {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    @media(max-width:500px) {
       .steps {
         grid-template-columns: 1fr
       }
@@ -1442,8 +1454,8 @@
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 48px;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+      gap: 40px;
       max-width: 1200px;
       margin: 0 auto
     }
@@ -1452,7 +1464,12 @@
       font-family: var(--serif);
       font-size: 1.4rem;
       color: var(--gold);
-      margin-bottom: 16px
+      margin-bottom: 16px;
+      transition: letter-spacing .3s
+    }
+
+    .footer-brand-block:hover .footer-brand {
+      letter-spacing: .5px
     }
 
     .footer-brand-text {
@@ -1471,15 +1488,37 @@
     }
 
     .footer-col a {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       font-size: .85rem;
       color: var(--text-dim);
       margin-bottom: 10px;
-      transition: color .3s
+      transition: color .3s, transform .3s;
+      width: fit-content
     }
 
     .footer-col a:hover {
-      color: var(--gold)
+      color: var(--gold);
+      transform: translateX(3px)
+    }
+
+    .footer-col a.footer-soon {
+      cursor: default;
+      opacity: .55;
+      pointer-events: none
+    }
+
+    .soon-tag {
+      font-size: .55rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      border: 1px solid var(--gold-dim);
+      padding: 1px 6px;
+      border-radius: 3px;
+      line-height: 1.6;
+      white-space: nowrap
     }
 
     .footer-social {
@@ -1492,39 +1531,117 @@
       width: 36px;
       height: 36px;
       border: 1px solid var(--border);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: .8rem;
       color: var(--text-dim);
-      transition: border-color .3s, color .3s
+      transition: border-color .3s, color .3s, transform .3s
     }
 
     .footer-social a:hover {
       border-color: var(--gold);
-      color: var(--gold)
+      color: var(--gold);
+      transform: translateY(-3px)
+    }
+
+    /* Trust badges */
+    .footer-trust {
+      max-width: 1200px;
+      margin: 56px auto 0;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center
+    }
+
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: .72rem;
+      letter-spacing: .3px;
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, .015);
+      transition: border-color .3s, color .3s, transform .3s
+    }
+
+    .trust-badge:hover {
+      border-color: var(--gold-dim);
+      color: var(--gold);
+      transform: translateY(-2px)
     }
 
     .footer-bottom {
       max-width: 1200px;
-      margin: 40px auto 0;
+      margin: 28px auto 0;
       padding-top: 24px;
       border-top: 1px solid var(--border);
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
+      align-items: center;
+      gap: 12px;
       font-size: .75rem;
       color: var(--text-dim)
     }
 
-    @media(max-width:800px) {
+    .footer-bottom-links {
+      display: flex;
+      gap: 8px;
+      align-items: center
+    }
+
+    .footer-bottom-links a {
+      color: var(--text-dim);
+      transition: color .3s
+    }
+
+    .footer-bottom-links a:hover {
+      color: var(--gold)
+    }
+
+    .footer-bottom-links .dot {
+      color: var(--border)
+    }
+
+    @media(max-width:1024px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        row-gap: 40px
+      }
+
+      .footer-brand-block {
+        grid-column: 1 / -1
+      }
+
+      .footer-brand-text {
+        max-width: 420px
+      }
+    }
+
+    @media(max-width:640px) {
       .footer-grid {
         grid-template-columns: 1fr 1fr
       }
     }
 
-    @media(max-width:500px) {
+    @media(max-width:420px) {
       .footer-grid {
         grid-template-columns: 1fr
+      }
+    }
+
+    @media(max-width:700px) {
+      .footer-bottom {
+        justify-content: center;
+        text-align: center
       }
     }
 
@@ -2167,6 +2284,37 @@
       border-top-color: #1a1e24
     }
 
+    [data-theme="light"] .footer-bottom-links a {
+      color: #8a8578
+    }
+
+    [data-theme="light"] .footer-bottom-links a:hover {
+      color: var(--gold)
+    }
+
+    [data-theme="light"] .footer-bottom-links .dot {
+      color: #2a2f38
+    }
+
+    [data-theme="light"] .soon-tag {
+      color: #8a6d3b;
+      border-color: #8a6d3b
+    }
+
+    [data-theme="light"] .footer-trust {
+      border-top-color: #1a1e24
+    }
+
+    [data-theme="light"] .trust-badge {
+      color: #8a8578;
+      border-color: #1a1e24
+    }
+
+    [data-theme="light"] .trust-badge:hover {
+      color: var(--gold);
+      border-color: #8a6d3b
+    }
+
     /* Section dividers */
     [data-theme="light"] .section-divider {
       background: linear-gradient(90deg, transparent 5%, #DDD9D0 30%, rgba(176, 138, 48, .3) 50%, #DDD9D0 70%, transparent 95%)
@@ -2179,36 +2327,6 @@
     /* Newsletter area stays dark */
     [data-theme="light"] .newsletter-bar {
       background: linear-gradient(180deg, transparent, rgba(176, 138, 48, .06), transparent)
-    }
-  .nav-signin{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .3s;padding:0 4px}.nav-signin:hover{color:var(--gold)}
-</style>
-  <style>
-    @media(max-width:600px) {
-      #cookieConsent {
-        min-width: 0 !important;
-        max-width: 90vw !important;
-        right: 6px !important;
-        bottom: 6px !important;
-        padding: 7px 7px 7px 10px !important;
-        font-size: .85rem !important;
-        border-radius: 7px !important;
-        gap: 7px !important;
-      }
-
-      #cookieConsent>div:first-child>div[style*='font-size:1.7rem'] {
-        font-size: .95rem !important;
-        margin-right: 2px !important;
-      }
-
-      #cookieConsent button {
-        padding: 5px 10px !important;
-        font-size: .85rem !important;
-        border-radius: 4px !important;
-      }
-
-      #cookieConsent>div:first-child>div[style*='max-width:260px'] {
-        max-width: 90px !important;
-      }
     }
   .nav-signin{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);transition:color .3s;padding:0 4px}.nav-signin:hover{color:var(--gold)}
 </style>
@@ -2457,33 +2575,6 @@
     }
   </script>
 
-  <!-- ════════ COOKIE BANNER ════════ -->
-  <div id="cookieConsent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#0a0d10;border-top:1px solid #1a1e24;padding:16px 40px;">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;">
-      <p style="font-size:.85rem;color:#8a8578;line-height:1.6;margin:0;">We use cookies to improve your experience and analyse site traffic. By clicking Accept, you consent to our use of cookies. <a href="cookies.html" style="color:#C9A465;text-decoration:underline;">Cookie Policy</a></p>
-      <div style="display:flex;gap:12px;flex-shrink:0;">
-        <button id="cookieDecline" style="padding:10px 24px;border:1px solid #1a1e24;background:none;color:#8a8578;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:inherit;transition:border-color .2s,color .2s;" onmouseover="this.style.borderColor='#C9A465';this.style.color='#C9A465'" onmouseout="this.style.borderColor='#1a1e24';this.style.color='#8a8578'">Decline</button>
-        <button id="cookieAccept" style="padding:10px 24px;background:#C9A465;color:#030507;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;cursor:pointer;border:none;font-family:inherit;">Accept</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    window.addEventListener('DOMContentLoaded', function () {
-      if (!localStorage.getItem('cookieConsent')) {
-        document.getElementById('cookieConsent').style.display = 'block';
-      }
-      document.getElementById('cookieAccept').onclick = function () {
-        localStorage.setItem('cookieConsent', 'accepted');
-        document.getElementById('cookieConsent').style.display = 'none';
-      };
-      document.getElementById('cookieDecline').onclick = function () {
-        localStorage.setItem('cookieConsent', 'declined');
-        document.getElementById('cookieConsent').style.display = 'none';
-      };
-    });
-  </script>
-
   <!-- ════════ CURSOR ════════ -->
   <div id="cr"></div>
   <div id="cd"></div>
@@ -2502,12 +2593,13 @@
       <a href="payment.html">Plans</a>
       <a href="#contact">Contact</a>
       <a href="sales-apply.html">Sales Reps</a>
+      <a href="sales-portal.html" class="nav-signin">Rep Login</a>
     </div>
-    <div style="display:flex;align-items:center;gap:8px">
+    <div class="nav-right" style="display:flex;align-items:center;gap:8px">
       <a href="https://clientsniper-zwr3.vercel.app/" class="nav-signin">Sign In</a>
       <button class="nav-cta" onclick="openCheckout()">Get Started</button>
+      <div class="burger" id="burger"><span></span><span></span><span></span></div>
     </div>
-    <div class="burger" id="burger"><span></span><span></span><span></span></div>
   </nav>
   <div class="mobile-drawer" id="drawer">
     <a href="index.html" onclick="closeDrawer()">Home</a>
@@ -2516,6 +2608,7 @@
     <a href="forum.html" onclick="closeDrawer()">Forum</a>
     <a href="payment.html" onclick="closeDrawer()">Plans</a>
     <a href="sales-apply.html" onclick="closeDrawer()">Sales Reps</a>
+    <a href="sales-portal.html" onclick="closeDrawer()">Rep Login</a>
     <a href="https://clientsniper-zwr3.vercel.app/" onclick="closeDrawer()">Sign In</a>
     <a href="#contact" onclick="closeDrawer()">Contact</a>
     <button class="nav-cta" onclick="openCheckout();closeDrawer()">Get Started</button>
@@ -2551,39 +2644,33 @@
       <div class="section-tag">Everything You Need</div>
       <div class="section-title">Find Opportunities. Reach Out. Win Clients.</div>
       <p class="section-sub">Every tool you need to go from zero to booked calls — in a single platform built for freelancers and agencies.</p>
-      <div class="products-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="products-grid">
         <div class="product-card">
-          <div class="p-icon">🔍</div>
           <h3>Lead Discovery</h3>
           <p>Search any city and niche to instantly surface local businesses that need better websites. Powered by real Google Maps data.</p>
           <div class="price-tag">From £30/mo</div>
         </div>
         <div class="product-card">
-          <div class="p-icon">🌐</div>
           <h3>Website Analysis</h3>
           <p>Automatically detect missing websites, outdated designs, poor mobile experience, slow load times, and weak SEO — for every lead.</p>
           <div class="price-tag">From £30/mo</div>
         </div>
         <div class="product-card">
-          <div class="p-icon">🎯</div>
           <h3>Opportunity Score</h3>
           <p>Each lead is scored 0–100 based on website quality, mobile friendliness, SEO, social presence, and available contact info.</p>
           <div class="price-tag">From £30/mo</div>
         </div>
         <div class="product-card">
-          <div class="p-icon">📋</div>
           <h3>Pipeline Dashboard</h3>
           <p>Organise, tag and track every lead through your entire sales pipeline — from first contact to closed deal.</p>
           <div class="price-tag">Included in all plans</div>
         </div>
         <div class="product-card">
-          <div class="p-icon">✉️</div>
           <h3>Outreach Templates</h3>
           <p>AI-generated, personalised outreach messages using <code style="font-family:var(--sans);color:var(--gold);background:rgba(201,164,101,.08);padding:1px 6px">{{businessName}}</code>, <code style="font-family:var(--sans);color:var(--gold);background:rgba(201,164,101,.08);padding:1px 6px">{{city}}</code> and <code style="font-family:var(--sans);color:var(--gold);background:rgba(201,164,101,.08);padding:1px 6px">{{niche}}</code>. One click and you're ready to send.</p>
           <div class="price-tag">Included in all plans</div>
         </div>
         <div class="product-card">
-          <div class="p-icon">⚡</div>
           <h3>Smart Filters</h3>
           <p>Filter leads by: no website, outdated design, poor mobile, slow speed, weak SEO, social presence, location, and category.</p>
           <div class="price-tag">Included in all plans</div>
@@ -2602,7 +2689,7 @@
       <div class="section-tag">How It Works</div>
       <div class="section-title">Four Steps. Five Minutes.</div>
       <p class="section-sub" style="margin:0 auto">No code, no config, no learning curve. Just opportunities.</p>
-      <div class="steps" style="grid-template-columns:repeat(4,1fr)">
+      <div class="steps">
         <div class="step">
           <div class="step-num">01</div>
           <h3>Enter City &amp; Niche</h3>
@@ -2731,7 +2818,6 @@
       <div class="insta-grid">
         <div class="insta-card" style="border-color:rgba(45,189,110,.15)">
           <div class="handle" style="display:flex;align-items:center;gap:10px">
-            <span style="font-size:1.2rem">📞</span>
             Phone Outreach
           </div>
           <div class="niche" style="color:var(--maps)">Click to Call</div>
@@ -2740,7 +2826,6 @@
         </div>
         <div class="insta-card" style="border-color:rgba(45,189,110,.15)">
           <div class="handle" style="display:flex;align-items:center;gap:10px">
-            <span style="font-size:1.2rem">✉️</span>
             Email Outreach
           </div>
           <div class="niche" style="color:var(--maps)">Cold Email</div>
@@ -2749,7 +2834,6 @@
         </div>
         <div class="insta-card" style="border-color:rgba(162,89,255,.15)">
           <div class="handle" style="display:flex;align-items:center;gap:10px">
-            <span style="font-size:1.2rem">⚡</span>
             Auto Outreach
           </div>
           <div class="niche" style="color:var(--ai)">Automated</div>
@@ -2831,7 +2915,7 @@
           <div class="forum-body">
             <h4>Best niches to target for "no website" outreach in 2026?</h4>
             <p>I've been killing it with barbers and local restaurants. What niches are everyone else finding the most opportunity in?</p>
-            <div class="forum-tags"><span class="forum-tag hot">🔥 Hot</span><span class="forum-tag">Strategy</span><span class="forum-tag">Outreach</span></div>
+            <div class="forum-tags"><span class="forum-tag hot">Hot</span><span class="forum-tag">Strategy</span><span class="forum-tag">Outreach</span></div>
             <div class="forum-meta-row"><span>23 replies</span><span>·</span><span>@dan_leads</span><span>·</span><span>2h ago</span></div>
           </div>
         </div>
@@ -2843,7 +2927,7 @@
           <div class="forum-body">
             <h4>How I closed £8K in one week targeting businesses with no website</h4>
             <p>Case study — found 200 local businesses with missing or outdated websites, sent personalised cold emails, landed 4 web design clients. Full breakdown inside.</p>
-            <div class="forum-tags"><span class="forum-tag hot">🔥 Hot</span><span class="forum-tag">Case Study</span><span class="forum-tag">Outreach</span></div>
+            <div class="forum-tags"><span class="forum-tag hot">Hot</span><span class="forum-tag">Case Study</span><span class="forum-tag">Outreach</span></div>
             <div class="forum-meta-row"><span>18 replies</span><span>·</span><span>@sophie_builds</span><span>·</span><span>5h ago</span></div>
           </div>
         </div>
@@ -2867,10 +2951,10 @@
             <div class="vote-label">votes</div>
           </div>
           <div class="forum-body">
-            <h4>🎉 Just landed my biggest client — £4,200/mo retainer!</h4>
+            <h4>Just landed my biggest client — £4,200/mo retainer!</h4>
             <p>Scraped wedding photographers in Leeds, sent 50 personalised emails, got 8 replies, closed 1 big deal.
             </p>
-            <div class="forum-tags"><span class="forum-tag hot">🏆 Win</span><span class="forum-tag">Showcase</span>
+            <div class="forum-tags"><span class="forum-tag hot">Win</span><span class="forum-tag">Showcase</span>
             </div>
             <div class="forum-meta-row"><span>7
                 replies</span><span>·</span><span>@alex_closes</span><span>·</span><span>6h ago</span></div>
@@ -2891,21 +2975,18 @@
       <div class="section-tag">Who It's For</div>
       <div class="section-title">Built for People Who Close Deals</div>
       <p class="section-sub" style="margin:0 auto 48px">If you sell websites or digital services, ClientSniper turns your prospecting from guesswork into a pipeline.</p>
-      <div class="products-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="products-grid">
         <div class="product-card" style="text-align:left">
-          <div class="p-icon">💼</div>
           <h3>Freelancers</h3>
           <p>Stop spending hours hunting for clients. Search a city and niche, find businesses with no website or a broken one, and reach out before anyone else does.</p>
           <div class="price-tag" style="color:var(--maps)">Find prospects in minutes</div>
         </div>
         <div class="product-card" style="text-align:left">
-          <div class="p-icon">🖥️</div>
           <h3>Web Designers</h3>
           <p>Discover businesses that genuinely need your help — not people who are happy with what they have. Every lead is a real opportunity, pre-qualified by website quality.</p>
           <div class="price-tag" style="color:var(--ai)">Target the right businesses</div>
         </div>
         <div class="product-card" style="text-align:left">
-          <div class="p-icon">📈</div>
           <h3>Small Agencies</h3>
           <p>Scale your outreach without scaling your headcount. Filter thousands of local businesses, prioritise the best opportunities, and let your team close more clients.</p>
           <div class="price-tag" style="color:var(--gold)">Scale outreach, close more</div>
@@ -3115,28 +3196,24 @@
       <div class="contact-grid">
         <div class="contact-info">
           <div class="contact-item">
-            <div class="ci-icon">📧</div>
             <div>
               <h4>Email</h4>
               <p>clientsniper.official@gmail.com</p>
             </div>
           </div>
           <div class="contact-item">
-            <div class="ci-icon">💬</div>
             <div>
               <h4>Live Chat</h4>
               <p>Available Mon–Fri, 9am–6pm GMT</p>
             </div>
           </div>
           <div class="contact-item">
-            <div class="ci-icon">⚡</div>
             <div>
               <h4>Response Time</h4>
               <p>Usually within 2 hours during business hours</p>
             </div>
           </div>
           <div class="contact-item">
-            <div class="ci-icon">📍</div>
             <div>
               <h4>Location</h4>
               <p>London, United Kingdom</p>
@@ -3188,13 +3265,13 @@
   <!-- ════════ FOOTER ════════ -->
   <footer class="footer">
     <div class="footer-grid">
-      <div>
+      <div class="footer-brand-block">
         <div class="footer-brand">Client<span style="color:var(--text)">Sniper</span></div>
         <p class="footer-brand-text">The client acquisition platform for freelancers and agencies. Find local businesses that need better websites and reach out before anyone else does.</p>
         <div class="footer-social">
           <a href="https://x.com/clientsniper" target="_blank" rel="noopener" aria-label="X">𝕏</a>
+          <a href="https://www.linkedin.com/company/clientsniper" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM10 9h3.6v1.7h.05c.5-.95 1.75-1.95 3.6-1.95 3.85 0 4.55 2.5 4.55 5.75V21h-4v-5.5c0-1.3-.02-3-1.85-3-1.85 0-2.15 1.4-2.15 2.9V21h-4z"/></svg></a>
           <a href="https://www.instagram.com/clientsniperofficial/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg></a>
-          <a href="https://www.facebook.com/profile.php?id=61588980692276" target="_blank" rel="noopener" aria-label="Facebook"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
           <a href="https://www.tiktok.com/@clientsniperltd" target="_blank" rel="noopener" aria-label="TikTok"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.53V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>
         </div>
       </div>
@@ -3202,35 +3279,71 @@
         <h4>Product</h4>
         <a href="#products">Lead Discovery</a>
         <a href="#outreach-preview">Outreach Tools</a>
-        <a href="#who-its-for">Who It's For</a>
-        <a href="features.html">All Features</a>
+        <a href="features.html">AI Website Audits</a>
+        <a href="features.html">Features</a>
         <a href="payment.html">Pricing</a>
+        <a href="#" class="footer-soon" onclick="return false" aria-disabled="true">Integrations <span class="soon-tag">Soon</span></a>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
-        <a href="#about">About Us</a>
+        <a href="about.html">About Us</a>
         <a href="blog.html">Blog</a>
-        <a href="forum.html">Forum</a>
+        <a href="#" class="footer-soon" onclick="return false" aria-disabled="true">Careers <span class="soon-tag">Soon</span></a>
         <a href="#contact">Contact</a>
         <a href="help.html">Help Centre</a>
+        <a href="documentation.html">Documentation</a>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
         <a href="privacy.html">Privacy Policy</a>
         <a href="terms.html">Terms of Service</a>
         <a href="cookies.html">Cookie Policy</a>
+        <a href="refund-policy.html">Refund Policy</a>
+        <a href="acceptable-use.html">Acceptable Use Policy</a>
+        <a href="subscription-terms.html">Subscription Terms</a>
+        <a href="data-sources.html">Data Sources &amp; Compliance</a>
+        <a href="security-policy.html">Security Policy</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="forum.html">Feature Requests</a>
+        <a href="help.html#troubleshoot">Report a Bug</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="status.html">System Status</a>
+        <a href="#" class="footer-soon" onclick="return false" aria-disabled="true">API Documentation <span class="soon-tag">Soon</span></a>
+        <a href="#" class="footer-soon" onclick="return false" aria-disabled="true">Community <span class="soon-tag">Soon</span></a>
       </div>
     </div>
+
+    <div class="footer-trust">
+      <div class="trust-badge">Secure Payments by Stripe</div>
+      <div class="trust-badge">UK GDPR Compliant</div>
+      <div class="trust-badge">99.9% Platform Uptime</div>
+      <div class="trust-badge">SSL Encrypted</div>
+    </div>
+
     <div class="footer-bottom">
       <span>&copy; 2026 ClientSniper. All rights reserved.</span>
-      <span>Made in London.</span>
+      <div class="footer-bottom-links">
+        <a href="privacy.html">Privacy</a><span class="dot">•</span>
+        <a href="terms.html">Terms</a><span class="dot">•</span>
+        <a href="cookies.html">Cookies</a><span class="dot">•</span>
+        <a href="sales-admin.html">Admin</a>
+      </div>
+      <span>Built in the United Kingdom.</span>
     </div>
   </footer>
 
 
 
   <!-- ════════ SCRIPTS ════════ -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script>
+    const db = supabase.createClient(
+      'https://jxcahqkkcnqkmjjqdnuu.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U'
+    );
+
     /* ───── FLOATING PARTICLES ───── */
     (function () {
       const container = document.getElementById('particles');
@@ -3344,24 +3457,14 @@
       if (!name || !email || !message) return;
       btn.disabled = true; btn.textContent = 'Sending…';
       status.style.display = 'none';
-      try {
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, subject, message })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          status.style.display = 'block'; status.style.color = 'var(--maps)';
-          status.textContent = 'Message sent! We\'ll get back to you within 24 hours.';
-          document.getElementById('contactForm').reset();
-        } else {
-          status.style.display = 'block'; status.style.color = 'var(--insta2)';
-          status.textContent = data.error || 'Something went wrong. Please try again.';
-        }
-      } catch (err) {
+      const { error } = await db.from('contact_messages').insert({ name, email, subject, message });
+      if (!error) {
+        status.style.display = 'block'; status.style.color = 'var(--maps)';
+        status.textContent = 'Message sent! We\'ll get back to you within 24 hours.';
+        document.getElementById('contactForm').reset();
+      } else {
         status.style.display = 'block'; status.style.color = 'var(--insta2)';
-        status.textContent = 'Network error. Please check your connection.';
+        status.textContent = 'Something went wrong. Please try again.';
       }
       btn.disabled = false; btn.textContent = 'Send Message →';
     }
@@ -3376,17 +3479,15 @@
       if (!email) return;
       btn.disabled = true; btn.textContent = 'Subscribing…';
       status.textContent = '';
-      try {
-        const res = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-        const data = await res.json();
-        if (res.ok) {
-          status.style.color = 'var(--maps)'; status.textContent = 'You\'re subscribed! 🎯';
-          emailEl.value = '';
-        } else {
-          status.style.color = 'var(--insta2)'; status.textContent = data.error || 'Something went wrong.';
-        }
-      } catch (err) {
-        status.style.color = 'var(--insta2)'; status.textContent = 'Network error. Please try again.';
+      const { error } = await db.from('newsletter_subscribers').insert({ email });
+      if (!error) {
+        status.style.color = 'var(--maps)'; status.textContent = 'You\'re subscribed!';
+        emailEl.value = '';
+      } else if (error.code === '23505') {
+        status.style.color = 'var(--maps)'; status.textContent = 'You\'re already subscribed!';
+        emailEl.value = '';
+      } else {
+        status.style.color = 'var(--insta2)'; status.textContent = 'Something went wrong. Please try again.';
       }
       btn.disabled = false; btn.textContent = 'Subscribe';
     }

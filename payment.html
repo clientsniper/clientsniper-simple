@@ -24,10 +24,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 ul{list-style:none}
 
 /* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:#030507}
-::-webkit-scrollbar-thumb{background:#2a2e34;border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:#C9A465}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold),var(--gold-dim));border-radius:2px}
 
 /* ── CURSOR ── */
 .cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(201,164,101,.4);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s}
@@ -80,11 +79,11 @@ ul{list-style:none}
 
 /* ── PRICING GRID ── */
 .pricing-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:48px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;
   max-width:1200px;margin-left:auto;margin-right:auto;
 }
 @media(max-width:1100px){.pricing-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.pricing-grid{grid-template-columns:1fr;max-width:420px}}
+@media(max-width:640px){.pricing-grid{grid-template-columns:1fr;max-width:420px}}
 
 .price-card{
   background:var(--surface);border:1px solid var(--border);padding:40px 28px;
@@ -261,6 +260,7 @@ ul{list-style:none}
     <a href="payment.html" class="active">Plans</a>
     <a href="index.html#contact">Contact</a>
     <a href="sales-apply.html">Sales Reps</a>
+    <a href="sales-portal.html" style="font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim)">Rep Login</a>
   </div>
   <button class="nav-cta" onclick="window.location.href='auth.html'">Get Started</button>
   <div class="burger" id="burger"><span></span><span></span><span></span></div>
@@ -272,6 +272,7 @@ ul{list-style:none}
   <a href="forum.html" onclick="closeDrawer()">Forum</a>
   <a href="payment.html" onclick="closeDrawer()">Plans</a>
   <a href="sales-apply.html" onclick="closeDrawer()">Sales Reps</a>
+  <a href="sales-portal.html" onclick="closeDrawer()">Rep Login</a>
   <a href="https://clientsniper-zwr3.vercel.app/" onclick="closeDrawer()">Sign In</a>
   <a href="index.html#contact" onclick="closeDrawer()">Contact</a>
   <button class="nav-cta" onclick="window.location.href='auth.html'">Get Started</button>
@@ -295,7 +296,6 @@ ul{list-style:none}
 <!-- NEW USER BONUS BANNER -->
 <div style="max-width:1200px;margin:0 auto 0;padding:0 24px">
   <div style="background:linear-gradient(135deg,rgba(201,164,101,.08),rgba(201,164,101,.03));border:1px solid rgba(201,164,101,.25);padding:20px 32px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:0">
-    <span style="font-size:1.6rem">🎁</span>
     <div style="flex:1;min-width:180px">
       <strong style="color:var(--text);font-size:.95rem;display:block;margin-bottom:3px">New member bonus — 500 free leads</strong>
       <p style="font-size:.82rem;color:var(--text-dim)">Every new account gets 500 bonus leads credited on sign-up. No code needed, no catch.</p>
@@ -307,12 +307,11 @@ ul{list-style:none}
 <!-- PRICING CARDS -->
 <section class="section" id="plans" style="padding-top:32px">
   <div class="container reveal">
-    <div class="pricing-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="pricing-grid">
 
       <!-- STARTER (featured) -->
       <div class="price-card featured" id="cardStarter">
         <div class="card-bar bar-starter"></div>
-        <div class="plan-icon">⚡</div>
         <h3>Starter</h3>
         <p class="plan-desc">Everything you need to find and close local business clients.</p>
         <div class="original-price" id="starterOriginal"></div>
@@ -336,7 +335,6 @@ ul{list-style:none}
       <!-- GROWTH -->
       <div class="price-card" id="cardGrowth">
         <div class="card-bar bar-starter"></div>
-        <div class="plan-icon">📈</div>
         <h3>Growth</h3>
         <p class="plan-desc">For serious outreach — 3× more leads, priority support, and unlimited queries.</p>
         <div class="original-price" id="growthOriginal"></div>
@@ -361,7 +359,6 @@ ul{list-style:none}
       <!-- ENTERPRISE -->
       <div class="price-card">
         <div class="card-bar bar-enterprise"></div>
-        <div class="plan-icon">🏢</div>
         <div class="plan-badge badge-enterprise">Custom</div>
         <h3>Enterprise</h3>
         <p class="plan-desc">For agencies and teams with serious volume requirements.</p>
@@ -387,7 +384,6 @@ ul{list-style:none}
 
     <!-- CREDIT TOP-UP BANNER -->
     <div class="topup-banner reveal">
-      <div class="topup-icon">⚡</div>
       <div class="topup-text">
         <strong>Used up your monthly quota?</strong>
         <p>Simply buy extra credits — <span>1,000 more leads for £4</span>. Anytime, no plan upgrade needed. Unused extra credits roll over to next month.</p>
@@ -398,12 +394,11 @@ ul{list-style:none}
 
     <!-- STUDENT DISCOUNT NOTE -->
     <div style="max-width:1200px;margin:16px auto 0;text-align:center">
-      <p style="font-size:.82rem;color:var(--text-dim)">🎓 Student? Get <strong style="color:var(--gold)">40% off</strong> any plan. <button onclick="openStudentModal()" style="background:none;border:none;color:var(--gold);font-family:var(--sans);font-size:.82rem;cursor:pointer;text-decoration:underline;padding:0">Verify your university email →</button></p>
+      <p style="font-size:.82rem;color:var(--text-dim)">Student? Get <strong style="color:var(--gold)">40% off</strong> any plan. <button onclick="openStudentModal()" style="background:none;border:none;color:var(--gold);font-family:var(--sans);font-size:.82rem;cursor:pointer;text-decoration:underline;padding:0">Verify your university email →</button></p>
     </div>
 
     <!-- GUARANTEE -->
     <div class="guarantee reveal">
-      <div class="g-icon">🛡️</div>
       <h3>Cancel Anytime, No Questions Asked</h3>
       <p>Cancel anytime from your dashboard in one click. No minimum term, no questions asked.</p>
     </div>
@@ -639,7 +634,6 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 <div id="studentOverlay" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.8);align-items:center;justify-content:center;padding:24px">
   <div style="background:#0a0d10;border:1px solid #2a2f38;width:100%;max-width:460px;padding:40px;position:relative">
     <button onclick="closeStudentModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#8a8578;font-size:1.3rem;cursor:pointer;line-height:1">✕</button>
-    <div style="font-size:2rem;margin-bottom:12px">🎓</div>
     <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.6rem;margin-bottom:8px;color:#F0EBE0">Student Discount</h2>
     <p style="color:#8a8578;font-size:.87rem;line-height:1.6;margin-bottom:28px">Enter your university or college email and we'll send your <strong style="color:#C9A465">40% off</strong> code directly to that inbox — confirming you're a student.</p>
 
@@ -657,7 +651,6 @@ document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
     </div>
 
     <div id="studentSuccess" style="display:none;text-align:center;padding:20px 0">
-      <div style="font-size:2.5rem;margin-bottom:12px">📬</div>
       <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;color:#F0EBE0;margin-bottom:8px">Check your inbox</h3>
       <p style="color:#8a8578;font-size:.87rem;line-height:1.6">Your 40% off code is on its way to your university email. Use it at checkout on any plan.</p>
       <button onclick="closeStudentModal()" style="margin-top:20px;padding:12px 28px;background:#C9A465;color:#030507;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer">View Plans</button>

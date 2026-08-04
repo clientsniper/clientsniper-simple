@@ -58,8 +58,8 @@ ul{list-style:none}
 /* CURSOR */
 .cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(201,164,101,.4);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .25s}
 .cursor-ring::before,.cursor-ring::after{content:'';position:absolute;background:rgba(201,164,101,.35)}
-.cursor-ring::before{width:1px;height:6px;top:-4px;left:50%;transform:translateX(-50%)}
-.cursor-ring::after{width:6px;height:1px;left:-4px;top:50%;transform:translateY(-50%)}
+.cursor-ring::before{width:1px;height:6px;top:-4px;left:50%;transform:translateX(-50%);box-shadow:0 38px 0 0 rgba(201,164,101,.35)}
+.cursor-ring::after{width:6px;height:1px;left:-4px;top:50%;transform:translateY(-50%);box-shadow:38px 0 0 0 rgba(201,164,101,.35)}
 .cursor-dot{position:fixed;width:5px;height:5px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%)}
 .cursor-ring.hover{width:52px;height:52px;border-color:var(--gold)}
 @media(pointer:coarse){.cursor-ring,.cursor-dot{display:none}}
@@ -82,8 +82,12 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 .nav-links a:hover,.nav-links a.active{color:var(--gold)}
 .nav-cta{padding:10px 28px;border:1px solid var(--gold);color:var(--gold);font-size:.75rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;transition:all .3s}
 .nav-cta:hover{background:var(--gold);color:#030507;box-shadow:0 4px 20px rgba(201,164,101,.25)}
-.theme-toggle{width:38px;height:38px;border:1px solid rgba(201,164,101,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:#F0EBE0;cursor:pointer;transition:border-color .3s,transform .3s;background:rgba(255,255,255,.04);margin-left:8px}
+.theme-toggle{width:38px;height:38px;border:1px solid rgba(201,164,101,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#F0EBE0;cursor:pointer;transition:border-color .3s,transform .3s;background:rgba(255,255,255,.04);margin-left:8px}
 .theme-toggle:hover{border-color:var(--gold);transform:scale(1.08)}
+.theme-toggle svg{width:16px;height:16px}
+.theme-toggle .icon-moon{display:none}
+[data-theme="light"] .theme-toggle .icon-sun{display:none}
+[data-theme="light"] .theme-toggle .icon-moon{display:block}
 .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:1001}
 .burger span{width:24px;height:1.5px;background:#F0EBE0;transition:transform .3s,opacity .3s}
 .burger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
@@ -277,7 +281,10 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
   <div style="display:flex;align-items:center;gap:8px">
       <a href="https://clientsniper-zwr3.vercel.app/" class="nav-signin">Sign In</a>
     <a href="payment.html" class="nav-cta">Get Started</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" onclick="toggleTheme()">☀️</button>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" onclick="toggleTheme()">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
   </div>
   <div class="burger" id="burger"><span></span><span></span><span></span></div>
 </nav>
@@ -290,7 +297,10 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
     <a href="https://clientsniper-zwr3.vercel.app/" onclick="closeDrawer()">Sign In</a>
   <a href="index.html#contact" onclick="closeDrawer()">Contact</a>
   <a href="payment.html" class="nav-cta" onclick="closeDrawer()">Get Started</a>
-  <button class="theme-toggle" onclick="toggleTheme()">☀️</button>
+  <button class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+  </button>
 </div>
 
 <!-- HERO -->
@@ -310,13 +320,13 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 <section class="section" style="padding-top:0;padding-bottom:16px">
   <div class="container">
     <div class="cat-row reveal">
-      <button class="cat-pill active" data-cat="all">🔥 All <span class="cat-count" id="cnt-all">—</span></button>
-      <button class="cat-pill" data-cat="general">💬 General <span class="cat-count" id="cnt-general">—</span></button>
-      <button class="cat-pill" data-cat="maps">📍 Maps Tips <span class="cat-count" id="cnt-maps">—</span></button>
-      <button class="cat-pill" data-cat="outreach">✉️ Outreach <span class="cat-count" id="cnt-outreach">—</span></button>
-      <button class="cat-pill" data-cat="strategy">🧠 Strategy <span class="cat-count" id="cnt-strategy">—</span></button>
-      <button class="cat-pill" data-cat="showcase">🏆 Showcase <span class="cat-count" id="cnt-showcase">—</span></button>
-      <button class="cat-pill" data-cat="feature">✨ Feature Requests <span class="cat-count" id="cnt-feature">—</span></button>
+      <button class="cat-pill active" data-cat="all">All <span class="cat-count" id="cnt-all">—</span></button>
+      <button class="cat-pill" data-cat="general">General <span class="cat-count" id="cnt-general">—</span></button>
+      <button class="cat-pill" data-cat="maps">Maps Tips <span class="cat-count" id="cnt-maps">—</span></button>
+      <button class="cat-pill" data-cat="outreach">Outreach <span class="cat-count" id="cnt-outreach">—</span></button>
+      <button class="cat-pill" data-cat="strategy">Strategy <span class="cat-count" id="cnt-strategy">—</span></button>
+      <button class="cat-pill" data-cat="showcase">Showcase <span class="cat-count" id="cnt-showcase">—</span></button>
+      <button class="cat-pill" data-cat="feature">Feature Requests <span class="cat-count" id="cnt-feature">—</span></button>
     </div>
   </div>
 </section>
@@ -412,12 +422,12 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
       <div style="margin-bottom:16px">
         <label style="display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;margin-bottom:7px">Category *</label>
         <select id="ntCat" style="width:100%;padding:11px 14px;background:#111519;border:1px solid #1a1e24;color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;appearance:none;cursor:pointer">
-          <option value="general">&#128172; General</option>
-          <option value="maps">&#128205; Maps Tips</option>
-          <option value="outreach">&#9993; Outreach</option>
-          <option value="strategy">&#129504; Strategy</option>
-          <option value="showcase">&#127942; Showcase / Wins</option>
-          <option value="feature">&#10024; Feature Requests</option>
+          <option value="general">General</option>
+          <option value="maps">Maps Tips</option>
+          <option value="outreach">Outreach</option>
+          <option value="strategy">Strategy</option>
+          <option value="showcase">Showcase / Wins</option>
+          <option value="feature">Feature Requests</option>
         </select>
       </div>
       <div style="margin-bottom:16px">
@@ -446,8 +456,8 @@ const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON);
 
 /* THEME */
-function toggleTheme(){const html=document.documentElement;const isDark=html.getAttribute('data-theme')==='dark';const newTheme=isDark?'light':'dark';html.setAttribute('data-theme',newTheme);localStorage.setItem('cs-theme',newTheme);document.querySelectorAll('.theme-toggle').forEach(b=>b.textContent=isDark?'🌙':'☀️')}
-(function(){const saved=localStorage.getItem('cs-theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelectorAll('.theme-toggle').forEach(b=>b.textContent=saved==='light'?'🌙':'☀️')}})();
+function toggleTheme(){const html=document.documentElement;const isDark=html.getAttribute('data-theme')==='dark';const newTheme=isDark?'light':'dark';html.setAttribute('data-theme',newTheme);localStorage.setItem('cs-theme',newTheme)}
+(function(){const saved=localStorage.getItem('cs-theme');if(saved){document.documentElement.setAttribute('data-theme',saved)}})();
 
 /* PARTICLES */
 (function(){const c=document.getElementById('particles');if(!c)return;function spawn(){const p=document.createElement('div');p.className='particle';const s=Math.random()*3+1.5,d=Math.random()*12+10,l=Math.random()*100,dl=Math.random()*8;p.style.cssText=`width:${s}px;height:${s}px;left:${l}%;bottom:-10px;animation-duration:${d}s;animation-delay:${dl}s;opacity:0`;c.appendChild(p);setTimeout(()=>{if(p.parentNode)p.remove()},(d+dl)*1000)}for(let i=0;i<12;i++)spawn();setInterval(spawn,2000)})();
@@ -486,7 +496,7 @@ function teamBadge(){return '<span style="background:rgba(201,164,101,.12);color
 function renderCard(t){
   const voted=!!votedThreads[t.id];
   const tags=(t.tags||[]).map(tag=>`<span class="thread-tag">${tag}</span>`).join('');
-  const pin=t.pinned?'<span class="pin-badge">&#128204; Pinned</span>':'';
+  const pin=t.pinned?'<span class="pin-badge">Pinned</span>':'';
   const rc=t.reply_count||0;
   return `
   <div class="thread${t.pinned?' pinned':''}" onclick="window.location='thread.html?id=${t.id}'">

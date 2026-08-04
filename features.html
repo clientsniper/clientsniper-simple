@@ -606,6 +606,13 @@
       }
     }
 
+    @media(max-width:420px) {
+      .dd-pipeline {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+      }
+    }
+
     /* ───── COMPARISON TABLE ───── */
     .compare-table {
       margin-top: 56px;
@@ -826,7 +833,7 @@
       transform: translateY(0)
     }
   
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#030507}::-webkit-scrollbar-thumb{background:#2a2e34;border-radius:3px}::-webkit-scrollbar-thumb:hover{background:#C9A465}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--gold),var(--gold-dim));border-radius:2px}
 </style>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ClientSniper">
@@ -889,7 +896,6 @@
     <div class="container">
       <div class="feat-overview reveal">
         <div class="feat-overview-card">
-          <div class="icon">📍</div>
           <h3>Google Maps Scraper</h3>
           <p>Scrape verified business data — names, emails, phones, ratings — from any Google Maps search in any city
             worldwide.</p>
@@ -906,23 +912,19 @@
             competitor accounts.</p>
         </div>
         <div class="feat-overview-card">
-          <div class="icon">🤖</div>
           <h3>AI Website Generator</h3>
           <p>Auto-generate a professional website mockup for any lead. Show prospects what you'd build — close deals
             faster.</p>
         </div>
         <div class="feat-overview-card">
-          <div class="icon">📊</div>
           <h3>CRM &amp; Pipeline</h3>
           <p>Organize, tag and track every lead through your sales pipeline with our built-in lightweight CRM.</p>
         </div>
         <div class="feat-overview-card">
-          <div class="icon">⚡</div>
           <h3>Automation &amp; Integrations</h3>
           <p>Connect to Zapier, HubSpot, Mailchimp and more. Automate your outreach from scrape to sequence.</p>
         </div>
         <div class="feat-overview-card">
-          <div class="icon">🚀</div>
           <h3>5-Minute Setup</h3>
           <p>No code, no complex config. Pick a scraper, enter your search, and start pulling leads immediately.</p>
         </div>
@@ -1135,13 +1137,13 @@
             </div>
             <div style="padding:20px;background:var(--surface2);border-radius:8px">
               <h4 style="font-family:var(--serif);font-size:.95rem;color:var(--ai);margin-bottom:8px">Contact</h4>
-              <p style="font-size:.78rem;color:var(--text-dim);line-height:1.5">📍 14 King St · ☎ 0161 XXX · Online
+              <p style="font-size:.78rem;color:var(--text-dim);line-height:1.5">14 King St · 0161 XXX · Online
                 booking</p>
             </div>
           </div>
           <div
             style="margin-top:16px;text-align:center;padding:12px;background:rgba(162,89,255,.06);border:1px solid rgba(162,89,255,.15);border-radius:8px">
-            <span style="color:var(--ai);font-size:.75rem;letter-spacing:1px">✨ AI-GENERATED IN 4.2 SECONDS</span>
+            <span style="color:var(--ai);font-size:.75rem;letter-spacing:1px">AI-GENERATED IN 4.2 SECONDS</span>
           </div>
         </div>
       </div>
@@ -1187,7 +1189,7 @@
             <div class="mockup-dot green"></div>
             <span class="mockup-title">CRM Pipeline — This Week</span>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
+          <div class="dd-pipeline" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
             <div style="text-align:center;padding:12px 8px;background:var(--surface2);border-radius:6px">
               <div
                 style="font-size:.65rem;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">
@@ -1349,42 +1351,34 @@
         copy-pasting.</p>
       <div class="integrations-grid">
         <div class="integ-card">
-          <div class="integ-icon">🔗</div>
           <h4>Zapier</h4>
           <p>5,000+ app connections</p>
         </div>
         <div class="integ-card">
-          <div class="integ-icon">🟠</div>
           <h4>HubSpot</h4>
           <p>CRM &amp; marketing sync</p>
         </div>
         <div class="integ-card">
-          <div class="integ-icon">📧</div>
           <h4>Mailchimp</h4>
           <p>Email campaigns</p>
         </div>
         <div class="integ-card">
-          <div class="integ-icon">☁️</div>
           <h4>Salesforce</h4>
           <p>Enterprise CRM</p>
         </div>
         <div class="integ-card">
-          <div class="integ-icon">🎯</div>
           <h4>Pipedrive</h4>
           <p>Sales pipeline</p>
         </div>
         <div class="integ-card">
-          <div class="integ-icon">📊</div>
           <h4>Google Sheets</h4>
           <p>Spreadsheet sync</p>
         </div>
         <div class="integ-card">
-          <div class="integ-icon">💬</div>
           <h4>Slack</h4>
           <p>Lead notifications</p>
         </div>
         <div class="integ-card">
-          <div class="integ-icon">📨</div>
           <h4>Outlook</h4>
           <p>Email integration</p>
         </div>
@@ -1443,7 +1437,7 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; 2025 ClientSniper. All rights reserved.</span>
-      <span>Built with precision. 🎯</span>
+      <span>Built with precision.</span>
     </div>
   </footer>
 
