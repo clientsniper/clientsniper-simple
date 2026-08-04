@@ -24,14 +24,14 @@
       --gold: #C9A465;
       --gold-dim: #8a6d3b;
       --text: #F0EBE0;
-      --text-dim: #8b99ad;
-      --text-muted: #4a5260;
+      --text-dim: #a39c8c;
+      --text-muted: #6f6a5c;
       --blue: #4f9cf9;
       --red: #f87171;
       --green: #34d399;
       --serif: 'Cormorant Garamond', Georgia, serif;
       --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
-      --radius: 10px;
+      --radius: 0;
     }
 
     html { background: var(--bg); color: var(--text); font-family: var(--sans); }
@@ -47,17 +47,18 @@
       place-items: center;
       padding: 24px;
       background:
-        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,164,101,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 45% at 50% 0%, rgba(201,164,101,.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 100% 100%, rgba(201,164,101,.04) 0%, transparent 70%),
         var(--bg);
     }
 
     .card {
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px 36px;
+      padding: 48px;
+      box-shadow: 0 24px 80px -24px rgba(0,0,0,.6), 0 0 0 1px rgba(201,164,101,.03);
     }
 
     .logo {
@@ -71,29 +72,28 @@
     .logo-mark {
       width: 34px;
       height: 34px;
-      background: linear-gradient(135deg, #C9A465, #8a6d3b);
-      border-radius: 8px;
+      border: 1px solid rgba(201,164,101,.3);
+      background: rgba(201,164,101,.06);
+      border-radius: 50%;
       display: grid;
       place-items: center;
-      font-size: 16px;
-      font-weight: 700;
-      color: #030507;
-      font-family: var(--serif);
+      color: var(--gold);
     }
+    .logo-mark svg { width: 17px; height: 17px; }
 
     .logo-name {
       font-family: var(--serif);
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: 0.02em;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 2px;
     }
 
     .tab-row {
       display: flex;
       gap: 0;
       background: var(--surface2);
-      border-radius: 8px;
+      border-radius: 0;
       padding: 4px;
       margin-bottom: 28px;
     }
@@ -107,7 +107,7 @@
       font-family: var(--sans);
       font-size: 13px;
       font-weight: 600;
-      border-radius: 6px;
+      border-radius: 0;
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
     }
@@ -123,7 +123,7 @@
     h2 {
       font-family: var(--serif);
       font-size: 26px;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 6px;
     }
 
@@ -136,10 +136,10 @@
 
     label {
       display: block;
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11.2px;
+      font-weight: 400;
       color: var(--text-dim);
-      letter-spacing: 0.05em;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       margin-bottom: 6px;
     }
@@ -147,12 +147,12 @@
     input {
       width: 100%;
       background: var(--surface2);
-      border: 1px solid var(--border2);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       color: var(--text);
       font-family: var(--sans);
-      font-size: 14px;
-      padding: 11px 14px;
+      font-size: 14.4px;
+      padding: 12px 14px;
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
       margin-bottom: 16px;
@@ -189,31 +189,57 @@
 
     .field-group input { padding-right: 40px; }
 
+    .remember-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    .remember-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: normal;
+      color: var(--text-dim);
+      cursor: pointer;
+      margin-bottom: 0;
+    }
+
+    .remember-label input {
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+
     .forgot {
-      display: block;
-      text-align: right;
       font-size: 12px;
       color: var(--blue);
       text-decoration: none;
-      margin-top: -10px;
-      margin-bottom: 20px;
     }
 
     .forgot:hover { text-decoration: underline; }
 
     .btn-primary {
       width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #C9A465, #a07a3a);
-      color: #030507;
+      padding: 14px;
+      background: var(--gold);
+      color: var(--bg);
       font-family: var(--sans);
-      font-size: 14px;
+      font-size: 12.48px;
       font-weight: 700;
       border: none;
       border-radius: var(--radius);
       cursor: pointer;
       transition: opacity 0.15s, transform 0.1s;
-      letter-spacing: 0.02em;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     .btn-primary:hover { opacity: 0.9; }
@@ -334,7 +360,9 @@
 
 <div class="card">
   <a href="/" class="logo">
-    <div class="logo-mark">C</div>
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.4 8.7-8 11-4.6-2.3-8-6-8-11V5z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
+    </div>
     <span class="logo-name">ClientSniper</span>
   </a>
 
@@ -365,7 +393,13 @@
         </button>
       </div>
 
-      <a href="#" class="forgot" id="forgot-link">Forgot password?</a>
+      <div class="remember-row">
+        <label class="remember-label">
+          <input type="checkbox" id="login-remember" checked>
+          Remember me
+        </label>
+        <a href="#" class="forgot" id="forgot-link">Forgot password?</a>
+      </div>
 
       <button type="submit" class="btn-primary" id="btn-login">Sign in</button>
     </form>
@@ -460,7 +494,19 @@
   const SUPABASE_URL  = 'https://jxcahqkkcnqkmjjqdnuu.supabase.co';
   const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U';
   const { createClient } = supabase;
-  const db = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  // "Remember me": unchecked sessions live in sessionStorage (cleared on browser close)
+  const REMEMBER_KEY = 'cs_remember_me';
+  const getRememberMe = () => localStorage.getItem(REMEMBER_KEY) !== 'false';
+  const setRememberMe = (v) => localStorage.setItem(REMEMBER_KEY, v ? 'true' : 'false');
+  const rememberAwareStorage = {
+    getItem: (key) => (getRememberMe() ? localStorage : sessionStorage).getItem(key),
+    setItem: (key, value) => (getRememberMe() ? localStorage : sessionStorage).setItem(key, value),
+    removeItem: (key) => { localStorage.removeItem(key); sessionStorage.removeItem(key); },
+  };
+  const db = createClient(SUPABASE_URL, SUPABASE_ANON, {
+    auth: { storage: rememberAwareStorage, persistSession: true, autoRefreshToken: true },
+  });
 
   // ── Routing ──────────────────────────────────────────────
   const panels = {
@@ -511,6 +557,7 @@
     e.preventDefault();
     const email    = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-pass').value;
+    setRememberMe(document.getElementById('login-remember').checked);
     const btn = document.getElementById('btn-login');
     btn.disabled = true;
     btn.textContent = 'Signing in…';
@@ -548,6 +595,8 @@
 
   // ── Google OAuth ──────────────────────────────────────────
   async function googleOAuth() {
+    const rememberEl = document.getElementById('login-remember');
+    setRememberMe(rememberEl ? rememberEl.checked : true);
     const { error } = await db.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: window.location.origin + '/app' }

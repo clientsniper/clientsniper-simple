@@ -11,7 +11,7 @@
     :root{
       --bg:#030507;--surface:#0a0d10;--surface2:#111519;--surface3:#161b20;
       --border:#1a1e24;--gold:#C9A465;--gold-dim:rgba(201,164,101,.12);
-      --text:#F0EBE0;--text-dim:#8a8578;--text-muted:#4a4840;
+      --text:#F0EBE0;--text-dim:#a39c8c;--text-muted:#6f6a5c;
       --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--amber:#f59e0b;
       --serif:'Cormorant Garamond',Georgia,serif;
       --sans:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif;
@@ -58,9 +58,15 @@
     .eye-btn .icon-eye-off{display:none}
     .eye-btn.showing .icon-eye{display:none}
     .eye-btn.showing .icon-eye-off{display:block}
+    .remember-row{display:flex;align-items:center;justify-content:space-between;margin:-4px 0 20px}
+    .remember-label{display:flex;align-items:center;gap:7px;font-size:.82rem;color:var(--text-dim);cursor:pointer;margin:0}
+    .remember-label input{width:15px;height:15px;margin:0;accent-color:var(--gold);cursor:pointer}
+    .forgot-link{font-size:.78rem;color:var(--blue);transition:opacity .2s}
+    .forgot-link:hover{opacity:.8}
     .auth-btn{width:100%;padding:14px;background:var(--gold);color:var(--bg);font-family:var(--sans);font-size:.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;transition:opacity .2s}
     .auth-btn:hover{opacity:.88}
     .auth-err{color:var(--red);font-size:.82rem;margin-top:10px;display:none}
+    .auth-ok{color:var(--green);font-size:.82rem;margin-top:10px;display:none}
 
     /* LAYOUT */
     #app{display:none;height:100vh;overflow:hidden}
@@ -176,19 +182,34 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.4 8.7-8 11-4.6-2.3-8-6-8-11V5z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
     </div>
     <div class="auth-logo">Client<span>Sniper</span></div>
-    <div class="auth-sub">Admin Panel — Sales Reps</div>
-    <div class="auth-field"><label>Email</label><input type="email" id="a-email" placeholder="admin@clientsniper.com"></div>
-    <div class="auth-field pass-field">
-      <label>Password</label>
-      <input type="password" id="a-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-      <button type="button" class="eye-btn" data-target="a-pass" aria-label="Show password">
-        <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
-        <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-7-11-7a18.7 18.7 0 015.06-5.94M9.9 4.24A10.4 10.4 0 0112 4c7 0 11 7 11 7a18.7 18.7 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-      </button>
+    <div class="auth-sub" id="authSub">Admin Panel — Sales Reps</div>
+
+    <div id="loginPanel">
+      <div class="auth-field"><label>Email</label><input type="email" id="a-email" placeholder="admin@clientsniper.com"></div>
+      <div class="auth-field pass-field">
+        <label>Password</label>
+        <input type="password" id="a-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+        <button type="button" class="eye-btn" data-target="a-pass" aria-label="Show password">
+          <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-7-11-7a18.7 18.7 0 015.06-5.94M9.9 4.24A10.4 10.4 0 0112 4c7 0 11 7 11 7a18.7 18.7 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
+      </div>
+      <div class="remember-row">
+        <label class="remember-label"><input type="checkbox" id="a-remember" checked> Remember me</label>
+        <a href="#" class="forgot-link" id="forgotLink">Forgot password?</a>
+      </div>
+      <button class="auth-btn" id="a-btn" onclick="doLogin()">Sign In →</button>
+      <div class="auth-err" id="a-err"></div>
+      <div class="auth-foot">Sales rep? <a href="sales-portal.html">Go to Rep Portal →</a></div>
     </div>
-    <button class="auth-btn" id="a-btn" onclick="doLogin()">Sign In →</button>
-    <div class="auth-err" id="a-err"></div>
-    <div class="auth-foot">Sales rep? <a href="sales-portal.html">Go to Rep Portal →</a></div>
+
+    <div id="resetPanel" style="display:none">
+      <div class="auth-field"><label>Email</label><input type="email" id="r-email" placeholder="admin@clientsniper.com" onkeydown="if(event.key==='Enter')doReset()"></div>
+      <button class="auth-btn" id="r-btn" onclick="doReset()">Send Reset Link →</button>
+      <div class="auth-err" id="r-err"></div>
+      <div class="auth-ok" id="r-ok">Check your email for a password reset link.</div>
+      <div class="auth-foot"><a href="#" id="backToLogin">← Back to sign in</a></div>
+    </div>
   </div>
 </div>
 
@@ -400,7 +421,19 @@
   const SUPABASE_URL  = 'https://jxcahqkkcnqkmjjqdnuu.supabase.co';
   const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U';
   const ADMIN_EMAIL = 'clientsniper.official@gmail.com';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+  // "Remember me": unchecked sessions live in sessionStorage (cleared on browser close)
+  const REMEMBER_KEY = 'cs_remember_me';
+  const getRememberMe = () => localStorage.getItem(REMEMBER_KEY) !== 'false';
+  const setRememberMe = (v) => localStorage.setItem(REMEMBER_KEY, v ? 'true' : 'false');
+  const rememberAwareStorage = {
+    getItem: (key) => (getRememberMe() ? localStorage : sessionStorage).getItem(key),
+    setItem: (key, value) => (getRememberMe() ? localStorage : sessionStorage).setItem(key, value),
+    removeItem: (key) => { localStorage.removeItem(key); sessionStorage.removeItem(key); },
+  };
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+    auth: { storage: rememberAwareStorage, persistSession: true, autoRefreshToken: true },
+  });
 
   let ALL_REPS = [];
 
@@ -420,6 +453,7 @@
     btn.disabled = true; err.style.display = 'none';
     const email = document.getElementById('a-email').value.trim();
     const pass  = document.getElementById('a-pass').value;
+    setRememberMe(document.getElementById('a-remember').checked);
     const { error, data } = await db.auth.signInWithPassword({ email, password: pass });
     if (error) { err.textContent = error.message; err.style.display = 'block'; btn.disabled = false; return; }
     if (data.user.email !== ADMIN_EMAIL) {
@@ -433,6 +467,37 @@
   }
 
   async function doSignOut() { await db.auth.signOut(); location.reload(); }
+
+  document.getElementById('forgotLink').addEventListener('click', e => {
+    e.preventDefault();
+    document.getElementById('loginPanel').style.display = 'none';
+    document.getElementById('resetPanel').style.display = 'block';
+    document.getElementById('authSub').textContent = 'Reset your password';
+    document.getElementById('r-email').value = document.getElementById('a-email').value;
+  });
+
+  document.getElementById('backToLogin').addEventListener('click', e => {
+    e.preventDefault();
+    document.getElementById('resetPanel').style.display = 'none';
+    document.getElementById('loginPanel').style.display = 'block';
+    document.getElementById('authSub').textContent = 'Admin Panel — Sales Reps';
+    document.getElementById('r-err').style.display = 'none';
+    document.getElementById('r-ok').style.display = 'none';
+  });
+
+  async function doReset() {
+    const btn = document.getElementById('r-btn');
+    const err = document.getElementById('r-err');
+    const ok  = document.getElementById('r-ok');
+    err.style.display = 'none'; ok.style.display = 'none';
+    const email = document.getElementById('r-email').value.trim();
+    if (!email) { err.textContent = 'Please enter your email.'; err.style.display = 'block'; return; }
+    btn.disabled = true;
+    const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/sales-admin.html' });
+    btn.disabled = false;
+    if (error) { err.textContent = error.message; err.style.display = 'block'; return; }
+    ok.style.display = 'block';
+  }
 
   function initApp() {
     document.getElementById('authGate').style.display = 'none';
