@@ -435,12 +435,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
         <textarea id="ntBody" rows="7" placeholder="Share your question, insight, or win in detail..." maxlength="5000" style="width:100%;padding:12px 14px;background:#111519;border:1px solid #1a1e24;color:#F0EBE0;font-size:.9rem;font-family:inherit;resize:vertical;outline:none;transition:border-color .2s;line-height:1.6" onfocus="this.style.borderColor='#C9A465'" onblur="this.style.borderColor='#1a1e24'"></textarea>
         <div id="ntCharCount" style="text-align:right;font-size:.7rem;color:#8a8578;margin-top:4px">0 / 5000</div>
       </div>
-      <div id="teamPassRow" style="margin-bottom:20px;display:none">
-        <label style="display:block;font-size:.7rem;letter-spacing:1.5px;text-transform:uppercase;color:#C9A465;margin-bottom:7px">Team Password</label>
-        <input id="ntTeamPass" type="password" placeholder="ClientSniper team only" style="width:100%;padding:11px 14px;background:#111519;border:1px solid rgba(201,164,101,.3);color:#F0EBE0;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='#C9A465'" onblur="this.style.borderColor='rgba(201,164,101,.3)'">
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-        <button onclick="document.getElementById('teamPassRow').style.display=document.getElementById('teamPassRow').style.display==='none'?'block':'none'" style="font-size:.72rem;color:#8a8578;text-decoration:underline;background:none;border:none;cursor:pointer;padding:0">ClientSniper team?</button>
+      <div style="display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:12px">
         <button id="ntSubmit" onclick="submitThread()" style="padding:12px 32px;background:#C9A465;color:#030507;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:opacity .2s">Post Thread</button>
       </div>
     </div>
@@ -451,7 +446,6 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 /* ── SUPABASE ─────────────────────────── */
 const SUPABASE_URL  = 'https://jxcahqkkcnqkmjjqdnuu.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U';
-const TEAM_PASS     = 'BenFinn12!';
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON);
 
@@ -493,11 +487,14 @@ function timeAgo(iso){
 
 function teamBadge(){return '<span style="background:rgba(201,164,101,.12);color:#C9A465;font-size:.55rem;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:100px;font-weight:700;border:1px solid rgba(201,164,101,.25);margin-left:6px">Team</span>'}
 
+function escHtml(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
 function renderCard(t){
   const voted=!!votedThreads[t.id];
-  const tags=(t.tags||[]).map(tag=>`<span class="thread-tag">${tag}</span>`).join('');
+  const tags=(t.tags||[]).map(tag=>`<span class="thread-tag">${escHtml(tag)}</span>`).join('');
   const pin=t.pinned?'<span class="pin-badge">Pinned</span>':'';
   const rc=t.reply_count||0;
+  const bodyPreview=escHtml((t.body||'').substring(0,200));
   return `
   <div class="thread${t.pinned?' pinned':''}" onclick="window.location='thread.html?id=${t.id}'">
     <div class="thread-votes">
@@ -507,13 +504,13 @@ function renderCard(t){
     </div>
     <div class="thread-content">
       ${pin?'<div class="thread-header">'+pin+'</div>':''}
-      <h3>${t.title}</h3>
-      <p>${(t.body||'').substring(0,200)}${(t.body||'').length>200?'&#8230;':''}</p>
+      <h3>${escHtml(t.title)}</h3>
+      <p>${bodyPreview}${(t.body||'').length>200?'&#8230;':''}</p>
       ${tags?`<div class="thread-tags">${tags}</div>`:''}
       <div class="thread-meta">
         <span class="author-link">
-          <span class="avatar-xs">${(t.author||'?')[0].toUpperCase()}</span>
-          <strong>${t.author}</strong>${t.is_team?teamBadge():''}
+          <span class="avatar-xs">${escHtml((t.author||'?')[0].toUpperCase())}</span>
+          <strong>${escHtml(t.author)}</strong>${t.is_team?teamBadge():''}
         </span>
         <span class="sep">&#183;</span>
         <span>${rc} ${rc===1?'reply':'replies'}</span>
@@ -655,15 +652,14 @@ async function submitThread(){
   const title=document.getElementById('ntTitle').value.trim();
   const body=document.getElementById('ntBody').value.trim();
   const cat=document.getElementById('ntCat').value;
-  const tpass=document.getElementById('ntTeamPass').value.trim();
   if(!author||!title||!body){errEl.textContent='Please fill in name, title, and post.';errEl.style.display='block';return;}
   btn.textContent='Posting…';btn.style.opacity='.6';
   const {data,error}=await db.from('forum_threads')
-    .insert({title,body,author,category:cat,is_team:tpass===TEAM_PASS,tags:[],votes:0,reply_count:0})
+    .insert({title,body,author,category:cat,tags:[],votes:0,reply_count:0})
     .select().single();
   if(error){errEl.textContent='Error posting. Please try again.';errEl.style.display='block';btn.textContent='Post Thread';btn.style.opacity='1';return;}
   closeNewThread();
-  ['ntAuthor','ntTitle','ntBody','ntTeamPass'].forEach(id=>document.getElementById(id).value='');
+  ['ntAuthor','ntTitle','ntBody'].forEach(id=>document.getElementById(id).value='');
   window.location='thread.html?id='+data.id;
 }
 

@@ -719,12 +719,12 @@ Let me know if you have any questions — happy to walk you through it.</div>
     const tbody = document.getElementById('customersBody');
     if (!refs || !refs.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No customers yet.</td></tr>'; return; }
     tbody.innerHTML = refs.map(r => `<tr>
-      <td>${r.customer_name || ''}<br><small style="color:var(--text-muted)">${r.customer_email}</small></td>
-      <td>${r.plan || '—'}</td>
+      <td>${escHtml(r.customer_name) || ''}<br><small style="color:var(--text-muted)">${escHtml(r.customer_email)}</small></td>
+      <td>${escHtml(r.plan) || '—'}</td>
       <td>£${Number(r.monthly_value).toFixed(2)}</td>
       <td>£${(Number(r.monthly_value) * 0.2).toFixed(2)}</td>
       <td>${fmt(r.referred_at)}</td>
-      <td><span class="status-pill ${r.status === 'active' ? 'pill-green' : 'pill-red'}">${r.status}</span></td>
+      <td><span class="status-pill ${r.status === 'active' ? 'pill-green' : 'pill-red'}">${escHtml(r.status)}</span></td>
     </tr>`).join('');
   }
 
@@ -792,7 +792,7 @@ Let me know if you have any questions — happy to walk you through it.</div>
     el.innerHTML = sorted.map((r,i) => `
       <div class="lb-item">
         <div class="lb-rank ${i < 3 ? 'top' : ''}">${i+1}</div>
-        <div class="lb-name">${r.name}${r.id === REP.id ? '<span class="lb-you">You</span>' : ''}</div>
+        <div class="lb-name">${escHtml(r.name)}${r.id === REP.id ? '<span class="lb-you">You</span>' : ''}</div>
         <div class="lb-earn">£${(totals[r.id]||0).toFixed(2)}</div>
       </div>`).join('');
   }
@@ -804,11 +804,11 @@ Let me know if you have any questions — happy to walk you through it.</div>
     el.innerHTML = `<div class="announce-list">${anns.map(a => `
       <div class="announce-card">
         <div class="announce-head">
-          <div class="announce-emoji">${a.emoji || ''}</div>
-          <div class="announce-title">${a.title}</div>
+          <div class="announce-emoji">${escHtml(a.emoji) || ''}</div>
+          <div class="announce-title">${escHtml(a.title)}</div>
           <div class="announce-date">${fmt(a.created_at)}</div>
         </div>
-        <div class="announce-body">${a.body}</div>
+        <div class="announce-body">${escHtml(a.body)}</div>
       </div>`).join('')}</div>`;
   }
 
@@ -817,10 +817,10 @@ Let me know if you have any questions — happy to walk you through it.</div>
     const tbody = document.getElementById('ticketsBody');
     if (!tickets || !tickets.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No tickets yet.</td></tr>'; return; }
     tbody.innerHTML = tickets.map(t => `<tr>
-      <td>${t.subject}</td>
+      <td>${escHtml(t.subject)}</td>
       <td>—</td>
       <td>${fmt(t.created_at)}</td>
-      <td><span class="status-pill ${t.status === 'open' ? 'pill-amber' : 'pill-green'}">${t.status}</span></td>
+      <td><span class="status-pill ${t.status === 'open' ? 'pill-amber' : 'pill-green'}">${escHtml(t.status)}</span></td>
     </tr>`).join('');
   }
 
@@ -913,6 +913,10 @@ Let me know if you have any questions — happy to walk you through it.</div>
   function fmt(iso) {
     if (!iso) return '—';
     return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function escHtml(str) {
+    return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
   // Handle password recovery redirect

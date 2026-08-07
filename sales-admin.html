@@ -564,11 +564,11 @@
     const tbody = document.getElementById('appsBody');
     if (!apps?.length) { tbody.innerHTML='<tr><td colspan="6" class="empty-state">No applications yet.</td></tr>'; return; }
     tbody.innerHTML = apps.map(a => `<tr>
-      <td>${a.name}</td>
-      <td>${a.email}</td>
-      <td>${a.country||'—'}</td>
+      <td>${escHtml(a.name)}</td>
+      <td>${escHtml(a.email)}</td>
+      <td>${escHtml(a.country)||'—'}</td>
       <td>${fmt(a.applied_at)}</td>
-      <td><span class="status-pill ${a.status==='pending'?'pill-amber':a.status==='approved'?'pill-green':'pill-red'}">${a.status}</span></td>
+      <td><span class="status-pill ${a.status==='pending'?'pill-amber':a.status==='approved'?'pill-green':'pill-red'}">${escHtml(a.status)}</span></td>
       <td>
         <button class="act-btn" onclick="viewApp('${a.id}')">View</button>
         ${a.status==='pending'?`<button class="act-btn btn-approve" onclick="approveApp('${a.id}','${esc(a.name)}','${a.email}')">Approve</button>
@@ -582,11 +582,11 @@
     if (!a) return;
     document.getElementById('modalTitle').textContent = 'Application: ' + a.name;
     document.getElementById('modalBody').innerHTML = `
-      <div class="detail-row"><div class="detail-label">Email</div><div class="detail-value">${a.email}</div></div>
-      <div class="detail-row"><div class="detail-label">Country</div><div class="detail-value">${a.country||'—'}</div></div>
-      <div class="detail-row"><div class="detail-label">LinkedIn</div><div class="detail-value">${a.linkedin?`<a href="${a.linkedin}" target="_blank" style="color:var(--gold)">${a.linkedin}</a>`:'—'}</div></div>
-      <div class="detail-row"><div class="detail-label">Experience</div><div class="detail-value" style="white-space:pre-wrap">${a.experience||'—'}</div></div>
-      <div class="detail-row"><div class="detail-label">Why Join</div><div class="detail-value" style="white-space:pre-wrap">${a.why_join||'—'}</div></div>
+      <div class="detail-row"><div class="detail-label">Email</div><div class="detail-value">${escHtml(a.email)}</div></div>
+      <div class="detail-row"><div class="detail-label">Country</div><div class="detail-value">${escHtml(a.country)||'—'}</div></div>
+      <div class="detail-row"><div class="detail-label">LinkedIn</div><div class="detail-value">${a.linkedin && /^https?:\/\//i.test(a.linkedin)?`<a href="${escHtml(a.linkedin)}" target="_blank" rel="noopener noreferrer" style="color:var(--gold)">${escHtml(a.linkedin)}</a>`:escHtml(a.linkedin)||'—'}</div></div>
+      <div class="detail-row"><div class="detail-label">Experience</div><div class="detail-value" style="white-space:pre-wrap">${escHtml(a.experience)||'—'}</div></div>
+      <div class="detail-row"><div class="detail-label">Why Join</div><div class="detail-value" style="white-space:pre-wrap">${escHtml(a.why_join)||'—'}</div></div>
       <div class="detail-row"><div class="detail-label">Applied</div><div class="detail-value">${fmt(a.applied_at)}</div></div>
     `;
     document.getElementById('modalActions').innerHTML = a.status==='pending' ? `
@@ -636,13 +636,13 @@
     const tbody = document.getElementById('repsBody');
     if (!reps?.length) { tbody.innerHTML='<tr><td colspan="8" class="empty-state">No reps yet.</td></tr>'; return; }
     tbody.innerHTML = reps.map(r => `<tr>
-      <td>${r.name}</td>
-      <td>${r.email}</td>
-      <td style="font-family:monospace;color:var(--gold)">${r.referral_code}</td>
-      <td><span class="status-pill pill-amber">${r.tier}</span></td>
+      <td>${escHtml(r.name)}</td>
+      <td>${escHtml(r.email)}</td>
+      <td style="font-family:monospace;color:var(--gold)">${escHtml(r.referral_code)}</td>
+      <td><span class="status-pill pill-amber">${escHtml(r.tier)}</span></td>
       <td>${custMap[r.id]||0}</td>
       <td>${fmt(r.joined_at)}</td>
-      <td><span class="status-pill ${r.status==='active'?'pill-green':'pill-red'}">${r.status}</span></td>
+      <td><span class="status-pill ${r.status==='active'?'pill-green':'pill-red'}">${escHtml(r.status)}</span></td>
       <td>
         ${r.status==='active'
           ? `<button class="act-btn btn-reject" onclick="toggleRep('${r.id}','suspended')">Suspend</button>`
@@ -698,13 +698,13 @@
     tbody.innerHTML = comms.map(c => {
       const ref=refMap[c.referral_id]||{};
       return `<tr>
-        <td>${repMap[c.rep_id]||'—'}</td>
-        <td>${ref.customer_name||ref.customer_email||'—'}</td>
+        <td>${escHtml(repMap[c.rep_id])||'—'}</td>
+        <td>${escHtml(ref.customer_name||ref.customer_email)||'—'}</td>
         <td>£${Number(c.invoice_amount||0).toFixed(2)}</td>
         <td>£${Number(c.amount).toFixed(2)}</td>
-        <td>${c.period||'—'}</td>
+        <td>${escHtml(c.period)||'—'}</td>
         <td>${fmt(c.earned_at)}</td>
-        <td><span class="status-pill ${c.status==='paid'?'pill-green':'pill-amber'}">${c.status}</span></td>
+        <td><span class="status-pill ${c.status==='paid'?'pill-green':'pill-amber'}">${escHtml(c.status)}</span></td>
         <td>${c.status==='pending'?`<button class="act-btn btn-approve" onclick="markCommPaid('${c.id}')">Mark Paid</button>`:'—'}</td>
       </tr>`;
     }).join('');
@@ -744,12 +744,12 @@
     const tbody=document.getElementById('payoutsBody');
     if (!pays?.length) { tbody.innerHTML='<tr><td colspan="7" class="empty-state">No payouts recorded yet.</td></tr>'; return; }
     tbody.innerHTML = pays.map(p=>`<tr>
-      <td>${repMap[p.rep_id]||'—'}</td>
+      <td>${escHtml(repMap[p.rep_id])||'—'}</td>
       <td>£${Number(p.amount).toFixed(2)}</td>
-      <td>${p.method||'—'}</td>
-      <td style="font-family:monospace;font-size:.78rem">${p.reference||'—'}</td>
+      <td>${escHtml(p.method)||'—'}</td>
+      <td style="font-family:monospace;font-size:.78rem">${escHtml(p.reference)||'—'}</td>
       <td>${fmt(p.created_at)}</td>
-      <td><span class="status-pill ${p.status==='paid'?'pill-green':'pill-amber'}">${p.status}</span></td>
+      <td><span class="status-pill ${p.status==='paid'?'pill-green':'pill-amber'}">${escHtml(p.status)}</span></td>
       <td>${p.status!=='paid'?`<button class="act-btn btn-approve" onclick="markPayoutPaid('${p.id}','${p.rep_id}',${p.amount})">Mark Paid</button>`:'—'}</td>
     </tr>`).join('');
   }
@@ -778,8 +778,8 @@
     const tbody=document.getElementById('annBody');
     if (!anns?.length) { tbody.innerHTML='<tr><td colspan="4" class="empty-state">No announcements.</td></tr>'; return; }
     tbody.innerHTML=anns.map(a=>`<tr>
-      <td>${a.emoji||''}</td>
-      <td>${a.title}</td>
+      <td>${escHtml(a.emoji)||''}</td>
+      <td>${escHtml(a.title)}</td>
       <td>${fmt(a.created_at)}</td>
       <td><button class="act-btn btn-reject" onclick="deleteAnn('${a.id}')">Delete</button></td>
     </tr>`).join('');
@@ -813,10 +813,10 @@
     const tbody=document.getElementById('ticketsBody');
     if (!tickets?.length) { tbody.innerHTML='<tr><td colspan="5" class="empty-state">No tickets.</td></tr>'; return; }
     tbody.innerHTML=tickets.map(t=>`<tr>
-      <td>${repMap[t.rep_id]?.name||'—'}<br><small style="color:var(--text-muted)">${repMap[t.rep_id]?.email||''}</small></td>
-      <td>${t.subject}<br><small style="color:var(--text-muted)">${t.message?.substring(0,60)}${t.message?.length>60?'...':''}</small></td>
+      <td>${escHtml(repMap[t.rep_id]?.name)||'—'}<br><small style="color:var(--text-muted)">${escHtml(repMap[t.rep_id]?.email)||''}</small></td>
+      <td>${escHtml(t.subject)}<br><small style="color:var(--text-muted)">${escHtml(t.message?.substring(0,60))}${t.message?.length>60?'...':''}</small></td>
       <td>${fmt(t.created_at)}</td>
-      <td><span class="status-pill ${t.status==='open'?'pill-amber':'pill-green'}">${t.status}</span></td>
+      <td><span class="status-pill ${t.status==='open'?'pill-amber':'pill-green'}">${escHtml(t.status)}</span></td>
       <td>${t.status==='open'?`<button class="act-btn btn-approve" onclick="closeTicket('${t.id}')">Close</button>`:'—'}</td>
     </tr>`).join('');
   }
@@ -834,6 +834,10 @@
   }
 
   function esc(str) { return (str||'').replace(/'/g,"\\'"); }
+
+  function escHtml(str) {
+    return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
 
   db.auth.onAuthStateChange((event, session) => {
     if (session?.user?.email === ADMIN_EMAIL) initApp();
