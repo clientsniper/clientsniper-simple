@@ -238,7 +238,6 @@
         <div class="nav-item active" data-page="dashboard"><span class="nav-icon">◈</span> Dashboard</div>
         <div class="nav-item" data-page="referral">Referral Centre</div>
         <div class="nav-item" data-page="customers">My Customers</div>
-        <div class="nav-item" data-page="earnings"><span class="nav-icon">£</span> Earnings</div>
         <div class="nav-item" data-page="sales">Sales Centre</div>
         <div class="nav-item" data-page="leaderboard">Leaderboard</div>
         <div class="nav-item" data-page="announcements">Announcements</div>
@@ -264,14 +263,12 @@
           <p class="page-sub">Welcome back. Here's your overview.</p>
         </div>
         <div class="stats-grid" id="dashStats">
-          <div class="stat-card"><div class="stat-label">Total Earned</div><div class="stat-value" id="d-total">£0</div><div class="stat-sub">All time commissions</div></div>
-          <div class="stat-card"><div class="stat-label">This Month</div><div class="stat-value" id="d-month">£0</div><div class="stat-sub">Pending payout</div></div>
           <div class="stat-card"><div class="stat-label">Active Customers</div><div class="stat-value" id="d-customers">0</div><div class="stat-sub">Currently subscribed</div></div>
           <div class="stat-card"><div class="stat-label">Your Tier</div><div class="stat-value" id="d-tier">Bronze</div><div class="stat-sub">Based on active customers</div></div>
         </div>
         <div class="ref-box">
           <h3>Your Referral Link</h3>
-          <p>Share this link with potential customers. When they subscribe, you'll earn 20% every month.</p>
+          <p>Share this link with potential customers.</p>
           <div class="link-copy">
             <input class="link-input" id="d-reflink" readonly value="Loading...">
             <button class="copy-btn" onclick="copyRef('d-reflink',this)">Copy Link</button>
@@ -279,8 +276,8 @@
         </div>
         <div class="table-wrap" id="dashRecentWrap">
           <table>
-            <thead><tr><th>Customer</th><th>Plan</th><th>Commission</th><th>Date</th><th>Status</th></tr></thead>
-            <tbody id="dashRecentBody"><tr><td colspan="5" class="empty-state">Loading...</td></tr></tbody>
+            <thead><tr><th>Customer</th><th>Plan</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody id="dashRecentBody"><tr><td colspan="4" class="empty-state">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -324,35 +321,8 @@
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Customer</th><th>Plan</th><th>Monthly Value</th><th>Your Cut (20%)</th><th>Since</th><th>Status</th></tr></thead>
-            <tbody id="customersBody"><tr><td colspan="6" class="empty-state">Loading...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- EARNINGS -->
-      <div class="page" id="page-earnings">
-        <div class="page-header">
-          <h1 class="page-title">Earnings</h1>
-          <p class="page-sub">Your commission history and upcoming payouts.</p>
-        </div>
-        <div class="stats-grid">
-          <div class="stat-card"><div class="stat-label">Total Earned</div><div class="stat-value" id="e-total">£0</div><div class="stat-sub">All time</div></div>
-          <div class="stat-card"><div class="stat-label">Pending Payout</div><div class="stat-value" id="e-pending">£0</div><div class="stat-sub">Processing this month</div></div>
-          <div class="stat-card"><div class="stat-label">Paid Out</div><div class="stat-value" id="e-paid">£0</div><div class="stat-sub">Successfully transferred</div></div>
-        </div>
-        <h3 style="font-family:var(--serif);font-size:1.2rem;margin:24px 0 16px">Commission History</h3>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Period</th><th>Customer</th><th>Invoice Amount</th><th>Commission (20%)</th><th>Status</th></tr></thead>
-            <tbody id="earningsBody"><tr><td colspan="5" class="empty-state">Loading...</td></tr></tbody>
-          </table>
-        </div>
-        <h3 style="font-family:var(--serif);font-size:1.2rem;margin:24px 0 16px">Payout History</h3>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Date</th><th>Amount</th><th>Method</th><th>Status</th></tr></thead>
-            <tbody id="payoutsBody"><tr><td colspan="4" class="empty-state">Loading...</td></tr></tbody>
+            <thead><tr><th>Customer</th><th>Plan</th><th>Since</th><th>Status</th></tr></thead>
+            <tbody id="customersBody"><tr><td colspan="4" class="empty-state">Loading...</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -383,11 +353,6 @@
             <div class="resource-title">Objection Handling</div>
             <div class="resource-desc">Common objections and how to address them confidently.</div>
             <a id="objToggle" class="resource-link" onclick="toggleObj()" style="cursor:pointer">View Guide →</a>
-          </div>
-          <div class="resource-card">
-            <div class="resource-title">Commission Calculator</div>
-            <div class="resource-desc">See what you'd earn based on number of customers and plans.</div>
-            <a id="calcToggle" class="resource-link" onclick="toggleCalc()" style="cursor:pointer">Open Calculator →</a>
           </div>
           <div class="resource-card">
             <div class="resource-title">Key Stats</div>
@@ -443,18 +408,6 @@ Let me know if you have any questions — happy to walk you through it.</div>
           </div>
         </div>
 
-        <div id="panel-calc" style="display:none" class="ref-box">
-          <h3>Commission Calculator</h3>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-            <div class="s-field"><label>Starter Customers (£25/mo)</label><input type="number" id="calc-starter" value="0" min="0" oninput="calcComm()"></div>
-            <div class="s-field"><label>Growth Customers (£45/mo)</label><input type="number" id="calc-growth" value="0" min="0" oninput="calcComm()"></div>
-          </div>
-          <div class="stats-grid">
-            <div class="stat-card"><div class="stat-label">Monthly Recurring</div><div class="stat-value" id="calc-monthly">£0</div></div>
-            <div class="stat-card"><div class="stat-label">Yearly Estimate</div><div class="stat-value" id="calc-yearly">£0</div></div>
-          </div>
-        </div>
-
         <div id="panel-stats" style="display:none" class="ref-box">
           <h3>Key Stats to Use in Conversations</h3>
           <div style="font-size:.85rem;line-height:1.8;color:var(--text-dim)">
@@ -498,7 +451,7 @@ Let me know if you have any questions — happy to walk you through it.</div>
           <div class="s-field"><label>Subject</label><input type="text" id="sup-subject" placeholder="Brief summary of your issue"></div>
           <div class="s-field"><label>Category</label>
             <select id="sup-cat">
-              <option>Commission / Payout</option>
+              <option>Payout</option>
               <option>Referral Tracking</option>
               <option>Technical Issue</option>
               <option>Other</option>
@@ -526,7 +479,7 @@ Let me know if you have any questions — happy to walk you through it.</div>
         </div>
         <div class="settings-card">
           <h3>Payout Information</h3>
-          <p style="font-size:.84rem;color:var(--text-dim);margin-bottom:20px;line-height:1.6">We pay commissions monthly via bank transfer or PayPal. Add your preferred payment details below.</p>
+          <p style="font-size:.84rem;color:var(--text-dim);margin-bottom:20px;line-height:1.6">We pay out monthly via bank transfer or PayPal. Add your preferred payment details below.</p>
           <div class="s-field"><label>Preferred Payout Method</label>
             <select id="set-method">
               <option value="bank">Bank Transfer (UK)</option>
@@ -671,7 +624,6 @@ Let me know if you have any questions — happy to walk you through it.</div>
         closeSidebar();
         const page = item.dataset.page;
         if (page === 'customers') loadCustomers();
-        else if (page === 'earnings') loadEarnings();
         else if (page === 'leaderboard') loadLeaderboard();
         else if (page === 'announcements') loadAnnouncements();
         else if (page === 'support') loadSupport();
@@ -681,89 +633,32 @@ Let me know if you have any questions — happy to walk you through it.</div>
   }
 
   async function loadDashboard() {
-    const { data: comms } = await db.from('commissions').select('*').eq('rep_id', REP.id);
-    const { data: refs  } = await db.from('referrals').select('*').eq('rep_id', REP.id);
-
-    const totalEarned = (comms || []).reduce((s, c) => s + Number(c.amount), 0);
-    const now = new Date();
-    const thisMonth = (comms || []).filter(c => {
-      const d = new Date(c.earned_at);
-      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear() && c.status === 'pending';
-    }).reduce((s, c) => s + Number(c.amount), 0);
+    const { data: refs } = await db.from('referrals').select('*').eq('rep_id', REP.id).order('referred_at', { ascending: false });
 
     const activeCustomers = (refs || []).filter(r => r.status === 'active').length;
-    document.getElementById('d-total').textContent = '£' + totalEarned.toFixed(2);
-    document.getElementById('d-month').textContent = '£' + thisMonth.toFixed(2);
     document.getElementById('d-customers').textContent = activeCustomers;
 
-    const recent = (comms || []).slice(-5).reverse();
+    const recent = (refs || []).slice(0, 5);
     const tbody = document.getElementById('dashRecentBody');
-    if (!recent.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No commissions yet. Start sharing your link!</td></tr>'; return; }
+    if (!recent.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No referrals yet. Start sharing your link!</td></tr>'; return; }
 
-    const refMap = {};
-    (refs || []).forEach(r => refMap[r.id] = r);
-    tbody.innerHTML = recent.map(c => {
-      const ref = refMap[c.referral_id] || {};
-      return `<tr>
-        <td>${ref.customer_name || ref.customer_email || '—'}</td>
-        <td>${ref.plan || '—'}</td>
-        <td>£${Number(c.amount).toFixed(2)}</td>
-        <td>${fmt(c.earned_at)}</td>
-        <td><span class="status-pill ${c.status === 'paid' ? 'pill-green' : 'pill-amber'}">${c.status}</span></td>
-      </tr>`;
-    }).join('');
+    tbody.innerHTML = recent.map(r => `<tr>
+        <td>${escHtml(r.customer_name) || escHtml(r.customer_email) || '—'}</td>
+        <td>${escHtml(r.plan) || '—'}</td>
+        <td>${fmt(r.referred_at)}</td>
+        <td><span class="status-pill ${r.status === 'active' ? 'pill-green' : 'pill-red'}">${escHtml(r.status)}</span></td>
+      </tr>`).join('');
   }
 
   async function loadCustomers() {
     const { data: refs } = await db.from('referrals').select('*').eq('rep_id', REP.id).order('referred_at', { ascending: false });
     const tbody = document.getElementById('customersBody');
-    if (!refs || !refs.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No customers yet.</td></tr>'; return; }
+    if (!refs || !refs.length) { tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No customers yet.</td></tr>'; return; }
     tbody.innerHTML = refs.map(r => `<tr>
       <td>${escHtml(r.customer_name) || ''}<br><small style="color:var(--text-muted)">${escHtml(r.customer_email)}</small></td>
       <td>${escHtml(r.plan) || '—'}</td>
-      <td>£${Number(r.monthly_value).toFixed(2)}</td>
-      <td>£${(Number(r.monthly_value) * 0.2).toFixed(2)}</td>
       <td>${fmt(r.referred_at)}</td>
       <td><span class="status-pill ${r.status === 'active' ? 'pill-green' : 'pill-red'}">${escHtml(r.status)}</span></td>
-    </tr>`).join('');
-  }
-
-  async function loadEarnings() {
-    const [{ data: comms }, { data: pays }, { data: refs }] = await Promise.all([
-      db.from('commissions').select('*').eq('rep_id', REP.id).order('earned_at', { ascending: false }),
-      db.from('payouts').select('*').eq('rep_id', REP.id).order('created_at', { ascending: false }),
-      db.from('referrals').select('id,customer_name,customer_email').eq('rep_id', REP.id),
-    ]);
-    const refMap = {};
-    (refs || []).forEach(r => refMap[r.id] = r);
-
-    const total  = (comms || []).reduce((s,c) => s + Number(c.amount), 0);
-    const pending = (comms || []).filter(c => c.status === 'pending').reduce((s,c) => s + Number(c.amount), 0);
-    const paid   = (pays || []).filter(p => p.status === 'paid').reduce((s,p) => s + Number(p.amount), 0);
-    document.getElementById('e-total').textContent   = '£' + total.toFixed(2);
-    document.getElementById('e-pending').textContent = '£' + pending.toFixed(2);
-    document.getElementById('e-paid').textContent    = '£' + paid.toFixed(2);
-
-    const cb = document.getElementById('earningsBody');
-    if (!comms || !comms.length) { cb.innerHTML = '<tr><td colspan="5" class="empty-state">No commissions yet.</td></tr>'; }
-    else cb.innerHTML = comms.map(c => {
-      const ref = refMap[c.referral_id] || {};
-      return `<tr>
-        <td>${c.period || fmt(c.earned_at)}</td>
-        <td>${ref.customer_name || ref.customer_email || '—'}</td>
-        <td>£${Number(c.invoice_amount || 0).toFixed(2)}</td>
-        <td>£${Number(c.amount).toFixed(2)}</td>
-        <td><span class="status-pill ${c.status === 'paid' ? 'pill-green' : 'pill-amber'}">${c.status}</span></td>
-      </tr>`;
-    }).join('');
-
-    const pb = document.getElementById('payoutsBody');
-    if (!pays || !pays.length) { pb.innerHTML = '<tr><td colspan="4" class="empty-state">No payouts yet.</td></tr>'; }
-    else pb.innerHTML = pays.map(p => `<tr>
-      <td>${fmt(p.created_at)}</td>
-      <td>£${Number(p.amount).toFixed(2)}</td>
-      <td>${p.method || '—'}</td>
-      <td><span class="status-pill ${p.status === 'paid' ? 'pill-green' : 'pill-amber'}">${p.status}</span></td>
     </tr>`).join('');
   }
 
@@ -780,11 +675,10 @@ Let me know if you have any questions — happy to walk you through it.</div>
 
   async function loadLeaderboard() {
     const { data: reps } = await db.from('sales_reps').select('id,name,referral_code').eq('status', 'active');
-    const { data: comms } = await db.from('commissions').select('rep_id,amount');
-    const now = new Date();
+    const { data: refs } = await db.from('referrals').select('rep_id').eq('status', 'active');
     const totals = {};
-    (comms || []).forEach(c => {
-      totals[c.rep_id] = (totals[c.rep_id] || 0) + Number(c.amount);
+    (refs || []).forEach(r => {
+      totals[r.rep_id] = (totals[r.rep_id] || 0) + 1;
     });
     const sorted = (reps || []).sort((a,b) => (totals[b.id]||0) - (totals[a.id]||0)).slice(0,10);
     const el = document.getElementById('leaderboardList');
@@ -793,7 +687,7 @@ Let me know if you have any questions — happy to walk you through it.</div>
       <div class="lb-item">
         <div class="lb-rank ${i < 3 ? 'top' : ''}">${i+1}</div>
         <div class="lb-name">${escHtml(r.name)}${r.id === REP.id ? '<span class="lb-you">You</span>' : ''}</div>
-        <div class="lb-earn">£${(totals[r.id]||0).toFixed(2)}</div>
+        <div class="lb-earn">${totals[r.id]||0} customers</div>
       </div>`).join('');
   }
 
@@ -879,14 +773,6 @@ Let me know if you have any questions — happy to walk you through it.</div>
     navigator.clipboard.writeText(document.getElementById('socialCopy').value).then(() => alert('Message copied!'));
   }
 
-  function calcComm() {
-    const s = Number(document.getElementById('calc-starter').value) || 0;
-    const g = Number(document.getElementById('calc-growth').value) || 0;
-    const monthly = (s * 25 + g * 45) * 0.20;
-    document.getElementById('calc-monthly').textContent = '£' + monthly.toFixed(2);
-    document.getElementById('calc-yearly').textContent  = '£' + (monthly * 12).toFixed(2);
-  }
-
   function togglePanel(id, linkId, showText, hideText) {
     const el = document.getElementById(id);
     const link = document.getElementById(linkId);
@@ -898,7 +784,6 @@ Let me know if you have any questions — happy to walk you through it.</div>
   function toggleScript() { togglePanel('panel-script','scriptToggle','View Script →','Hide Script ↑'); }
   function toggleICP()    { togglePanel('panel-icp','icpToggle','View ICP →','Hide ICP ↑'); }
   function toggleObj()    { togglePanel('panel-obj','objToggle','View Guide →','Hide Guide ↑'); }
-  function toggleCalc()   { togglePanel('panel-calc','calcToggle','Open Calculator →','Close Calculator ↑'); }
   function toggleStats()  { togglePanel('panel-stats','statsToggle','View Stats →','Hide Stats ↑'); }
 
   function openSidebar() {

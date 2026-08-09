@@ -236,7 +236,6 @@
         <div class="nav-item active" data-page="overview"><span class="nav-icon">◈</span> Overview</div>
         <div class="nav-item" data-page="applications">Applications</div>
         <div class="nav-item" data-page="reps">Active Reps</div>
-        <div class="nav-item" data-page="commissions"><span class="nav-icon">£</span> Commissions</div>
         <div class="nav-item" data-page="payouts">Payouts</div>
         <div class="nav-item" data-page="announcements">Announcements</div>
         <div class="nav-item" data-page="support">Support Tickets</div>
@@ -263,7 +262,6 @@
           <div class="stat-card"><div class="stat-label">Pending Applications</div><div class="stat-value" id="ov-apps">—</div></div>
           <div class="stat-card"><div class="stat-label">Active Reps</div><div class="stat-value" id="ov-reps">—</div></div>
           <div class="stat-card"><div class="stat-label">Total Customers</div><div class="stat-value" id="ov-customers">—</div></div>
-          <div class="stat-card"><div class="stat-label">Commissions Pending</div><div class="stat-value" id="ov-pending">£—</div></div>
           <div class="stat-card"><div class="stat-label">Total Paid Out</div><div class="stat-value" id="ov-paid">£—</div></div>
           <div class="stat-card"><div class="stat-label">Open Tickets</div><div class="stat-value" id="ov-tickets">—</div></div>
         </div>
@@ -312,40 +310,11 @@
         </div>
       </div>
 
-      <!-- COMMISSIONS -->
-      <div class="page" id="page-commissions">
-        <div class="page-header">
-          <h1 class="page-title">Commissions</h1>
-          <p class="page-sub">All commission records — updated automatically via Stripe webhook.</p>
-        </div>
-        <div class="form-card">
-          <h3>Manual Commission Entry</h3>
-          <p style="font-size:.82rem;color:var(--text-dim);margin-bottom:16px">Use this to add corrections or manual referrals.</p>
-          <div class="row2">
-            <div class="f-field"><label>Rep</label><select id="mc-rep"><option value="">Select rep...</option></select></div>
-            <div class="f-field"><label>Customer Email</label><input type="email" id="mc-cemail" placeholder="customer@email.com"></div>
-          </div>
-          <div class="row2">
-            <div class="f-field"><label>Invoice Amount (£)</label><input type="number" id="mc-inv" placeholder="25.00" step="0.01"></div>
-            <div class="f-field"><label>Period</label><input type="text" id="mc-period" placeholder="Aug 2026"></div>
-          </div>
-          <div class="msg-ok" id="mcOk">Commission added.</div>
-          <div class="msg-err" id="mcErr"></div>
-          <button class="btn-sm btn-gold" onclick="addCommission()">Add Commission</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Rep</th><th>Customer</th><th>Invoice</th><th>Commission</th><th>Period</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody id="commsBody"><tr><td colspan="8" class="empty-state">Loading...</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-
       <!-- PAYOUTS -->
       <div class="page" id="page-payouts">
         <div class="page-header">
           <h1 class="page-title">Payouts</h1>
-          <p class="page-sub">Record and manage commission payouts.</p>
+          <p class="page-sub">Record and manage rep payouts.</p>
         </div>
         <div class="form-card">
           <h3>Record Payout</h3>
@@ -361,7 +330,7 @@
             </div>
             <div class="f-field"><label>Reference</label><input type="text" id="po-ref" placeholder="Bank ref or PayPal ID"></div>
           </div>
-          <div class="msg-ok" id="poOk">Payout recorded and rep commissions marked paid.</div>
+          <div class="msg-ok" id="poOk">Payout recorded.</div>
           <div class="msg-err" id="poErr"></div>
           <button class="btn-sm btn-gold" onclick="recordPayout()">Record Payout</button>
         </div>
@@ -506,7 +475,6 @@
     loadOverview();
     loadApplications();
     loadReps();
-    loadAllCommissions();
     loadAllPayouts();
     loadAnnouncements();
     loadTickets();
@@ -538,23 +506,19 @@
       { count: appCount },
       { count: repCount },
       { count: custCount },
-      { data: comms },
       { data: pays },
       { count: tickCount },
     ] = await Promise.all([
       db.from('rep_applications').select('*',{count:'exact',head:true}).eq('status','pending'),
       db.from('sales_reps').select('*',{count:'exact',head:true}).eq('status','active'),
       db.from('referrals').select('*',{count:'exact',head:true}).eq('status','active'),
-      db.from('commissions').select('amount,status'),
       db.from('payouts').select('amount,status'),
       db.from('rep_support_tickets').select('*',{count:'exact',head:true}).eq('status','open'),
     ]);
     document.getElementById('ov-apps').textContent     = appCount ?? 0;
     document.getElementById('ov-reps').textContent     = repCount ?? 0;
     document.getElementById('ov-customers').textContent= custCount ?? 0;
-    const pending = (comms||[]).filter(c=>c.status==='pending').reduce((s,c)=>s+Number(c.amount),0);
-    const paid    = (pays||[]).filter(p=>p.status==='paid').reduce((s,p)=>s+Number(p.amount),0);
-    document.getElementById('ov-pending').textContent = '£'+pending.toFixed(2);
+    const paid = (pays||[]).filter(p=>p.status==='paid').reduce((s,p)=>s+Number(p.amount),0);
     document.getElementById('ov-paid').textContent    = '£'+paid.toFixed(2);
     document.getElementById('ov-tickets').textContent = tickCount ?? 0;
   }
@@ -680,58 +644,7 @@
 
   function updateRepSelects() {
     const opts = ALL_REPS.map(r => `<option value="${r.id}">${r.name} (${r.referral_code})</option>`).join('');
-    document.getElementById('mc-rep').innerHTML = '<option value="">Select rep...</option>' + opts;
     document.getElementById('po-rep').innerHTML = '<option value="">Select rep...</option>' + opts;
-  }
-
-  async function loadAllCommissions() {
-    const [{ data: comms }, { data: reps }, { data: refs }] = await Promise.all([
-      db.from('commissions').select('*').order('earned_at',{ascending:false}),
-      db.from('sales_reps').select('id,name'),
-      db.from('referrals').select('id,customer_email,customer_name'),
-    ]);
-    const repMap={}, refMap={};
-    (reps||[]).forEach(r=>repMap[r.id]=r.name);
-    (refs||[]).forEach(r=>refMap[r.id]=r);
-    const tbody=document.getElementById('commsBody');
-    if (!comms?.length) { tbody.innerHTML='<tr><td colspan="8" class="empty-state">No commissions yet.</td></tr>'; return; }
-    tbody.innerHTML = comms.map(c => {
-      const ref=refMap[c.referral_id]||{};
-      return `<tr>
-        <td>${escHtml(repMap[c.rep_id])||'—'}</td>
-        <td>${escHtml(ref.customer_name||ref.customer_email)||'—'}</td>
-        <td>£${Number(c.invoice_amount||0).toFixed(2)}</td>
-        <td>£${Number(c.amount).toFixed(2)}</td>
-        <td>${escHtml(c.period)||'—'}</td>
-        <td>${fmt(c.earned_at)}</td>
-        <td><span class="status-pill ${c.status==='paid'?'pill-green':'pill-amber'}">${escHtml(c.status)}</span></td>
-        <td>${c.status==='pending'?`<button class="act-btn btn-approve" onclick="markCommPaid('${c.id}')">Mark Paid</button>`:'—'}</td>
-      </tr>`;
-    }).join('');
-  }
-
-  async function addCommission() {
-    const ok=document.getElementById('mcOk'), err=document.getElementById('mcErr');
-    ok.style.display='none'; err.style.display='none';
-    const rep_id  = document.getElementById('mc-rep').value;
-    const cemail  = document.getElementById('mc-cemail').value.trim();
-    const inv     = parseFloat(document.getElementById('mc-inv').value)||0;
-    const period  = document.getElementById('mc-period').value.trim();
-    if (!rep_id||!cemail||!inv) { err.textContent='Rep, customer email, and invoice amount required.'; err.style.display='block'; return; }
-    let { data: ref } = await db.from('referrals').select('id').eq('rep_id',rep_id).eq('customer_email',cemail).maybeSingle();
-    if (!ref) {
-      const { data: newRef, error: refErr } = await db.from('referrals').insert({rep_id,customer_email:cemail,monthly_value:inv}).select().single();
-      if (refErr) { err.textContent=refErr.message; err.style.display='block'; return; }
-      ref = newRef;
-    }
-    const { error } = await db.from('commissions').insert({ rep_id, referral_id:ref.id, amount:inv*0.2, invoice_amount:inv, period });
-    if (error) { err.textContent=error.message; err.style.display='block'; }
-    else { ok.style.display='block'; loadAllCommissions(); loadOverview(); }
-  }
-
-  async function markCommPaid(id) {
-    await db.from('commissions').update({status:'paid'}).eq('id',id);
-    loadAllCommissions();
   }
 
   async function loadAllPayouts() {
@@ -769,8 +682,7 @@
 
   async function markPayoutPaid(id, repId, amount) {
     await db.from('payouts').update({ status:'paid', paid_at: new Date().toISOString() }).eq('id',id);
-    await db.from('commissions').update({ status:'paid' }).eq('rep_id',repId).eq('status','pending');
-    loadAllPayouts(); loadAllCommissions(); loadOverview();
+    loadAllPayouts(); loadOverview();
   }
 
   async function loadAnnouncements() {
