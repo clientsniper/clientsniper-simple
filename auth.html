@@ -491,9 +491,10 @@
 </div>
 
 <script>
-  const SUPABASE_URL  = 'https://jxcahqkkcnqkmjjqdnuu.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U';
+  const SUPABASE_URL  = 'https://ehrdnbspxgpukpcvqair.supabase.co';
+  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVocmRuYnNweGdwdWtwY3ZxYWlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNTEwNTgsImV4cCI6MjA5NzcyNzA1OH0.glSXj4kdPSEOKJcmHvDua__oaGy_DWJ1v9YfkNosSKU';
   const { createClient } = supabase;
+  const APP_URL = 'https://clientsniper-zwr3.vercel.app/';
 
   // "Remember me": unchecked sessions live in sessionStorage (cleared on browser close)
   const REMEMBER_KEY = 'cs_remember_me';
@@ -568,7 +569,7 @@
       showAlert(friendlyError(error.message));
       return;
     }
-    window.location.href = '/app';
+    window.location.href = APP_URL;
   });
 
   // ── Sign up ───────────────────────────────────────────────
@@ -599,7 +600,7 @@
     setRememberMe(rememberEl ? rememberEl.checked : true);
     const { error } = await db.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin + '/app' }
+      options: { redirectTo: APP_URL }
     });
     if (error) showAlert(friendlyError(error.message));
   }
@@ -647,7 +648,7 @@
         if (!newPass || newPass.length < 8) { alert('Password too short.'); return; }
         const { error } = await db.auth.updateUser({ password: newPass });
         if (error) showAlert(friendlyError(error.message));
-        else { showAlert('Password updated. You are now signed in.', 'success'); window.location.href = '/app'; }
+        else { showAlert('Password updated. You are now signed in.', 'success'); window.location.href = APP_URL; }
       }
     });
   }
@@ -655,7 +656,7 @@
   // ── If already signed in, redirect to app ────────────────
   db.auth.getSession().then(({ data: { session } }) => {
     if (session && params.get('mode') !== 'update-password') {
-      window.location.href = '/app';
+      window.location.href = APP_URL;
     }
   });
 

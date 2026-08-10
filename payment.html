@@ -232,7 +232,7 @@ ul{list-style:none}
 <meta property="og:site_name" content="ClientSniper">
 <meta property="og:locale" content="en_GB">
 <meta property="og:title" content="Plans & Pricing — ClientSniper">
-<meta property="og:description" content="Free plan, Starter, Student discount, and Enterprise. No hidden fees. No tricks. Extra leads from £4.">
+<meta property="og:description" content="Free plan, Starter, Student discount, and Enterprise. No hidden fees. No tricks. Extra leads from $4.50.">
 <meta property="og:url" content="https://clientsniper.com/payment.html">
 <meta property="og:image" content="https://clientsniper.com/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -243,6 +243,8 @@ ul{list-style:none}
 <meta name="twitter:description" content="Free plan, Starter, Student discount, and Enterprise. No hidden fees. No tricks.">
 <meta name="twitter:image" content="https://clientsniper.com/og-image.png">
 <link rel="canonical" href="https://clientsniper.com/payment.html">
+<script src="https://js.stripe.com/v3/"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -311,7 +313,7 @@ ul{list-style:none}
         <h3>Starter</h3>
         <p class="plan-desc">Everything you need to find and close local business clients.</p>
         <div class="original-price" id="starterOriginal"></div>
-        <div class="price-val" id="starterPrice">£25</div>
+        <div class="price-val" id="starterPrice">$25</div>
         <div class="price-period" id="starterPeriod">per month</div>
         <div class="start-note">START TODAY</div>
         <div class="plan-features">
@@ -322,7 +324,7 @@ ul{list-style:none}
           <div class="plan-feature"><span class="feat-yes">✓</span>AI personalisation</div>
           <div class="plan-feature"><span class="feat-yes">✓</span>Unlimited saved searches</div>
           <div class="plan-feature"><span class="feat-yes">✓</span>CSV &amp; Excel export</div>
-          <div class="plan-feature"><span class="feat-yes">✓</span>Extra 1,000 leads for £4</div>
+          <div class="plan-feature"><span class="feat-yes">✓</span>Extra 1,000 leads for $4.50</div>
           <div class="plan-feature"><span class="feat-yes">✓</span>Email support</div>
         </div>
         <button class="price-btn" id="btnStarter" onclick="goCheckout('starter')">Get Started</button>
@@ -334,7 +336,7 @@ ul{list-style:none}
         <h3>Growth</h3>
         <p class="plan-desc">For serious outreach — 3× more leads, priority support, and unlimited queries.</p>
         <div class="original-price" id="growthOriginal"></div>
-        <div class="price-val" id="growthPrice">£45</div>
+        <div class="price-val" id="growthPrice">$55</div>
         <div class="price-period" id="growthPeriod">per month</div>
         <div class="start-note">CANCEL ANYTIME</div>
         <div class="plan-features">
@@ -346,7 +348,7 @@ ul{list-style:none}
           <div class="plan-feature"><span class="feat-yes">✓</span>Unlimited saved searches</div>
           <div class="plan-feature"><span class="feat-yes">✓</span>Unlimited search queries</div>
           <div class="plan-feature"><span class="feat-yes">✓</span>CSV &amp; Excel export</div>
-          <div class="plan-feature"><span class="feat-yes">✓</span>Extra 1,000 leads for £4</div>
+          <div class="plan-feature"><span class="feat-yes">✓</span>Extra 1,000 leads for $4.50</div>
           <div class="plan-feature"><span class="feat-yes">✓</span>Priority support</div>
         </div>
         <button class="price-btn" id="btnGrowth" onclick="goCheckout('growth')">Get Started</button>
@@ -382,9 +384,9 @@ ul{list-style:none}
     <div class="topup-banner reveal">
       <div class="topup-text">
         <strong>Used up your monthly quota?</strong>
-        <p>Simply buy extra credits — <span>1,000 more leads for £4</span>. Anytime, no plan upgrade needed. Unused extra credits roll over to next month.</p>
+        <p>Simply buy extra credits — <span>1,000 more leads for $4.50</span>. Anytime, no plan upgrade needed. Unused extra credits roll over to next month.</p>
       </div>
-      <div class="topup-price">£4 <small>/ 1K LEADS</small></div>
+      <div class="topup-price">$4.50 <small>/ 1K LEADS</small></div>
       <button class="topup-btn" onclick="goCheckout('topup')">Buy Credits</button>
     </div>
 
@@ -412,8 +414,8 @@ ul{list-style:none}
         <thead>
           <tr>
             <th>Feature</th>
-            <th>Starter · £25/mo</th>
-            <th>Growth · £45/mo</th>
+            <th>Starter · $25/mo</th>
+            <th>Growth · $55/mo</th>
             <th>Enterprise</th>
           </tr>
         </thead>
@@ -427,7 +429,7 @@ ul{list-style:none}
           <tr><td class="row-head">CSV &amp; Excel export</td><td class="yes">✓</td><td class="yes">✓</td><td class="grn">✓</td></tr>
           <tr><td class="row-head">Unlimited search queries</td><td class="no">—</td><td class="yes">✓</td><td class="grn">✓</td></tr>
           <tr><td class="row-head">Priority support</td><td class="no">—</td><td class="yes">✓</td><td class="grn">✓</td></tr>
-          <tr><td class="row-head">Extra credits (£4/1K)</td><td class="yes">✓</td><td class="yes">✓</td><td class="grn">✓</td></tr>
+          <tr><td class="row-head">Extra credits ($4.50/1K)</td><td class="yes">✓</td><td class="yes">✓</td><td class="grn">✓</td></tr>
           <tr><td class="row-head">Annual billing option</td><td class="yes">✓</td><td class="yes">✓</td><td class="grn">Custom</td></tr>
           <tr><td class="row-head">Onboarding call</td><td class="no">—</td><td class="no">—</td><td class="grn">✓</td></tr>
           <tr><td class="row-head">Dedicated account manager</td><td class="no">—</td><td class="no">—</td><td class="grn">✓</td></tr>
@@ -459,7 +461,7 @@ ul{list-style:none}
       </div>
       <div class="faq-card">
         <h4>How does the student discount work?</h4>
-        <p>Sign up with your university email address or verify via UNiDAYS. The <span>£15/month</span> rate is applied automatically. Student plans are monthly billing only.</p>
+        <p>Sign up with your university email address or verify via UNiDAYS. The <span>$15/month</span> rate is applied automatically. Student plans are monthly billing only.</p>
       </div>
       <div class="faq-card">
         <h4>How do the 500 free leads work?</h4>
@@ -557,30 +559,22 @@ function toggleBilling(){
 }
 function updatePrices(){
   if(isYearly){
-    document.getElementById('starterPrice').textContent  = '£240';
-    document.getElementById('starterPeriod').textContent = 'per year (£20/mo)';
-    document.getElementById('starterOriginal').textContent = '£300/yr';
-    document.getElementById('growthPrice').textContent   = '£432';
-    document.getElementById('growthPeriod').textContent  = 'per year (£36/mo)';
-    document.getElementById('growthOriginal').textContent  = '£540/yr';
+    document.getElementById('starterPrice').textContent  = '$240';
+    document.getElementById('starterPeriod').textContent = 'per year ($20/mo)';
+    document.getElementById('starterOriginal').textContent = '$300/yr';
+    document.getElementById('growthPrice').textContent   = '$528';
+    document.getElementById('growthPeriod').textContent  = 'per year ($44/mo)';
+    document.getElementById('growthOriginal').textContent  = '$660/yr';
   } else {
-    document.getElementById('starterPrice').textContent  = '£25';
+    document.getElementById('starterPrice').textContent  = '$25';
     document.getElementById('starterPeriod').textContent = 'per month';
     document.getElementById('starterOriginal').textContent = '';
-    document.getElementById('growthPrice').textContent   = '£45';
+    document.getElementById('growthPrice').textContent   = '$55';
     document.getElementById('growthPeriod').textContent  = 'per month';
     document.getElementById('growthOriginal').textContent  = '';
   }
 }
 
-/* Stripe payment links — paste your buy.stripe.com URLs here after creating products */
-const STRIPE_LINKS = {
-  starter_monthly: 'https://buy.stripe.com/3cI3cva8KfQ55U22W9bsc03',
-  starter_yearly:  'https://buy.stripe.com/fZucN54Oq8nD4PY40dbsc04',
-  growth_monthly:  'https://buy.stripe.com/fZu3cv3KmgU95U21S5bsc01',
-  growth_yearly:   'https://buy.stripe.com/28EbJ1bcOcDT96e0O1bsc02',
-  topup:           'https://buy.stripe.com/00weVdep0fQ5fuC8gtbsc00',
-};
 // Capture referral code from URL and persist in localStorage
 (function(){
   const p = new URLSearchParams(window.location.search);
@@ -589,17 +583,20 @@ const STRIPE_LINKS = {
 })();
 
 function goCheckout(plan){
-  let url;
-  if(plan === 'starter'){
-    url = isYearly ? STRIPE_LINKS.starter_yearly : STRIPE_LINKS.starter_monthly;
-  } else if(plan === 'growth'){
-    url = isYearly ? STRIPE_LINKS.growth_yearly : STRIPE_LINKS.growth_monthly;
-  } else if(plan === 'topup'){
-    url = STRIPE_LINKS.topup;
+  if(plan === 'topup'){
+    openCheckout({ kind: 'credits', title: 'Buy Credits', subtitle: '1,000 lead credits, no expiry', priceLabel: '$4.50', payLabel: 'Buy Credits' });
+    return;
   }
-  const ref = localStorage.getItem('cs_ref');
-  if (ref) url += '?client_reference_id=' + encodeURIComponent(ref);
-  window.location.href = url;
+  const planId = `${plan}_${isYearly ? 'yearly' : 'monthly'}`;
+  const names  = { starter: 'Starter', growth: 'Growth' };
+  const prices = isYearly
+    ? { starter: '$240/yr', growth: '$528/yr' }
+    : { starter: '$25/mo',  growth: '$55/mo'  };
+  openCheckout({
+    kind: 'subscription', planId,
+    title: names[plan], subtitle: isYearly ? 'Billed yearly' : 'Billed monthly',
+    priceLabel: prices[plan], payLabel: 'Subscribe',
+  });
 }
 
 /* Scroll reveal */
@@ -715,6 +712,226 @@ document.querySelectorAll('#studentOverlay input').forEach(inp => {
   inp.addEventListener('focus', () => inp.style.borderColor = '#C9A465');
   inp.addEventListener('blur',  () => inp.style.borderColor = '#2a2f38');
 });
+</script>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkoutOverlay" style="display:none;position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.8);align-items:center;justify-content:center;padding:24px">
+  <div style="background:#0a0d10;border:1px solid #2a2f38;width:100%;max-width:460px;padding:40px;position:relative;box-shadow:0 24px 80px -24px rgba(0,0,0,.7)">
+    <button onclick="closeCheckout()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#8a8578;font-size:1.3rem;cursor:pointer;line-height:1">✕</button>
+
+    <h2 id="coTitle" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.6rem;color:#C9A465;margin-bottom:4px"></h2>
+    <p id="coSubtitle" style="color:#8a8578;font-size:.87rem;margin-bottom:22px"></p>
+
+    <div id="coPriceBox" style="display:flex;align-items:baseline;justify-content:space-between;padding:12px 16px;background:#111519;border:1px solid #2a2f38;margin-bottom:20px">
+      <span style="font-size:.82rem;color:#8a8578">Total due today</span>
+      <span id="coPriceLabel" style="font-size:1.25rem;font-weight:800;color:#F0EBE0"></span>
+    </div>
+
+    <div id="coAlert" style="display:none;padding:10px 14px;font-size:.84rem;line-height:1.5;margin-bottom:16px"></div>
+
+    <!-- STEP 1: account (only shown if visitor has no session) -->
+    <div id="coAccountStep">
+      <label style="font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;display:block;margin-bottom:6px">Email</label>
+      <input id="coEmail" type="email" placeholder="you@business.com" style="width:100%;background:#111519;border:1px solid #2a2f38;color:#F0EBE0;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:11px 14px;outline:none;margin-bottom:14px">
+
+      <label style="font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;display:block;margin-bottom:6px">Password</label>
+      <input id="coPassword" type="password" placeholder="At least 8 characters" style="width:100%;background:#111519;border:1px solid #2a2f38;color:#F0EBE0;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:11px 14px;outline:none;margin-bottom:20px">
+
+      <button id="coContinueBtn" onclick="coContinue()" style="width:100%;padding:13px;background:linear-gradient(135deg,#C9A465,#a07a3a);color:#030507;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer">Continue</button>
+      <p style="color:#8a8578;font-size:.75rem;text-align:center;margin-top:14px">This creates your ClientSniper account. Already have one? <a href="auth.html" style="color:#C9A465;text-decoration:underline">Sign in first</a>.</p>
+    </div>
+
+    <!-- STEP 2: Stripe payment element -->
+    <div id="coPayStep" style="display:none">
+      <div id="coPaymentElement" style="margin-bottom:18px"></div>
+      <button id="coPayBtn" onclick="coPay()" style="width:100%;padding:13px;background:linear-gradient(135deg,#C9A465,#a07a3a);color:#030507;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+        <span id="coPayBtnLabel"></span>
+      </button>
+      <p style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;color:#8a8578;font-size:.78rem">🔒 Payments secured by Stripe</p>
+    </div>
+
+    <!-- LOADING -->
+    <div id="coLoading" style="display:none;padding:40px 0;text-align:center;color:#C9A465">Loading…</div>
+
+    <!-- SUCCESS -->
+    <div id="coSuccess" style="display:none;text-align:center;padding:10px 0">
+      <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;color:#F0EBE0;margin-bottom:8px">You're all set 🎉</h3>
+      <p id="coSuccessMsg" style="color:#8a8578;font-size:.87rem;line-height:1.6;margin-bottom:20px"></p>
+      <button onclick="window.location.href='https://clientsniper-zwr3.vercel.app/'" style="padding:13px 28px;background:#C9A465;color:#030507;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer">Go to Dashboard →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CO_SUPABASE_URL  = 'https://ehrdnbspxgpukpcvqair.supabase.co';
+const CO_SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVocmRuYnNweGdwdWtwY3ZxYWlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNTEwNTgsImV4cCI6MjA5NzcyNzA1OH0.glSXj4kdPSEOKJcmHvDua__oaGy_DWJ1v9YfkNosSKU';
+const CO_FUNCTIONS_URL = `${CO_SUPABASE_URL}/functions/v1`;
+const CO_STRIPE_PK     = 'pk_live_51TlaC9FTbGnfzNowUwRqtQFursBRQ9iJSBUy4xO57Hzykju94MQ2SH3VazPpNlvLb9IAZkPtZNV1Mz81QKLSyjHC00E7ZL0zeD';
+
+const coDb     = supabase.createClient(CO_SUPABASE_URL, CO_SUPABASE_ANON);
+const coStripe = Stripe(CO_STRIPE_PK);
+
+let coState = null;   // { kind, planId, title, subtitle, priceLabel, payLabel }
+let coSession = null; // existing Supabase session, if any
+let coElements = null;
+
+coDb.auth.getSession().then(({ data }) => { coSession = data.session; });
+
+function coShowAlert(msg, type){
+  const el = document.getElementById('coAlert');
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.style.background = type === 'error' ? 'rgba(248,113,113,.1)' : 'rgba(45,189,110,.1)';
+  el.style.border = type === 'error' ? '1px solid rgba(248,113,113,.3)' : '1px solid rgba(45,189,110,.3)';
+  el.style.color = type === 'error' ? '#f87171' : '#2dbd6e';
+}
+function coHideAlert(){ document.getElementById('coAlert').style.display = 'none'; }
+
+function openCheckout(opts){
+  coState = opts;
+  document.getElementById('coTitle').textContent = opts.title;
+  document.getElementById('coSubtitle').textContent = opts.subtitle;
+  document.getElementById('coPriceLabel').textContent = opts.priceLabel;
+  document.getElementById('coPayBtnLabel').textContent = opts.payLabel + ' →';
+  coHideAlert();
+  document.getElementById('coSuccess').style.display = 'none';
+  document.getElementById('coLoading').style.display = 'none';
+  document.getElementById('coPayStep').style.display = 'none';
+  document.getElementById('coEmail').value = '';
+  document.getElementById('coPassword').value = '';
+
+  if (coSession) {
+    document.getElementById('coAccountStep').style.display = 'none';
+    coStartPayment();
+  } else {
+    document.getElementById('coAccountStep').style.display = 'block';
+  }
+
+  document.getElementById('checkoutOverlay').style.display = 'flex';
+}
+function closeCheckout(){
+  document.getElementById('checkoutOverlay').style.display = 'none';
+}
+document.getElementById('checkoutOverlay').addEventListener('click', function(e){
+  if (e.target === this) closeCheckout();
+});
+
+async function coContinue(){
+  const email = document.getElementById('coEmail').value.trim();
+  const password = document.getElementById('coPassword').value;
+  coHideAlert();
+  if (!email || !email.includes('@')) { coShowAlert('Please enter a valid email address.', 'error'); return; }
+  if (password.length < 8) { coShowAlert('Password must be at least 8 characters.', 'error'); return; }
+
+  const btn = document.getElementById('coContinueBtn');
+  btn.disabled = true; btn.textContent = 'Please wait…';
+  await coStartPayment({ email, password });
+  btn.disabled = false; btn.textContent = 'Continue';
+}
+
+async function coStartPayment(creds){
+  document.getElementById('coAccountStep').style.display = 'none';
+  document.getElementById('coLoading').style.display = 'block';
+
+  try {
+    let clientSecret;
+    if (coSession) {
+      const endpoint = coState.kind === 'credits' ? 'buy-credits' : 'create-subscription';
+      const res = await fetch(`${CO_FUNCTIONS_URL}/${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${coSession.access_token}` },
+        body: JSON.stringify(coState.kind === 'credits' ? {} : { planId: coState.planId }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not start checkout.');
+      clientSecret = data.clientSecret;
+    } else {
+      const endpoint = coState.kind === 'credits' ? 'public-checkout-credits' : 'public-checkout-subscription';
+      const body = coState.kind === 'credits'
+        ? { email: creds.email, password: creds.password }
+        : { email: creds.email, password: creds.password, planId: coState.planId };
+      const res = await fetch(`${CO_FUNCTIONS_URL}/${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Could not start checkout.');
+      clientSecret = data.clientSecret;
+      coState.pendingCreds = creds; // needed to sign them in locally after payment succeeds
+    }
+
+    coMountPaymentElement(clientSecret);
+
+  } catch (err) {
+    document.getElementById('coLoading').style.display = 'none';
+    document.getElementById('coAccountStep').style.display = coSession ? 'none' : 'block';
+    coShowAlert(err.message || 'Could not start checkout. Please try again.', 'error');
+  }
+}
+
+function coMountPaymentElement(clientSecret){
+  coElements = coStripe.elements({
+    clientSecret,
+    appearance: {
+      theme: 'night',
+      variables: {
+        colorPrimary: '#C9A465', colorBackground: '#111519', colorText: '#F0EBE0',
+        colorTextSecondary: '#8a8578', colorTextPlaceholder: '#6f6a5c', colorDanger: '#f87171',
+        fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif", fontSizeBase: '14px',
+        borderRadius: '0px', spacingUnit: '4px',
+      },
+      rules: {
+        '.Input': { border: '1px solid #2a2f38', boxShadow: 'none' },
+        '.Input:focus': { border: '1px solid #C9A465', boxShadow: '0 0 0 3px rgba(201,164,101,.12)' },
+        '.Label': { color: '#8a8578', fontSize: '11px', letterSpacing: '.05em', textTransform: 'uppercase', fontWeight: '600' },
+        '.Tab': { border: '1px solid #2a2f38', background: '#0a0d10' },
+        '.Tab--selected': { border: '1px solid #C9A465', background: 'rgba(201,164,101,.08)' },
+      },
+    },
+  });
+  const paymentElement = coElements.create('payment', { layout: 'tabs' });
+  paymentElement.mount('#coPaymentElement');
+
+  document.getElementById('coLoading').style.display = 'none';
+  document.getElementById('coPayStep').style.display = 'block';
+}
+
+async function coPay(){
+  const btn = document.getElementById('coPayBtn');
+  btn.disabled = true;
+  const originalLabel = document.getElementById('coPayBtnLabel').textContent;
+  document.getElementById('coPayBtnLabel').textContent = 'Processing…';
+  coHideAlert();
+
+  const { error, paymentIntent } = await coStripe.confirmPayment({
+    elements: coElements,
+    redirect: 'if_required',
+    confirmParams: { return_url: `${window.location.origin}${window.location.pathname}?status=success` },
+  });
+
+  if (error) {
+    coShowAlert(error.message || 'Payment failed. Please check your details and try again.', 'error');
+    btn.disabled = false;
+    document.getElementById('coPayBtnLabel').textContent = originalLabel;
+    return;
+  }
+
+  if (paymentIntent && (paymentIntent.status === 'succeeded' || paymentIntent.status === 'processing')) {
+    // New account created during this checkout — sign in locally so "Go to Dashboard" works immediately.
+    if (coState.pendingCreds) {
+      await coDb.auth.signInWithPassword({ email: coState.pendingCreds.email, password: coState.pendingCreds.password });
+    }
+    document.getElementById('coPayStep').style.display = 'none';
+    document.getElementById('coSuccessMsg').textContent = coState.kind === 'credits'
+      ? '1,000 lead credits have been added to your account.'
+      : 'Your subscription is active and your credits have been added.';
+    document.getElementById('coSuccess').style.display = 'block';
+  } else {
+    btn.disabled = false;
+    document.getElementById('coPayBtnLabel').textContent = originalLabel;
+  }
+}
 </script>
 
   <script defer data-domain="clientsniper.com" src="https://plausible.io/js/script.js"></script>
