@@ -735,7 +735,13 @@ document.querySelectorAll('#studentOverlay input').forEach(inp => {
       <input id="coEmail" type="email" placeholder="you@business.com" style="width:100%;background:#111519;border:1px solid #2a2f38;color:#F0EBE0;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:11px 14px;outline:none;margin-bottom:14px">
 
       <label style="font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:#8a8578;display:block;margin-bottom:6px">Password</label>
-      <input id="coPassword" type="password" placeholder="At least 8 characters" style="width:100%;background:#111519;border:1px solid #2a2f38;color:#F0EBE0;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:11px 14px;outline:none;margin-bottom:20px">
+      <div style="position:relative;margin-bottom:20px">
+        <input id="coPassword" type="password" placeholder="At least 8 characters" style="width:100%;background:#111519;border:1px solid #2a2f38;color:#F0EBE0;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;padding:11px 40px 11px 14px;outline:none">
+        <button type="button" onclick="coTogglePassword(this)" aria-label="Show password" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#8a8578;cursor:pointer;padding:0;display:flex;align-items:center">
+          <svg class="co-icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg class="co-icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;display:none"><path d="M17.94 17.94A10.94 10.94 0 0112 20c-7 0-11-7-11-7a18.7 18.7 0 015.06-5.94M9.9 4.24A10.4 10.4 0 0112 4c7 0 11 7 11 7a18.7 18.7 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
+      </div>
 
       <button id="coContinueBtn" onclick="coContinue()" style="width:100%;padding:13px;background:linear-gradient(135deg,#C9A465,#a07a3a);color:#030507;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer">Continue</button>
       <p style="color:#8a8578;font-size:.75rem;text-align:center;margin-top:14px">This creates your ClientSniper account. Already have one? <a href="auth.html" style="color:#C9A465;text-decoration:underline">Sign in first</a>.</p>
@@ -777,6 +783,14 @@ let coElements = null;
 
 coDb.auth.getSession().then(({ data }) => { coSession = data.session; });
 
+function coTogglePassword(btn){
+  const input = document.getElementById('coPassword');
+  const showing = input.type === 'password';
+  input.type = showing ? 'text' : 'password';
+  btn.querySelector('.co-icon-eye').style.display = showing ? 'none' : 'block';
+  btn.querySelector('.co-icon-eye-off').style.display = showing ? 'block' : 'none';
+  btn.setAttribute('aria-label', showing ? 'Hide password' : 'Show password');
+}
 function coShowAlert(msg, type){
   const el = document.getElementById('coAlert');
   el.textContent = msg;
