@@ -307,12 +307,10 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 <section class="page-hero">
   <div class="tag">Community Forum</div>
   <h1>Connect. <span class="outline">Learn. Grow.</span></h1>
-  <p>Share strategies, ask questions, post wins, and connect with 2,400+ lead generation pros using ClientSniper every day.</p>
+  <p>Share strategies, ask questions, post wins, and connect with other lead generation pros using ClientSniper.</p>
   <div class="forum-hero-stats">
-    <div class="fh-stat"><div class="fh-num">2,847</div><div class="fh-label">Members</div></div>
-    <div class="fh-stat"><div class="fh-num">1,204</div><div class="fh-label">Threads</div></div>
-    <div class="fh-stat"><div class="fh-num">8,391</div><div class="fh-label">Replies</div></div>
-    <div class="fh-stat"><div class="fh-num">142</div><div class="fh-label">Online Now</div></div>
+    <div class="fh-stat"><div class="fh-num" id="heroThreads">—</div><div class="fh-label">Threads</div></div>
+    <div class="fh-stat"><div class="fh-num" id="heroReplies">—</div><div class="fh-label">Replies</div></div>
   </div>
 </section>
 
@@ -444,8 +442,8 @@ body::before{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;
 
 <script>
 /* ── SUPABASE ─────────────────────────── */
-const SUPABASE_URL  = 'https://jxcahqkkcnqkmjjqdnuu.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U';
+const SUPABASE_URL  = 'https://ehrdnbspxgpukpcvqair.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVocmRuYnNweGdwdWtwY3ZxYWlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNTEwNTgsImV4cCI6MjA5NzcyNzA1OH0.glSXj4kdPSEOKJcmHvDua__oaGy_DWJ1v9YfkNosSKU';
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON);
 
