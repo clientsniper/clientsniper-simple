@@ -1,7 +1,7 @@
-User-agent: *
+﻿User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /webhook
 Disallow: /create-checkout-session
 
-Sitemap: https://clientsniper.com/sitemap.xml
+Sitemap: https://clientsniperofficial.com/sitemap.xml

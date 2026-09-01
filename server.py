@@ -1,4 +1,4 @@
-import os
+﻿import os
 import re
 import json
 import uuid
@@ -45,8 +45,8 @@ PRICE_MAP = {
 }
 
 ALLOWED_ORIGINS = {
-    'https://clientsniper.com',
-    'https://www.clientsniper.com',
+    'https://clientsniperofficial.com',
+    'https://www.clientsniperofficial.com',
 }
 
 RESEND_API_KEY = os.getenv('RESEND_API_KEY', '')
@@ -57,9 +57,9 @@ SMTP_HOST = os.getenv('SMTP_HOST', 'smtp.gmail.com')
 SMTP_PORT = int(os.getenv('SMTP_PORT', 587))
 SMTP_USER = os.getenv('SMTP_USER', '')
 SMTP_PASS = os.getenv('SMTP_PASS', '')
-FROM_EMAIL = os.getenv('FROM_EMAIL', f'ClientSniper <{SMTP_USER}>' if SMTP_USER else 'ClientSniper <noreply@clientsniper.com>')
+FROM_EMAIL = os.getenv('FROM_EMAIL', f'ClientSniper <{SMTP_USER}>' if SMTP_USER else 'ClientSniper <noreply@clientsniperofficial.com>')
 CONTACT_EMAIL_TO = os.getenv('CONTACT_EMAIL_TO', 'clientsniper.official@gmail.com')
-SITE_URL = os.getenv('SITE_URL', 'https://clientsniper.com')
+SITE_URL = os.getenv('SITE_URL', 'https://clientsniperofficial.com')
 
 SUPABASE_URL         = os.getenv('SUPABASE_URL', 'https://jxcahqkkcnqkmjjqdnuu.supabase.co')
 SUPABASE_SERVICE_KEY = os.getenv('SUPABASE_SERVICE_KEY', '')

@@ -1,4 +1,4 @@
-{
+﻿{
   "builds": [
     {
       "src": "server.py",
@@ -12,6 +12,6 @@
     }
   ],
   "env": {
-    "SITE_URL": "https://clientsniper.com"
+    "SITE_URL": "https://clientsniperofficial.com"
   }
 }
