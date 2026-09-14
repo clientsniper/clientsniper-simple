@@ -3247,31 +3247,37 @@
     <div class="container reveal" style="text-align:center">
       <div class="section-tag">Testimonials</div>
       <div class="section-title">What Our Users Say</div>
-      <div class="testimonial-track">
-        <div class="testimonial-slider" id="testimonialSlider">
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <blockquote>"I searched 'restaurants in Leeds' and found 43 businesses with no website or an outdated one. Sent 40 emails, got 11 replies, closed 3 clients in a week."</blockquote>
-            <div class="author"><strong>James T.</strong> — Freelance Web Designer, London</div>
-          </div>
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <blockquote>"The Opportunity Score is genuinely brilliant. I only contact businesses scoring above 85 and my reply rate has tripled compared to cold outreach I used to do manually."</blockquote>
-            <div class="author"><strong>Sophie R.</strong> — Digital Agency Owner, Manchester</div>
-          </div>
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <blockquote>"I was spending £200/mo on three different tools and hours a week on manual research. ClientSniper replaced all of it for £55. And it's actually better."</blockquote>
-            <div class="author"><strong>Amir K.</strong> — Freelance Web Designer</div>
-          </div>
-          <div class="testimonial-card">
-            <div class="stars">★★★★★</div>
-            <blockquote>"The outreach templates are incredibly well-written. I generate one, tweak two lines, and send. My conversion from first contact to booked call went from 4% to 14%."</blockquote>
-            <div class="author"><strong>Laura M.</strong> — Agency Founder, Dublin</div>
-          </div>
-        </div>
+      <div id="testimonialEmpty" style="display:none;color:var(--text-dim);font-size:.95rem;max-width:480px;margin:0 auto 24px">Be the first to leave a review below.</div>
+      <div class="testimonial-track" id="testimonialTrack">
+        <div class="testimonial-slider" id="testimonialSlider"></div>
       </div>
       <div class="testimonial-dots" id="testimonialDots"></div>
+
+      <div id="reviewFormWrap" style="max-width:520px;margin:48px auto 0;text-align:left">
+        <button type="button" id="reviewToggleBtn" onclick="toggleReviewForm()" style="display:block;margin:0 auto;background:none;border:1px solid var(--border);color:var(--gold);font-size:.75rem;letter-spacing:2px;text-transform:uppercase;padding:10px 24px;cursor:pointer;transition:all .2s">Leave a Review</button>
+        <form id="reviewForm" onsubmit="submitReview(event)" style="display:none;margin-top:24px;background:var(--surface);border:1px solid var(--border);padding:28px;">
+          <div style="margin-bottom:14px">
+            <label style="display:block;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px">Your Rating</label>
+            <div id="starPicker" style="font-size:1.6rem;letter-spacing:4px;cursor:pointer;color:var(--border)"></div>
+            <input type="hidden" id="rv-rating" value="0">
+          </div>
+          <div style="margin-bottom:14px">
+            <label style="display:block;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px">Name</label>
+            <input id="rv-name" required style="width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:.9rem">
+          </div>
+          <div style="margin-bottom:14px">
+            <label style="display:block;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px">Role / Company <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+            <input id="rv-role" style="width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:.9rem">
+          </div>
+          <div style="margin-bottom:18px">
+            <label style="display:block;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px">Your Review</label>
+            <textarea id="rv-text" required rows="4" minlength="10" maxlength="1000" style="width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:.9rem;resize:vertical"></textarea>
+          </div>
+          <button type="submit" id="rv-btn" class="btn-primary" style="width:100%;justify-content:center">Submit Review</button>
+          <p id="rv-status" style="display:none;margin-top:12px;font-size:.82rem;text-align:center"></p>
+          <p style="margin-top:12px;font-size:.72rem;color:var(--text-dim);text-align:center">Reviews are checked before appearing publicly.</p>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -3476,9 +3482,10 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script>
     const db = supabase.createClient(
-      'https://jxcahqkkcnqkmjjqdnuu.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4Y2FocWtrY25xa21qanFkbnV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTY5NzQsImV4cCI6MjA5Mjg5Mjk3NH0.1V2vl5NqLWFqOKpeNoEAuYvg2t0Tv-v4FOpNJBQ9q-U'
+      'https://ehrdnbspxgpukpcvqair.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVocmRuYnNweGdwdWtwY3ZxYWlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNTEwNTgsImV4cCI6MjA5NzcyNzA1OH0.glSXj4kdPSEOKJcmHvDua__oaGy_DWJ1v9YfkNosSKU'
     );
+    const FUNCTIONS_URL = 'https://ehrdnbspxgpukpcvqair.supabase.co/functions/v1';
 
     /* ───── FLOATING PARTICLES ───── */
     (function () {
@@ -3549,13 +3556,35 @@
       nums.forEach(n => ob.observe(n));
     })();
 
-    /* ───── TESTIMONIAL CAROUSEL ───── */
-    (function () {
+    /* ───── TESTIMONIAL CAROUSEL — loads real published reviews ───── */
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    (async function () {
       const slider = document.getElementById('testimonialSlider');
       const dotsWrap = document.getElementById('testimonialDots');
+      const track = document.getElementById('testimonialTrack');
+      const emptyMsg = document.getElementById('testimonialEmpty');
       if (!slider || !dotsWrap) return;
-      const cards = slider.children;
-      const total = cards.length;
+
+      const { data: reviews } = await db.from('reviews').select('name,role,rating,review_text').eq('published', true).order('created_at', { ascending: false }).limit(20);
+
+      if (!reviews || reviews.length === 0) {
+        track.style.display = 'none';
+        dotsWrap.style.display = 'none';
+        emptyMsg.style.display = 'block';
+        return;
+      }
+
+      slider.innerHTML = reviews.map(r => `
+        <div class="testimonial-card">
+          <div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+          <blockquote>"${escapeHtml(r.review_text)}"</blockquote>
+          <div class="author"><strong>${escapeHtml(r.name)}</strong>${r.role ? ' — ' + escapeHtml(r.role) : ''}</div>
+        </div>
+      `).join('');
+
+      const total = reviews.length;
       let current = 0;
       for (let i = 0; i < total; i++) {
         const d = document.createElement('div');
@@ -3568,8 +3597,61 @@
         slider.style.transform = `translateX(-${i * 100}%)`;
         dotsWrap.querySelectorAll('.dot').forEach((d, idx) => d.classList.toggle('active', idx === i));
       }
-      setInterval(() => goTo((current + 1) % total), 5000);
+      if (total > 1) setInterval(() => goTo((current + 1) % total), 5000);
     })();
+
+    /* ───── REVIEW SUBMISSION ───── */
+    function toggleReviewForm() {
+      const form = document.getElementById('reviewForm');
+      const btn = document.getElementById('reviewToggleBtn');
+      const show = form.style.display === 'none';
+      form.style.display = show ? 'block' : 'none';
+      btn.style.display = show ? 'none' : 'block';
+    }
+    (function () {
+      const picker = document.getElementById('starPicker');
+      if (!picker) return;
+      const ratingInput = document.getElementById('rv-rating');
+      picker.innerHTML = [1, 2, 3, 4, 5].map(n => `<span data-n="${n}">★</span>`).join('');
+      const stars = picker.querySelectorAll('span');
+      function paint(n) {
+        stars.forEach((s, i) => s.style.color = i < n ? 'var(--gold)' : 'var(--border)');
+      }
+      stars.forEach(s => {
+        s.addEventListener('mouseenter', () => paint(Number(s.dataset.n)));
+        s.addEventListener('click', () => { ratingInput.value = s.dataset.n; paint(Number(s.dataset.n)); });
+      });
+      picker.addEventListener('mouseleave', () => paint(Number(ratingInput.value)));
+    })();
+    async function submitReview(e) {
+      e.preventDefault();
+      const btn = document.getElementById('rv-btn');
+      const status = document.getElementById('rv-status');
+      const rating = Number(document.getElementById('rv-rating').value);
+      const name = document.getElementById('rv-name').value.trim();
+      const role = document.getElementById('rv-role').value.trim();
+      const review_text = document.getElementById('rv-text').value.trim();
+      status.style.display = 'none';
+      if (!rating) { status.style.display = 'block'; status.style.color = 'var(--insta2)'; status.textContent = 'Please pick a star rating.'; return; }
+      if (!name || review_text.length < 10) { status.style.display = 'block'; status.style.color = 'var(--insta2)'; status.textContent = 'Please add your name and a review (10+ characters).'; return; }
+      btn.disabled = true; btn.textContent = 'Submitting…';
+      try {
+        const res = await fetch(`${FUNCTIONS_URL}/submit-form`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'review', name, role, rating, review_text }),
+        });
+        if (!res.ok) throw new Error();
+        status.style.display = 'block'; status.style.color = 'var(--maps)';
+        status.textContent = 'Thanks! Your review will appear once it\'s been checked.';
+        document.getElementById('reviewForm').reset();
+        document.getElementById('rv-rating').value = 0;
+      } catch {
+        status.style.display = 'block'; status.style.color = 'var(--insta2)';
+        status.textContent = 'Something went wrong. Please try again.';
+      }
+      btn.disabled = false; btn.textContent = 'Submit Review';
+    }
 
     /* ───── FAQ ACCORDION ───── */
     document.querySelectorAll('.faq-question').forEach(q => {
@@ -3593,12 +3675,17 @@
       if (!name || !email || !message) return;
       btn.disabled = true; btn.textContent = 'Sending…';
       status.style.display = 'none';
-      const { error } = await db.from('contact_messages').insert({ name, email, subject, message });
-      if (!error) {
+      try {
+        const res = await fetch(`${FUNCTIONS_URL}/submit-form`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'contact', name, email, subject, message }),
+        });
+        if (!res.ok) throw new Error();
         status.style.display = 'block'; status.style.color = 'var(--maps)';
         status.textContent = 'Message sent! We\'ll get back to you within 24 hours.';
         document.getElementById('contactForm').reset();
-      } else {
+      } catch {
         status.style.display = 'block'; status.style.color = 'var(--insta2)';
         status.textContent = 'Something went wrong. Please try again.';
       }
@@ -3615,14 +3702,23 @@
       if (!email) return;
       btn.disabled = true; btn.textContent = 'Subscribing…';
       status.textContent = '';
-      const { error } = await db.from('newsletter_subscribers').insert({ email });
-      if (!error) {
-        status.style.color = 'var(--maps)'; status.textContent = 'You\'re subscribed!';
-        emailEl.value = '';
-      } else if (error.code === '23505') {
-        status.style.color = 'var(--maps)'; status.textContent = 'You\'re already subscribed!';
-        emailEl.value = '';
-      } else {
+      try {
+        const res = await fetch(`${FUNCTIONS_URL}/submit-form`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'newsletter', email }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          status.style.color = 'var(--maps)'; status.textContent = 'You\'re subscribed!';
+          emailEl.value = '';
+        } else if (data.code === '23505') {
+          status.style.color = 'var(--maps)'; status.textContent = 'You\'re already subscribed!';
+          emailEl.value = '';
+        } else {
+          status.style.color = 'var(--insta2)'; status.textContent = 'Something went wrong. Please try again.';
+        }
+      } catch {
         status.style.color = 'var(--insta2)'; status.textContent = 'Something went wrong. Please try again.';
       }
       btn.disabled = false; btn.textContent = 'Subscribe';
